@@ -1,11 +1,53 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import RootLayout from "../Layouts/RootLayout";
+import Home from "../Pages/Home/Home";
+import ErrorPage from "../Pages/Error/ErrorPage";
+import AuthLayout from "../Layouts/AuthLayout";
+import Login from "../Pages/Authentication/Login/Login";
+import Register from "../Pages/Authentication/Register/Register";
+import ErrorLayout from "../Layouts/ErrorLayout";
+import AboutUs from "../Pages/AboutUs/AboutUs";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello World</div>,
+    Component: RootLayout,
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
+      {
+        path: "/",
+        Component: Home,
+      },
+        {
+        path: "/about-us",
+        Component: AboutUs,
+      },
+    ],
+  },
+  {
+    path: "auth",
+    Component: AuthLayout,
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
+      {
+        path: "login",
+        Component: Login,
+      },
+      {
+        path: "register",
+        Component: Register,
+      },
+    ],
+  },
+  {
+    path: "/",
+    Component: ErrorLayout,
+    errorElement: <ErrorPage></ErrorPage>,
+    children: [
+      {
+        path: "*",
+        Component: ErrorPage,
+      },
+    ],
   },
 ]);
