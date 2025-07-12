@@ -7,7 +7,7 @@ const Footer = () => {
     <div>
       <footer
         className=" 
-            lg:footer-horizontal mt-10 md:mt-15 lg:mt-20  p-5 pt-5 md:px-10 lg:px-20"
+            lg:footer-horizontal mt-10 md:mt-15 lg:mt-20  p-5 pt-5 md:px-10 lg:px-20 font-nunito"
       >
         <div
           className="flex lg:flex-row flex-col lg:items-center justify-around lg:gap-10 p-2
@@ -28,7 +28,7 @@ const Footer = () => {
             {" "}
             <li>
               {" "}
-              <h6 className="font-semibold text-xl font-[quicksand]">Terms</h6>
+              <h6 className="font-bold text-xl font-poppins">Terms</h6>
             </li>
             <div className="border-b-2 border-green-500 w-20 "></div>
             <li>
@@ -56,7 +56,7 @@ const Footer = () => {
             {" "}
             <li>
               {" "}
-              <h6 className="font-bold text-xl font-[quicksand]">Help</h6>
+              <h6 className="font-bold text-xl font-poppins">Help</h6>
             </li>
             <div className="border-b-2 border-green-500 w-15 "></div>
             <li>
@@ -80,7 +80,7 @@ const Footer = () => {
             {" "}
             <li>
               {" "}
-              <h6 className="font-semibold text-xl font-[quicksand]">
+              <h6 className="font-bold text-xl font-poppins">
                 Follow Us
               </h6>
               <div className="border-b-2 border-green-500 w-25 "></div>

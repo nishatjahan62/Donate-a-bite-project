@@ -7,6 +7,8 @@ import Login from "../Pages/Authentication/Login/Login";
 import Register from "../Pages/Authentication/Register/Register";
 import ErrorLayout from "../Layouts/ErrorLayout";
 import AboutUs from "../Pages/AboutUs/AboutUs";
+import AllDonations from "../Pages/AllDonations/AllDonations";
+import ForgetPassword from "../Pages/Authentication/ForgetPassword/ForgetPassword";
 
 export const router = createBrowserRouter([
   {
@@ -18,9 +20,13 @@ export const router = createBrowserRouter([
         path: "/",
         Component: Home,
       },
-        {
+      {
         path: "/about-us",
         Component: AboutUs,
+      },
+      {
+        path: "all-donations",
+        Component: AllDonations,
       },
     ],
   },
@@ -36,6 +42,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         Component: Register,
+      },
+      {
+        path: "forget-password",
+        Component: ForgetPassword,
       },
     ],
   },
