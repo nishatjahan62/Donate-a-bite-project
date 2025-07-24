@@ -9,6 +9,7 @@ import ErrorLayout from "../Layouts/ErrorLayout";
 import AboutUs from "../Pages/AboutUs/AboutUs";
 import AllDonations from "../Pages/AllDonations/AllDonations";
 import ForgetPassword from "../Pages/Authentication/ForgetPassword/ForgetPassword";
+import DonationDetails from "../Pages/DonationDetails/DonationDetails";
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,12 @@ export const router = createBrowserRouter([
       {
         path: "all-donations",
         Component: AllDonations,
+      },
+      {
+        path: "donation-details/:id",
+        Component: DonationDetails,
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/donation/${params.id}`),
       },
     ],
   },

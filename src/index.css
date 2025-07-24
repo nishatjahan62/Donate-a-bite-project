@@ -2,6 +2,7 @@
 @plugin "daisyui" {
   themes: light --default;
 }
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* set colors */
 @plugin "daisyui/theme" {
@@ -20,4 +21,10 @@
 
 .nunito {
   font-family: "Nunito", sans-serif;
+}
+html {
+  background-color: white;
+}
+html.dark {
+  background-color: #1c1c1d;
 }

@@ -106,12 +106,12 @@ const Login = () => {
                   Register here
                 </Link>
               </p>
-              <div className="w-full text-center">
-                <p>OR</p>
-
-                <GoogleLogin></GoogleLogin>
-              </div>
             </form>
+            <div className="w-full text-center">
+              <p>OR</p>
+
+              <GoogleLogin></GoogleLogin>
+            </div>
           </div>
         </div>
         <div className="w-full lg:w-1/2 bg-[#FAFDF0] flex items-center justify-center p-10">
