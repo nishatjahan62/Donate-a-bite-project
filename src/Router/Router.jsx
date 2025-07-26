@@ -10,6 +10,7 @@ import AboutUs from "../Pages/AboutUs/AboutUs";
 import AllDonations from "../Pages/AllDonations/AllDonations";
 import ForgetPassword from "../Pages/Authentication/ForgetPassword/ForgetPassword";
 import DonationDetails from "../Pages/DonationDetails/DonationDetails";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -31,7 +32,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "donation-details/:id",
-        Component: DonationDetails,
+        element: (
+          <PrivateRoute>
+            <DonationDetails></DonationDetails>
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
           fetch(`http://localhost:3000/donation/${params.id}`),
       },

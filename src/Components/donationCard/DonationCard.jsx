@@ -45,7 +45,7 @@ const DonationCard = ({ donation }) => {
       </div>
     </div>
   );
-};
+}
 
 export default DonationCard;
 

@@ -7,6 +7,7 @@ import Button from "../../Button/Button";
 import LightLogo from "../../../assets/LightLogo.png";
 import DarkLogo from "../../../assets/DarkLogo.png";
 import OnlyLogo from "../../../assets/onlyicon.png";
+import UserIcon from "../../../assets/userIcon.png";
 
 const Navbar = () => {
   const { user, logOut } = UseAuth();
@@ -165,11 +166,11 @@ const Navbar = () => {
                 <img
                   className="w-10 rounded-full "
                   alt="user's photo"
-                  src={`${user ? user.photoURL : "/userIcon"}`}
+                  src={user?.photoURL || UserIcon}
                   title={user && user.displayName}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = "/userIcon.png";
+                    e.currentTarget.src = UserIcon;
                   }}
                 />
               </div>

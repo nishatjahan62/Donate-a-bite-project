@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DonationCard from "../donationCard/DonationCard";
-import { Autoplay, Mousewheel, Navigation, Pagination } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -21,7 +21,7 @@ const Featured = () => {
         Featured Donations
       </h2>
       <Swiper
-        modules={[Navigation, Pagination, Mousewheel, Autoplay]}
+        modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={20}
         slidesPerView={1}
         breakpoints={{
@@ -35,8 +35,6 @@ const Featured = () => {
         }}
         navigation
         pagination={{ clickable: true }}
-        mousewheel
-        loop={true}
       >
         {donations.map((donation) => (
           <SwiperSlide key={donation._id}>
