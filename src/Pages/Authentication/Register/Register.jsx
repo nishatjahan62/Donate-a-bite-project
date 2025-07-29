@@ -5,8 +5,10 @@ import Swal from "sweetalert2";
 import UseAuth from "../../../Hooks/UseAuth";
 import SingUp from "../../../assets/Sign up.png";
 import toast from "react-hot-toast";
+import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 
 const Register = () => {
+  const axiosSecure = UseAxiosSecure();
   const {
     register,
     handleSubmit,
@@ -16,28 +18,34 @@ const Register = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   const { createUser, updateUser, setUser, user } = UseAuth();
-  const onsubmit = (data) => {
-    const { email, password, photo, name } = data;
-    createUser(email, password)
-      .then((res) => {
-        res.user;
-        updateUser({ displayName: name, photoURL: photo }).then(() => {
-          setUser({ ...user, displayName: name, photoURL: photo });
-        });
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Created Account",
-          text: "Your account has been registered successfully. ",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(from);
-      })
-      .catch((err) => {
-        const errorMessage = err.message;
-        toast.error(errorMessage);
+  const onsubmit = async (data) => {
+    const { email, password, photo, name, role } = data;
+    try {
+      await createUser(email, password);
+      await updateUser({ displayName: name, photoURL: photo });
+      setUser({ ...user, displayName: name, photoURL: photo });
+
+      //  Save user to Database
+      await axiosSecure.post("/users", {
+        name,
+        email,
+        role,
+        image: photo,
       });
+
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Created Account",
+        text: "Your account has been registered successfully.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate(from);
+    } catch (err) {
+      console.error(err.message);
+      toast.error("Registration failed");
+    }
   };
 
   return (
