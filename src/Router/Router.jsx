@@ -18,6 +18,7 @@ import MyReviews from "../Pages/userdashbord/MyReviews/MyReviews";
 import Transactions from "../Pages/userdashbord/Transactions/Transactions";
 import RequestCharity from "../Pages/userdashbord/RequestCarityRole/RequestCharity";
 import Dashboard from "../Pages/userdashbord/Dashboard/Dashboard";
+import Payment from "../Pages/Payment/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -109,7 +110,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "request-charity",
-        Component: RequestCharity,
+        Component: Payment,
       },
     ],
   },

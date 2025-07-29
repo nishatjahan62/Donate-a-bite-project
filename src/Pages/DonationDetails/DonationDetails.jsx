@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router";
 import UseAuth from "../../Hooks/UseAuth";
 import toast from "react-hot-toast";
-import axios from "axios";
+
 import Button from "../Button/Button";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const DonationDetails = () => {
   const { user } = UseAuth();
-  const userId = user?.uid;
+  const userEmail = user?.email; // use email consistently
   const axiosSecure = UseAxiosSecure();
   const [isFavorite, setIsFavorite] = useState(false);
   const [userData, setUserData] = useState({});
@@ -28,31 +28,51 @@ const DonationDetails = () => {
     restaurant = {},
   } = useLoaderData();
 
+  // Load user data
   useEffect(() => {
-    if (user?.email) {
-      axiosSecure.get(`/users/${user.email}`).then((res) => {
+    if (userEmail) {
+      axiosSecure.get(`/users/${userEmail}`).then((res) => {
         setUserData(res.data);
       });
     }
-  }, [user?.email, axiosSecure]);
+  }, [userEmail, axiosSecure]);
 
+  // Load requests
   useEffect(() => {
     axiosSecure.get(`/requests/${_id}`).then((res) => setRequests(res.data));
   }, [_id, axiosSecure]);
 
+  // Load reviews
   useEffect(() => {
     axiosSecure.get(`/reviews/${_id}`).then((res) => setReviews(res.data));
   }, [_id, axiosSecure]);
 
-  // Handle   favorites
+  // Load favorite status on mount
+  useEffect(() => {
+    if (!userEmail) return;
+
+    axiosSecure
+      .get(`/favorites/${userEmail}`)
+      .then((res) => {
+        const alreadyFavorited = res.data.some(
+          (fav) => fav.donationId === _id
+        );
+        setIsFavorite(alreadyFavorited);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch favorites", err);
+      });
+  }, [userEmail, _id, axiosSecure]);
+
+  // Handle favorites toggle
   const handleFavorite = async () => {
-    if (!userId) {
+    if (!userEmail) {
       toast.error("Please log in to save this donation to favorites.");
       return;
     }
     try {
-      const response = await axios.post("http://localhost:3000/favorites", {
-        userId,
+      const response = await axiosSecure.post("/favorites", {
+        userId: userEmail, // send email as userId
         donationId: _id,
       });
 
@@ -165,7 +185,7 @@ const DonationDetails = () => {
             label={isFavorite ? "Added to Favorites" : "Add to Favorites"}
           />
 
-          {/*   Request Donation */}
+          {/* Request Donation */}
           {userData.role === "charity" && (
             <>
               <button
@@ -179,7 +199,7 @@ const DonationDetails = () => {
             </>
           )}
 
-          {/* Confirm Pickup  */}
+          {/* Confirm Pickup */}
           {userData.role === "charity" && requests.length > 0 && (
             <div className="mt-6">
               <h3 className="text-xl font-semibold mb-2">Your Requests:</h3>
@@ -341,7 +361,7 @@ const DonationDetails = () => {
         </div>
       </dialog>
 
-      {/*  Review Modal */}
+      {/* Review Modal */}
       {showReviewModal && (
         <dialog open className="modal">
           <div className="modal-box">

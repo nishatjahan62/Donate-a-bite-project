@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { Link } from "react-router";
 import UseAuth from "../../../Hooks/UseAuth";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
@@ -8,10 +7,21 @@ const Favorites = () => {
   const { user } = UseAuth();
   const axiosSecure = UseAxiosSecure();
   const [favorites, setFavorites] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    axiosSecure.get(`/favorites/${user.uid}`).then(res => setFavorites(res.data));
-  }, [axiosSecure, user.uid]);
+    if (!user?.email) return;
+
+    axiosSecure.get(`/favorites/${user.email}`)
+      .then(res => {
+        setFavorites(res.data);
+        setError(null);
+      })
+      .catch(err => {
+        console.error("Failed to fetch favorites:", err);
+        setError("Failed to load favorites.");
+      });
+  }, [axiosSecure, user?.email]);
 
   const handleRemove = async (id) => {
     try {
@@ -19,16 +29,21 @@ const Favorites = () => {
       setFavorites(favorites.filter(item => item._id !== id));
     } catch (err) {
       console.error("Error removing favorite:", err);
+      setError("Failed to remove favorite.");
     }
   };
 
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">My Favorite Donations</h2>
+      {error && <p className="text-red-600 mb-4">{error}</p>}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {favorites.length === 0 && !error && <p>No favorite donations yet.</p>}
         {favorites.map(fav => (
           <div key={fav._id} className="card bg-base-100 shadow-xl">
-            <figure><img src={fav.image} alt="Donation" className="h-48 w-full object-cover" /></figure>
+            <figure>
+              <img src={fav.image} alt="Donation" className="h-48 w-full object-cover" />
+            </figure>
             <div className="card-body">
               <h3 className="card-title">{fav.title}</h3>
               <p><strong>Restaurant:</strong> {fav.restaurantName}, {fav.location}</p>
