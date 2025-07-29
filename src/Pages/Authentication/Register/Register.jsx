@@ -21,17 +21,31 @@ const Register = () => {
   const onsubmit = async (data) => {
     const { email, password, photo, name, role } = data;
     try {
-      await createUser(email, password);
+      const userCredential = await createUser(email, password);
+      const currentUser = userCredential.user;
+
       await updateUser({ displayName: name, photoURL: photo });
       setUser({ ...user, displayName: name, photoURL: photo });
 
-      //  Save user to Database
-      await axiosSecure.post("/users", {
-        name,
-        email,
-        role,
-        image: photo,
-      });
+    
+      const token = await currentUser.getIdToken();
+      localStorage.setItem("access-token", token);
+
+     
+      await axiosSecure.post(
+        "/users",
+        {
+          name:name,
+          email:email,
+          role: role || "user",
+          image: photo,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       Swal.fire({
         position: "center",
@@ -43,7 +57,7 @@ const Register = () => {
       });
       navigate(from);
     } catch (err) {
-      console.error(err.message);
+      console.error("Registration error:", err);
       toast.error("Registration failed");
     }
   };
