@@ -22,8 +22,8 @@ const TransactionHistory = () => {
 
   return (
     <div className="p-5">
-      <h2 className="text-2xl font-bold mb-4">Transaction History</h2>
-      <div className="overflow-x-auto">
+      <h2 className="text-3xl text-center text-primary font-bold mb-4">Transaction History</h2>
+      <div className="overflow-x-auto border-2 border-secondary  rounded-2xl shadow-2xl px-3 sm:px-5 py-4 sm:py-8">
         <table className="table table-zebra w-full">
           <thead>
             <tr>
