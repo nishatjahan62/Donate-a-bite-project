@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 const UseAxiosSecure = () => {
   const instance = axios.create({
-    baseURL: "http://localhost:3000", 
+    baseURL: "http://localhost:5000", 
   });
 
   useEffect(() => {

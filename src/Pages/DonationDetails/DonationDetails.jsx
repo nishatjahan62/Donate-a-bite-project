@@ -1,416 +1,315 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useLoaderData } from "react-router";
-import UseAuth from "../../Hooks/UseAuth";
-import toast from "react-hot-toast";
-
-import Button from "../Button/Button";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import Button from "../Shared/Button/Button";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
+import { FaRegCommentDots } from "react-icons/fa6";
+import Swal from "sweetalert2";
+import UseAuth from "../../Hooks/UseAuth";
 
 const DonationDetails = () => {
-  const { user } = UseAuth();
-  const userEmail = user?.email; // use email consistently
+  const donation = useLoaderData();
   const axiosSecure = UseAxiosSecure();
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [userData, setUserData] = useState({});
-  const [requests, setRequests] = useState([]);
-  const [reviews, setReviews] = useState([]);
+  const queryClient = useQueryClient();
+  const { user } = UseAuth();
+
+  const [showRequestModal, setShowRequestModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
 
-  const {
-    _id,
-    title,
-    description,
-    foodType,
-    quantity,
-    image,
-    status,
-    pickupTime,
-    restaurant = {},
-  } = useLoaderData();
+  // Reviews query
+  const { data: reviews = [] } = useQuery({
+    queryKey: ["reviews", donation._id],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/reviews/${donation._id}`);
+      return res.data;
+    },
+  });
 
-  // Load user data
-  useEffect(() => {
-    if (userEmail) {
-      axiosSecure.get(`/users/${userEmail}`).then((res) => {
-        setUserData(res.data);
+  // Save to favorites
+  const saveToFavorites = useMutation({
+    mutationFn: async () => {
+      return axiosSecure.post("/favorites", {
+        donationId: donation._id,
+        userEmail: user.email,
       });
-    }
-  }, [userEmail, axiosSecure]);
-
-  // Load requests
-  useEffect(() => {
-    axiosSecure.get(`/requests/${_id}`).then((res) => setRequests(res.data));
-  }, [_id, axiosSecure]);
-
-  // Load reviews
-  useEffect(() => {
-    axiosSecure.get(`/reviews/${_id}`).then((res) => setReviews(res.data));
-  }, [_id, axiosSecure]);
-
-  // Load favorite status on mount
-  useEffect(() => {
-    if (!userEmail) return;
-
-    axiosSecure
-      .get(`/favorites/${userEmail}`)
-      .then((res) => {
-        const alreadyFavorited = res.data.some(
-          (fav) => fav.donationId === _id
-        );
-        setIsFavorite(alreadyFavorited);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch favorites", err);
+    },
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Saved!",
+        text: "Donation has been added to your favorites.",
+        confirmButtonColor: "var(--color-primary)",
       });
-  }, [userEmail, _id, axiosSecure]);
+    },
+  });
 
-  // Handle favorites toggle
-  const handleFavorite = async () => {
-    if (!userEmail) {
-      toast.error("Please log in to save this donation to favorites.");
-      return;
-    }
-    try {
-      const response = await axiosSecure.post("/favorites", {
-        userId: userEmail, // send email as userId
-        donationId: _id,
+  // Request donation
+  const requestDonation = useMutation({
+    mutationFn: async (formData) => axiosSecure.post("/requests", formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["requests"]);
+      Swal.fire({
+        icon: "success",
+        title: "Request Submitted!",
+        text: "Your donation request has been sent successfully.",
+        confirmButtonColor: "var(--color-secondary)",
       });
+      setShowRequestModal(false);
+    },
+  });
 
-      if (response.status === 201) {
-        setIsFavorite(true);
-        toast.success("Saved to favorites!");
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 409) {
-        toast.error("Already in favorites.");
-        setIsFavorite(true);
-      } else {
-        console.error(error);
-        toast.error("Failed to save favorite.");
-      }
-    }
-  };
+  // Add review
+  const addReview = useMutation({
+    mutationFn: async (formData) => axiosSecure.post("/reviews", formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews", donation._id]);
+      Swal.fire({
+        icon: "success",
+        title: "Thank you!",
+        text: "Your review has been submitted.",
+        confirmButtonColor: "var(--color-primary)",
+      });
+      setShowReviewModal(false);
+    },
+  });
 
-  const handleConfirmPickup = async (requestId) => {
-    try {
-      await axiosSecure.patch(`/requests/${requestId}`, {
+  // confirm pick up
+  const { data: request } = useQuery({
+    queryKey: ["request", donation._id, user.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(
+        `/requests/by-donation/${donation._id}?email=${user.email}`
+      );
+      return res.data[0]; // assuming one request per user per donation
+    },
+  });
+
+  const confirmPickup = useMutation({
+    mutationFn: async (requestId) => {
+      return axiosSecure.patch(`/requests/${requestId}`, {
         status: "Picked Up",
       });
-      toast.success("Pickup confirmed!");
-
-      const res = await axiosSecure.get(`/requests/${_id}`);
-      setRequests(res.data);
-    } catch (err) {
-      toast.error("Failed to confirm pickup.");
-      console.error(err);
-    }
-  };
-
-  const handleReviewSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const reviewData = {
-      donationId: _id,
-      reviewerName: userData.name,
-      reviewerRole: userData.role,
-      description: form.description.value,
-      rating: Number(form.rating.value),
-      createdAt: new Date(),
-    };
-
-    try {
-      await axiosSecure.post("/reviews", reviewData);
-      toast.success("Review submitted!");
-      setShowReviewModal(false);
-      form.reset();
-      const res = await axiosSecure.get(`/reviews/${_id}`);
-      setReviews(res.data);
-    } catch (err) {
-      toast.error("Failed to submit review.");
-      console.error(err);
-    }
-  };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["request", donation._id, user.email]);
+      Swal.fire({
+        icon: "success",
+        title: "Confirmed!",
+        text: "Donation has been marked as Picked Up.",
+        confirmButtonColor: "var(--color-primary)",
+      });
+    },
+  });
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12 nunito">
-      <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row items-center justify-center">
-        <div className="md:w-1/2">
+    <div
+      className="max-w-5xl py-5 lg:py-10 mx-auto p-6 border border-secondary rounded-2xl shadow-2xl mt-10 sm:mt-20
+                    bg-white dark:bg-black text-black dark:text-gray-200"
+    >
+      <div className="flex flex-col md:flex-row gap-8">
+        {/* Left - Image */}
+        <div className="flex-1">
           <img
-            src={image}
-            alt={title}
-            className="h-full w-full object-cover rounded-t-3xl md:rounded-tr-none md:rounded-l-3xl"
+            src={donation.image}
+            alt={donation.title}
+            className="w-full h-80 object-cover rounded-lg shadow-md"
           />
         </div>
 
-        <div className="md:w-1/2 p-8 flex flex-col justify-between">
-          <div className="space-y-4 text-gray-800 dark:text-gray-100">
-            <h2 className="text-4xl font-bold text-primary poppins">{title}</h2>
-            <p className="text-lg leading-relaxed">{description}</p>
-
-            <div className="text-base space-y-1">
-              <p>
-                <span className="font-semibold">Food Type:</span> {foodType}
-              </p>
-              <p>
-                <span className="font-semibold">Quantity:</span> {quantity}
-              </p>
-              <p>
-                <span className="font-semibold">Restaurant:</span>{" "}
-                {restaurant.name} - {restaurant.location}
-              </p>
-              <p>
-                <span className="font-semibold">Pickup Time:</span> {pickupTime}
-              </p>
-            </div>
-
-            <span
-              className={`inline-block mt-4 px-4 py-1 rounded-full font-semibold text-sm tracking-wide ${
-                status === "Available"
-                  ? "bg-green-100 text-green-700"
-                  : status === "Requested"
-                  ? "bg-yellow-100 text-yellow-700"
-                  : "bg-red-100 text-red-700"
-              }`}
-            >
-              Status: {status}
-            </span>
+        {/* Right - Details */}
+        <div className="flex-1 flex flex-col">
+          <h2 className="text-3xl lg:text-4xl font-bold text-[var(--color-primary)]">
+            {donation.title}
+          </h2>
+          <p className="mt-2 dark:text-gray-300">{donation.description}</p>
+          <hr className="mt-2 border-dashed border-secondary dark:border-gray-600" />
+          <p className="mt-2 font-semibold">Food Type: {donation.foodType}</p>
+          <p className="mt-1 font-semibold">Quantity: {donation.quantity}</p>
+          <p className="mt-1 font-semibold">
+            Pickup Time: {new Date(donation.pickupTime).toLocaleString()}
+          </p>
+          <p className="mt-1 font-semibold">Status: {donation.status}</p>
+          <hr className="mt-2 border-dashed border-secondary dark:border-gray-600" />
+          <div className="mt-2">
+            <h3 className="text-lg lg:text-xl font-bold text-[var(--color-primary)]">
+              Restaurant Info
+            </h3>
+            <p>
+              <span className="font-semibold">Name:</span>{" "}
+              {donation.restaurant?.name}
+            </p>
+            <p>
+              <span className="font-semibold">Location:</span>{" "}
+              {donation.restaurant?.location}
+            </p>
           </div>
 
-          <Button
-            onClick={handleFavorite}
-            className={`mt-4 px-4 py-2 rounded-lg text-white font-semibold ${
-              isFavorite ? "bg-gray-500" : "bg-primary hover:bg-primary"
-            }`}
-            disabled={isFavorite}
-            label={isFavorite ? "Added to Favorites" : "Add to Favorites"}
-          />
-
-          {/* Request Donation */}
-          {userData.role === "charity" && (
-            <>
-              <button
-                onClick={() =>
-                  document.getElementById("request_modal").showModal()
-                }
-                className="btn btn-primary mt-4"
-              >
-                Request Donation
-              </button>
-            </>
-          )}
-
-          {/* Confirm Pickup */}
-          {userData.role === "charity" && requests.length > 0 && (
-            <div className="mt-6">
-              <h3 className="text-xl font-semibold mb-2">Your Requests:</h3>
-              <ul>
-                {requests.map((req) => (
-                  <li
-                    key={req._id}
-                    className="border p-3 mb-2 rounded flex justify-between items-center"
-                  >
-                    <div>
-                      <p>
-                        <strong>Status:</strong> {req.status}
-                      </p>
-                      <p>
-                        <strong>Pickup Time:</strong> {req.pickupTime}
-                      </p>
-                    </div>
-                    {req.status === "Accepted" && (
-                      <button
-                        onClick={() => handleConfirmPickup(req._id)}
-                        className="btn btn-success"
-                      >
-                        Confirm Pickup
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Review Section */}
-          <div className="mt-10">
-            <h3 className="text-2xl font-bold mb-4">Reviews</h3>
-            {reviews.length === 0 && (
-              <p className="italic text-gray-500">No reviews yet.</p>
-            )}
-            <ul className="space-y-4 max-h-60 overflow-y-auto">
-              {reviews.map((review) => (
-                <li
-                  key={review._id}
-                  className="border rounded p-4 bg-gray-50 dark:bg-gray-800"
-                >
-                  <p className="font-semibold">
-                    {review.reviewerName} ({review.reviewerRole})
-                  </p>
-                  <p>{review.description}</p>
-                  <p>
-                    Rating:{" "}
-                    <span className="font-bold text-yellow-500">
-                      {"⭐".repeat(review.rating)}
-                    </span>
-                  </p>
-                </li>
-              ))}
-            </ul>
-            <button
-              className="btn btn-secondary mt-4"
+          {/* Buttons */}
+          <div className="mt-6 flex gap-2">
+            <Button
+              size="sm"
+              label=" Save to Favorites"
+              onClick={() => saveToFavorites.mutate()}
+            />
+            <Button
+              size="md"
+              label=" Request Donation"
+              onClick={() => setShowRequestModal(true)}
+            />
+            <Button
+              size="md"
+              label="Add Review"
               onClick={() => setShowReviewModal(true)}
-            >
-              Add Review
-            </button>
+            />
+            {request?.status === "Accepted" && (
+              <Button
+                label="Confirm Pickup"
+                color="secondary"
+                onClick={() => confirmPickup.mutate(request._id)}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      {/* Request Donation Modal */}
-      <dialog id="request_modal" className="modal">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg mb-4">Request This Donation</h3>
-          <form
-            onSubmit={async (e) => {
-              e.preventDefault();
-              const form = e.target;
-              const requestData = {
-                donationId: _id,
-                donationTitle: title,
-                restaurantName: restaurant.name,
-                charityName: userData.name,
-                charityEmail: userData.email,
-                requestDescription: form.description.value,
-                pickupTime: form.pickupTime.value,
-              };
+      {/* Reviews */}
+      <div className="mt-10">
+        <h3 className="text-2xl text-[var(--color-primary)] font-bold mb-4 flex items-center gap-2">
+          <FaRegCommentDots className="text-[var(--color-secondary)]" />
+          Reviews
+        </h3>
 
-              try {
-                await axiosSecure.post("/requests", requestData);
-                toast.success("Request submitted!");
-                form.reset();
-                document.getElementById("request_modal").close();
-                const res = await axiosSecure.get(`/requests/${_id}`);
-                setRequests(res.data);
-              } catch (err) {
-                toast.error("Failed to submit request.");
-                console.error(err);
-              }
-            }}
-          >
-            <div className="form-control mb-2">
+        {reviews.length === 0 ? (
+          <p className="dark:text-gray-400">No reviews yet.</p>
+        ) : (
+          reviews.map((r, idx) => (
+            <div
+              key={idx}
+              className="border-b py-2 border-gray-300 dark:border-gray-700"
+            >
+              <p className="font-semibold">{r.reviewerName}</p>
+              <p>{r.description}</p>
+              <p>Rating: ⭐{r.rating}</p>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Request Modal */}
+      {showRequestModal && (
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center ">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-2xl border-3 border-secondary  w-96 text-black dark:text-gray-200">
+            <h2 className="text-3xl text-primary font-bold mb-4">
+              Request Donation
+            </h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const form = e.target;
+                requestDonation.mutate({
+                  donationId: donation._id,
+                  donationTitle: donation.title,
+                  restaurantName: donation.restaurant?.name,
+                  charityName: user.displayName,
+                  charityEmail: user.email,
+                  description: form.description.value,
+                  pickupTime: form.pickupTime.value,
+                  status: "Pending",
+                });
+              }}
+            >
               <input
                 type="text"
-                value={title}
+                value={donation.title}
                 readOnly
-                className="input input-bordered w-full"
+                className="border p-2 mb-2 w-full rounded bg-gray-100 dark:bg-gray-800"
               />
-            </div>
-            <div className="form-control mb-2">
               <input
                 type="text"
-                value={restaurant.name}
+                value={donation.restaurant?.name}
                 readOnly
-                className="input input-bordered w-full"
+                className="border p-2 mb-2 w-full rounded bg-gray-100 dark:bg-gray-800"
               />
-            </div>
-            <div className="form-control mb-2">
               <input
                 type="text"
-                value={userData.name}
+                value={user.displayName}
                 readOnly
-                className="input input-bordered w-full"
+                className="border p-2 mb-2 w-full rounded bg-gray-100 dark:bg-gray-800"
               />
-            </div>
-            <div className="form-control mb-2">
               <input
                 type="email"
-                value={userData.email}
+                value={user.email}
                 readOnly
-                className="input input-bordered w-full"
+                className="border p-2 mb-2 w-full rounded bg-gray-100 dark:bg-gray-800"
               />
-            </div>
-            <div className="form-control mb-2">
               <textarea
                 name="description"
-                placeholder="Why are you requesting this donation?"
-                className="textarea textarea-bordered"
+                placeholder="Request description"
+                className="border p-2 mb-2 w-full rounded bg-gray-100 dark:bg-gray-800"
                 required
-              ></textarea>
-            </div>
-            <div className="form-control mb-4">
+              />
               <input
                 type="datetime-local"
                 name="pickupTime"
-                className="input input-bordered w-full"
+                className="border p-2 mb-2 w-full rounded bg-gray-100 dark:bg-gray-800"
                 required
               />
-            </div>
-            <div className="modal-action">
-              <button type="submit" className="btn btn-primary">
-                Submit
-              </button>
-              <button
-                type="button"
-                onClick={() => document.getElementById("request_modal").close()}
-                className="btn"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      </dialog>
-
-      {/* Review Modal */}
-      {showReviewModal && (
-        <dialog open className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg mb-4">Add Review</h3>
-            <form onSubmit={handleReviewSubmit}>
-              <div className="form-control mb-2">
-                <input
-                  type="text"
-                  value={userData.name}
-                  readOnly
-                  className="input input-bordered w-full"
+              <div className="flex gap-2">
+                <Button label="Submit" type="submit" />
+                <Button
+                  label="Cancel"
+                  onClick={() => setShowRequestModal(false)}
+                  color="secondary"
                 />
-              </div>
-              <div className="form-control mb-2">
-                <textarea
-                  name="description"
-                  placeholder="Write your review here..."
-                  className="textarea textarea-bordered"
-                  required
-                ></textarea>
-              </div>
-              <div className="form-control mb-4">
-                <label className="block mb-1 font-semibold">
-                  Rating (1 to 5):
-                </label>
-                <input
-                  type="number"
-                  name="rating"
-                  min="1"
-                  max="5"
-                  required
-                  className="input input-bordered w-full"
-                />
-              </div>
-              <div className="modal-action">
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-                <button
-                  type="button"
-                  className="btn"
-                  onClick={() => setShowReviewModal(false)}
-                >
-                  Cancel
-                </button>
               </div>
             </form>
           </div>
-        </dialog>
+        </div>
+      )}
+
+      {/* Review Modal */}
+      {showReviewModal && (
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center">
+          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg w-96 text-black  shadow-2xl border-3 border-secondary  dark:text-gray-200">
+            <h2 className="text-3xl text-primary font-bold mb-4">Add Review</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const form = e.target;
+                addReview.mutate({
+                  donationId: donation._id,
+                  reviewerName: user.displayName,
+                  description: form.description.value,
+                  rating: form.rating.value,
+                });
+              }}
+            >
+              <textarea
+                name="description"
+                placeholder="Review description"
+                className="border p-2 mb-2 w-full rounded bg-gray-100 dark:bg-gray-800"
+                required
+              />
+              <input
+                type="number"
+                name="rating"
+                placeholder="Rate 1-5"
+                min="1"
+                max="5"
+                className="border p-2 mb-2 w-full rounded bg-gray-100 dark:bg-gray-800"
+                required
+              />
+              <div className="flex gap-2">
+                <Button label="Submit" type="submit" />
+                <Button
+                  label="Cancel"
+                  onClick={() => setShowReviewModal(false)}
+                  color="secondary"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );

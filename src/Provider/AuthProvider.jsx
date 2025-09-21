@@ -35,37 +35,36 @@ const AuthProvider = ({ children }) => {
   };
 
   //   Observer
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-    setLoading(false);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
 
-    if (currentUser?.email) {
-      // Call your backend to get JWT using only the email
-      fetch("http://localhost:3000/jwt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: currentUser.email }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.token) {
-            localStorage.setItem("access-token", data.token);
-          }
+      if (currentUser?.email) {
+        // Call your backend to get JWT using only the email
+        fetch("http://localhost:5000/jwt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: currentUser.email }),
         })
-        .catch((err) => {
-          console.error("JWT fetch failed:", err);
-        });
-    } else {
-      localStorage.removeItem("access-token");
-    }
-  });
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.token) {
+              localStorage.setItem("access-token", data.token);
+            }
+          })
+          .catch((err) => {
+            console.error("JWT fetch failed:", err);
+          });
+      } else {
+        localStorage.removeItem("access-token");
+      }
+    });
 
-  return () => unsubscribe();
-}, []);
-
+    return () => unsubscribe();
+  }, []);
 
   //   Update User
   const updateUser = (updateData) => {

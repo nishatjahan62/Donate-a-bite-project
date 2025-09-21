@@ -12,14 +12,6 @@ import ForgetPassword from "../Pages/Authentication/ForgetPassword/ForgetPasswor
 import DonationDetails from "../Pages/DonationDetails/DonationDetails";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../Layouts/DashbordLayout";
-import Profile from "../Pages/userdashbord/Profile.jsx/Profile";
-import Favorites from "../Pages/userdashbord/Favorites/Favorites";
-import MyReviews from "../Pages/userdashbord/MyReviews/MyReviews";
-import Transactions from "../Pages/userdashbord/Transactions/Transactions";
-import RequestCharity from "../Pages/userdashbord/RequestCarityRole/RequestCharity";
-import Dashboard from "../Pages/userdashbord/Dashboard/Dashboard";
-import Payment from "../Pages/Payment/Payment";
-
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -46,7 +38,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:3000/donation/${params.id}`),
+          fetch(`http://localhost:5000/donation/${params.id}`),
       },
     ],
   },
@@ -90,27 +82,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Dashboard,
-      },
-      {
-        path: "profile",
-        Component: Profile,
-      },
-      {
-        path: "favorites",
-        Component: Favorites,
-      },
-      {
-        path: "reviews",
-        Component: MyReviews,
-      },
-      {
-        path: "transactions",
-        Component: Transactions,
-      },
-      {
-        path: "request-charity",
-        Component: Payment,
+        element: <h2>Welcome to your dashboard</h2>,
       },
     ],
   },

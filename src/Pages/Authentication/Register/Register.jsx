@@ -5,10 +5,8 @@ import Swal from "sweetalert2";
 import UseAuth from "../../../Hooks/UseAuth";
 import SingUp from "../../../assets/Sign up.png";
 import toast from "react-hot-toast";
-import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 
 const Register = () => {
-  const axiosSecure = UseAxiosSecure();
   const {
     register,
     handleSubmit,
@@ -17,35 +15,12 @@ const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  const { createUser, updateUser, setUser, user } = UseAuth();
+  const { updateUser, setUser, user } = UseAuth();
   const onsubmit = async (data) => {
-    const { email, password, photo, name, role } = data;
+    const { photo, name } = data;
     try {
-      const userCredential = await createUser(email, password);
-      const currentUser = userCredential.user;
-
       await updateUser({ displayName: name, photoURL: photo });
       setUser({ ...user, displayName: name, photoURL: photo });
-
-    
-      const token = await currentUser.getIdToken();
-      localStorage.setItem("access-token", token);
-
-     
-      await axiosSecure.post(
-        "/users",
-        {
-          name:name,
-          email:email,
-          role: role || "user",
-          image: photo,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
 
       Swal.fire({
         position: "center",

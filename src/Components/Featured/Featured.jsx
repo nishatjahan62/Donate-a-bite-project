@@ -5,16 +5,25 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 
 const Featured = () => {
   const [donations, setDonations] = useState([]);
+  const axiosSecure = UseAxiosSecure();
 
   useEffect(() => {
-    fetch("http://localhost:3000/featured-donations")
-      .then((res) => res.json())
-      .then((data) => setDonations(data))
-      .catch((error) => console.log(error));
-  }, []);
+    const fetchDonations = async () => {
+      try {
+        const res = await axiosSecure.get("/featured-donations"); // backend route
+        setDonations(res.data); // save to state
+      } catch (error) {
+        console.error("Error fetching featured donations:", error);
+      }
+    };
+
+    fetchDonations();
+  }, [axiosSecure]);
+
   return (
     <div>
       <h2 className="text-center font-bold text-4xl text-primary py-10 poppins ">

@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router"; 
-import Button from "../../Pages/Button/Button";
+import { Link } from "react-router";
+import Button from "../../Pages/Shared/Button/Button";
 
 const DonationCard = ({ donation }) => {
   const {
@@ -36,16 +36,13 @@ const DonationCard = ({ donation }) => {
         </span>
 
         <div className="mt-4">
-          <Link
-            to={`/donation-details/${_id}`}
-          >
+          <Link to={`/donation-details/${_id}`}>
             <Button className="w-full" label="View Details"></Button>
           </Link>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default DonationCard;
-

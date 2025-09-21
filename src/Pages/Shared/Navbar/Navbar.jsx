@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router";
 import UseAuth from "../../../Hooks/UseAuth";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
-import Button from "../../Button/Button";
+import Button from "../Button/Button";
 import LightLogo from "../../../assets/LightLogo.png";
 import DarkLogo from "../../../assets/DarkLogo.png";
 import OnlyLogo from "../../../assets/onlyicon.png";
@@ -51,46 +51,31 @@ const Navbar = () => {
       setTheme("light");
     }
   };
+  const NavLinkClass = ({ isActive }) =>
+    ` ${
+      isActive
+        ? "border-b-3 pb-1 font-extrabold text-lg text-secondary"
+        : "font-medium  text-lg"
+    }`;
   const navItems = (
     <>
       <li>
-        <NavLink
-          to="/"
-          className={({ isActive }) =>
-            isActive
-              ? " border-b-3 pb-1 font-extrabold text-lg text-secondary"
-              : "font-medium  text-lg"
-          }
-        >
+        <NavLink to="/" className={NavLinkClass}>
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink
-          to="/about-us"
-          className={({ isActive }) =>
-            isActive
-              ? " border-b-3 pb-1 font-extrabold text-lg text-secondary"
-              : "font-medium  text-lg"
-          }
-        >
+        <NavLink to="/about-us" className={NavLinkClass}>
           About Us
         </NavLink>
       </li>
-      <li>
-        {user && (
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              isActive
-                ? " border-b-3 pb-1 font-extrabold text-lg text-secondary"
-                : "font-medium  text-lg"
-            }
-          >
+      {user && (
+        <li>
+          <NavLink to="/dashboard" className={NavLinkClass}>
             Dashboard
           </NavLink>
-        )}
-      </li>
+        </li>
+      )}
     </>
   );
   return (
