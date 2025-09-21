@@ -1,15 +1,14 @@
 import React from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import RequestCharityRole from "../Dashboard/RequestCharityRole/RequestCharityRole";
-
+import PaymentForm from "./paymentForm";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
 
 const Payment = () => {
   return (
     <Elements stripe={stripePromise}>
-      <RequestCharityRole />
+      <PaymentForm></PaymentForm>
     </Elements>
   );
 };

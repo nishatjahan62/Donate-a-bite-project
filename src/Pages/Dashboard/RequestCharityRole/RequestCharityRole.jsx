@@ -1,99 +1,107 @@
+import { useNavigate } from "react-router";
 import { useState } from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import UseAuth from "../../../Hooks/UseAuth";
+import Button from "../../Shared/Button/Button";
 
 const RequestCharityRole = () => {
   const { user } = UseAuth();
-  const axiosSecure = UseAxiosSecure();
-  const stripe = useStripe();
-  const elements = useElements();
+  const navigate = useNavigate();
 
   const [organizationName, setOrganizationName] = useState("");
   const [missionStatement, setMissionStatement] = useState("");
-  const [submitted, setSubmitted] = useState(false);
 
-  const handlePayment = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!stripe || !elements) return;
 
-    try {
-      // Create payment intent using axios hook
-      const { data: clientSecretData } = await axiosSecure.post("/create-payment-intent", {
-        amount: 25,
-      });
-
-      const card = elements.getElement(CardElement);
-      const { paymentIntent, error } = await stripe.confirmCardPayment(
-        clientSecretData.clientSecret,
-        { payment_method: { card } }
-      );
-
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      // Payment succeeded, submit charity role request
-      if (paymentIntent.status === "succeeded") {
-        await axiosSecure.post("/charity-request", {
-          email: user.email,
-          organizationName,
-          missionStatement,
-          transactionId: paymentIntent.id,
-          amount: 25,
-        });
-
-        setSubmitted(true);
-        alert("Charity role request submitted successfully!");
-      }
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.message || "Something went wrong!");
-    }
+    // Navigate to payment page with all form data
+    navigate("/dashboard/payment-form", {
+      state: {
+        name: user?.displayName || "Anonymous",
+        email: user?.email,
+        organizationName,
+        missionStatement,
+        amount: 25, // fixed payment
+        purpose: "Charity Role Request",
+      },
+    });
   };
 
-  if (submitted)
-    return <p className="p-5">Your charity role request is pending approval.</p>;
-
   return (
-    <div className="p-5">
-      <h2 className="text-2xl font-bold mb-4">Request Charity Role</h2>
-      <form onSubmit={handlePayment} className="space-y-4">
-        <div>
-          <label>Name</label>
-          <input type="text" value={user.name} readOnly className="input input-bordered w-full" />
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="email" value={user.email} readOnly className="input input-bordered w-full" />
-        </div>
-        <div>
-          <label>Organization Name</label>
+    <div className="flex justify-center items-center min-h-[80vh] bg-gray-50 p-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)]"
+      >
+        <h2 className="text-3xl font-extrabold text-center mb-8 text-primary">
+          Charity Role Request
+        </h2>
+
+        {/* User Name */}
+        <div className="mb-5">
+          <label className="block text-sm font-semibold mb-2">Name</label>
           <input
             type="text"
+            value={user?.displayName || ""}
+            readOnly
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+          />
+        </div>
+
+        {/* User Email */}
+        <div className="mb-5">
+          <label className="block text-sm font-semibold mb-2">Email</label>
+          <input
+            type="email"
+            value={user?.email || ""}
+            readOnly
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+          />
+        </div>
+
+        {/* Organization Name */}
+        <div className="mb-5">
+          <label className="block text-sm font-semibold mb-2">
+            Organization Name
+          </label>
+          <input
+            type="text"
+            required
             value={organizationName}
             onChange={(e) => setOrganizationName(e.target.value)}
-            className="input input-bordered w-full"
-            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            placeholder="Enter your organization name"
           />
         </div>
-        <div>
-          <label>Mission Statement</label>
+
+        {/* Mission Statement */}
+        <div className="mb-6">
+          <label className="block text-sm font-semibold mb-2">
+            Mission Statement
+          </label>
           <textarea
+            required
             value={missionStatement}
             onChange={(e) => setMissionStatement(e.target.value)}
-            className="textarea textarea-bordered w-full"
-            required
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            placeholder="Describe your mission..."
+            rows="5"
           />
         </div>
-        <div>
-          <label>Card Details</label>
-          <CardElement className="p-2 border rounded" />
+
+        {/* Payment Amount */}
+        <div className="mb-6 text-center">
+          <p className="font-semibold text-lg">
+            Payment Amount:{" "}
+            <span className="text-[--color-primary] font-bold text-xl">
+              $25
+            </span>
+          </p>
         </div>
-        <button type="submit" className="btn btn-primary mt-3">
-          Pay $25 & Submit
-        </button>
+
+        {/* Submit Button */}
+        <div className="flex justify-center">
+          <Button type="submit" label="Pay" />
+        </div>
       </form>
     </div>
   );

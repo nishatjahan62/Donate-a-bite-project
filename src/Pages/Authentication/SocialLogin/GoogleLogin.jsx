@@ -2,29 +2,50 @@ import React from "react";
 import UseAuth from "../../../Hooks/UseAuth";
 import { useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
+import useAxios from "../../../Hooks/UseAxios";
 
 const GoogleLogin = () => {
-  const { SignInWithGoogle } = UseAuth();
+  const { SignInWithGoogle,setUser } = UseAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-  const handleGoogleSignIn = () => {
-    SignInWithGoogle()
-      .then((result) => {
-        result.user;
+  const axiosInstance = useAxios();
 
-        Swal.fire({
-          title: "Welcome Back!",
-          text: "You have successfully logged in. ",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate(from);
-      })
-      .catch((error) => {
-        console.error(error.code);
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await SignInWithGoogle();
+      const user = result.user;
+      console.log(result.user);
+
+      const userInfo = {
+        name: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        role: "user",
+      };
+
+      await axiosInstance.post("/users", userInfo);
+
+      // Update global auth state (optional but useful)
+      setUser(user);
+
+      Swal.fire({
+        title: "Welcome Back!",
+        text: "You have successfully logged in.",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
       });
+
+      navigate(from);
+    } catch (error) {
+      console.log("Google login failed:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Login Failed",
+        text: error.message,
+      });
+    }
   };
   return (
     <div className="w-full">
