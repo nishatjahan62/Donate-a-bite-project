@@ -12,6 +12,12 @@ import ForgetPassword from "../Pages/Authentication/ForgetPassword/ForgetPasswor
 import DonationDetails from "../Pages/DonationDetails/DonationDetails";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../Layouts/DashbordLayout";
+import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
+import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
+import Favorites from "../Pages/Dashboard/Favorites/Favorites";
+import RequestCharityRole from "../Pages/Dashboard/RequestCharityRole/RequestCharityRole";
+import TransactionHistory from "../Pages/Dashboard/TransactionHistory/TransactionHistory";
+import MyReviews from "../Pages/Dashboard/MyReviews/MyReviews";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -82,7 +88,28 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h2>Welcome to your dashboard</h2>,
+        element: <DashboardHome></DashboardHome>,
+      },
+      {
+        
+        path: "profile",
+        element: <MyProfile></MyProfile>,
+      },
+      {
+        path: "favorites",
+        element: <Favorites></Favorites>,
+      },
+       {
+        path: "reviews",
+        element: <MyReviews></MyReviews>,
+      },
+      {
+        path: "request-charity-role",
+        element: <RequestCharityRole></RequestCharityRole>,
+      },
+      {
+        path: "transaction-history",
+        element: <TransactionHistory></TransactionHistory>,
       },
     ],
   },

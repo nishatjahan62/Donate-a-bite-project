@@ -56,7 +56,7 @@ const DashboardLayout = () => {
           {user && (
             <div className="flex items-center mb-6">
               <img
-                src={user.photoURL || "https://via.placeholder.com/50"}
+                src={user.photoURL || "../assets/userIcon.png"}
                 alt="User"
                 className="w-10 h-10 rounded-full mr-3"
               />
@@ -73,12 +73,14 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
           </>
-          {/* <>
+          <>
             <li>
-              <NavLink  className={NavLinkClass}  to="/dashboard/profile">My Profile</NavLink>
+              <NavLink className={NavLinkClass} to="/dashboard/profile">
+                My Profile
+              </NavLink>
             </li>
             <li>
-              <NavLink className={NavLinkClass} to="/dashboard/request-charity">
+              <NavLink className={NavLinkClass} to="/dashboard/request-charity-role">
                 Request Charity Role
               </NavLink>
             </li>
@@ -87,19 +89,18 @@ const DashboardLayout = () => {
                 Favorites
               </NavLink>
             </li>
-            <li>
+              <li>
               <NavLink className={NavLinkClass} to="/dashboard/reviews">
                 My Reviews
               </NavLink>
             </li>
+          
             <li>
-              <NavLink className={NavLinkClass} to="/dashboard/transactions">
+              <NavLink className={NavLinkClass} to="/dashboard/transaction-history">
                 Transaction History
               </NavLink>
             </li>
-        
-       
-          </> */}
+          </>
         </aside>
       </div>
     </div>
