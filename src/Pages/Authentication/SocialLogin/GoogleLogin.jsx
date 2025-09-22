@@ -12,41 +12,42 @@ const GoogleLogin = () => {
   const axiosInstance = useAxios();
 
   const handleGoogleSignIn = async () => {
-    try {
-      const result = await SignInWithGoogle();
-      const user = result.user;
-      console.log(result.user);
+  try {
+    const result = await SignInWithGoogle();
+    const user = result.user;
+    console.log("Google User:", user); // check photoURL here
 
-      const userInfo = {
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        role: "user",
-      };
+    const userInfo = {
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      role: "user",
+    };
 
-      await axiosInstance.post("/users", userInfo);
+    await axiosInstance.post("/users", userInfo);
 
-      // Update global auth state (optional but useful)
-      setUser(user);
+    // Make sure your auth state has the full Google user
+    setUser(user);
 
-      Swal.fire({
-        title: "Welcome Back!",
-        text: "You have successfully logged in.",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 1500,
-      });
+    Swal.fire({
+      title: "Welcome Back!",
+      text: "You have successfully logged in.",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    });
 
-      navigate(from);
-    } catch (error) {
-      console.log("Google login failed:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Login Failed",
-        text: error.message,
-      });
-    }
-  };
+    navigate(from);
+  } catch (error) {
+    console.log("Google login failed:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Login Failed",
+      text: error.message,
+    });
+  }
+};
+
   return (
     <div className="w-full">
       <button

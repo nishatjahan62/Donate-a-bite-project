@@ -1,6 +1,8 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router";
 import UseAuth from "../Hooks/UseAuth";
+import UserIcon from "../assets/userIcon.png";
+
 const DashboardLayout = () => {
   const { user } = UseAuth();
   const NavLinkClass = ({ isActive }) =>
@@ -49,20 +51,24 @@ const DashboardLayout = () => {
       {/* Sidebar */}
       <div className="drawer-side">
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-        <aside className="menu w-64 bg-secondary min-h-screen p-4">
+        <aside className="menu w-64 bg-secondary min-h-screen ">
           {/* Logo */}
 
           {/* User info */}
           {user && (
-            <div className="flex items-center mb-6">
+            <div className=" flex justify-center items-center mb-3 mt-2">
               <img
-                src={user.photoURL || "../assets/userIcon.png"}
-                alt="User"
-                className="w-10 h-10 rounded-full mr-3"
+                className="w-10 rounded-full m-2 "
+                alt="user's photo"
+                src={user?.photoURL || UserIcon}
+                title={user && user.displayName}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = UserIcon;
+                }}
               />
               <div>
-                <p className="font-semibold">{user.displayName}</p>
-                <p className="text-xs text-gray-400">User</p>
+                <p className="font-semibold pt-2 text-lg">{user.displayName}</p>
               </div>
             </div>
           )}
@@ -80,7 +86,10 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink className={NavLinkClass} to="/dashboard/request-charity-role">
+              <NavLink
+                className={NavLinkClass}
+                to="/dashboard/request-charity-role"
+              >
                 Request Charity Role
               </NavLink>
             </li>
@@ -89,15 +98,24 @@ const DashboardLayout = () => {
                 Favorites
               </NavLink>
             </li>
-              <li>
+            <li>
               <NavLink className={NavLinkClass} to="/dashboard/reviews">
                 My Reviews
               </NavLink>
             </li>
-          
+
             <li>
-              <NavLink className={NavLinkClass} to="/dashboard/transaction-history">
+              <NavLink
+                className={NavLinkClass}
+                to="/dashboard/transaction-history"
+              >
                 Transaction History
+              </NavLink>
+              <NavLink
+                className={NavLinkClass}
+                to="/dashboard/manage-users"
+              >
+                Manage Users{" "}
               </NavLink>
             </li>
           </>

@@ -19,6 +19,7 @@ import RequestCharityRole from "../Pages/Dashboard/RequestCharityRole/RequestCha
 import TransactionHistory from "../Pages/Dashboard/TransactionHistory/TransactionHistory";
 import MyReviews from "../Pages/Dashboard/MyReviews/MyReviews";
 import Payment from "../Pages/Payment/Payment";
+import ManageUsers from "../Pages/Dashboard/ManageUsers.jsx/ManageUsers";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -92,7 +93,6 @@ export const router = createBrowserRouter([
         element: <DashboardHome></DashboardHome>,
       },
       {
-
         path: "profile",
         element: <MyProfile></MyProfile>,
       },
@@ -100,7 +100,7 @@ export const router = createBrowserRouter([
         path: "favorites",
         element: <Favorites></Favorites>,
       },
-       {
+      {
         path: "reviews",
         element: <MyReviews></MyReviews>,
       },
@@ -108,14 +108,18 @@ export const router = createBrowserRouter([
         path: "transaction-history",
         element: <TransactionHistory></TransactionHistory>,
       },
-       {
-      path: "request-charity-role",   
-      element: <RequestCharityRole />,
-    },
-    {
-      path: "payment-form",         
-      element: <Payment />,
-    },
+      {
+        path: "request-charity-role",
+        element: <RequestCharityRole></RequestCharityRole>,
+      },
+      {
+        path: "payment-form",
+        element: <Payment></Payment>,
+      },
+      {
+        path: "manage-users",
+        element: <ManageUsers></ManageUsers>,
+      },
     ],
   },
 ]);

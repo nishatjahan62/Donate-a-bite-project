@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import UseAuth from "../../../Hooks/UseAuth";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import UserIcon from "../../../assets/userIcon.png";
 
 const MyProfile = () => {
   const { user } = UseAuth();
@@ -35,7 +36,7 @@ const MyProfile = () => {
         {/* Image */}
         <div className="flex justify-center mb-4">
           <img
-            src={user.photoURL || "../../../assets/userIcon.png"}
+            src={profile.photoURL || UserIcon}
             alt={profile.name}
             className="w-28 h-28 rounded-full border-4"
             style={{ borderColor: "var(--color-secondary)" }}
@@ -44,13 +45,17 @@ const MyProfile = () => {
 
         {/* Details */}
         <div className="space-y-2 text-center">
-          <p className="text-lg font-semibold" style={{ color: "var(--color-secondary)" }}>
+          <p
+            className="text-lg font-semibold"
+            style={{ color: "var(--color-secondary)" }}
+          >
             {profile.name}
           </p>
           <p className="text-gray-600">{profile.email}</p>
           {profile.role && (
             <p className="text-gray-700">
-              <strong style={{ color: "var(--color-primary)" }}>Role:</strong> {profile.role}
+              <strong style={{ color: "var(--color-primary)" }}>Role:</strong>{" "}
+              {profile.role}
             </p>
           )}
           <p className="text-gray-700">

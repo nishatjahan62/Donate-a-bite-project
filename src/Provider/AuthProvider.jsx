@@ -13,6 +13,7 @@ import { app } from "../Firebase/FirebaseInit";
 import AuthContext from "./AuthContext";
 
 const auth = getAuth(app);
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,41 +24,58 @@ const AuthProvider = ({ children }) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  //   Sign Im
+  // Sign In
   const signIn = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  //   Sign Out
+  // Sign Out
   const logOut = () => {
+    localStorage.removeItem("access-token"); // remove JWT on logout
     return signOut(auth);
   };
 
-  //   Observer
+  // Update User
+  const updateUser = (updateData) => {
+    return updateProfile(auth.currentUser, updateData);
+  };
+
+  // Google SignIn
+  const googleProvider = new GoogleAuthProvider();
+  const SignInWithGoogle = () => {
+    return signInWithPopup(auth, googleProvider);
+  };
+
+  // 🔹 Observer: fetch fresh JWT whenever user changes
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       setLoading(false);
 
       if (currentUser?.email) {
-        // Call your backend to get JWT using only the email
-        fetch("http://localhost:5000/jwt", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: currentUser.email }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.token) {
-              localStorage.setItem("access-token", data.token);
-            }
-          })
-          .catch((err) => {
-            console.error("JWT fetch failed:", err);
+        try {
+          const res = await fetch("http://localhost:5000/jwt", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: currentUser.email }),
           });
+
+          const data = await res.json();
+
+          if (data.token) {
+            localStorage.setItem("access-token", data.token);
+            console.log(" New JWT generated and stored!");
+          } else {
+            localStorage.removeItem("access-token");
+            console.warn(" No token returned from backend.");
+          }
+        } catch (err) {
+          localStorage.removeItem("access-token");
+          console.error("JWT fetch failed:", err);
+        }
       } else {
         localStorage.removeItem("access-token");
       }
@@ -65,17 +83,6 @@ const AuthProvider = ({ children }) => {
 
     return () => unsubscribe();
   }, []);
-
-  //   Update User
-  const updateUser = (updateData) => {
-    return updateProfile(auth.currentUser, updateData);
-  };
-
-  //   Google SignIn
-  const googleProvider = new GoogleAuthProvider();
-  const SignInWithGoogle = () => {
-    return signInWithPopup(auth, googleProvider);
-  };
 
   const authData = {
     createUser,
@@ -88,8 +95,10 @@ const AuthProvider = ({ children }) => {
     updateUser,
     SignInWithGoogle,
   };
+
   return (
     <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>
   );
 };
+
 export default AuthProvider;
