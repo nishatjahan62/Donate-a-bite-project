@@ -20,6 +20,8 @@ import TransactionHistory from "../Pages/Dashboard/TransactionHistory/Transactio
 import MyReviews from "../Pages/Dashboard/MyReviews/MyReviews";
 import Payment from "../Pages/Payment/Payment";
 import ManageUsers from "../Pages/Dashboard/ManageUsers.jsx/ManageUsers";
+import ForbiddenPage from "../Pages/Error/ForbiddenPage";
+import AdminRoute from "./AdminRoute";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -78,6 +80,10 @@ export const router = createBrowserRouter([
         path: "*",
         Component: ErrorPage,
       },
+      {
+        path: "forbidden",
+        Component: ForbiddenPage,
+      },
     ],
   },
   {
@@ -118,7 +124,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-users",
-        element: <ManageUsers></ManageUsers>,
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
       },
     ],
   },
