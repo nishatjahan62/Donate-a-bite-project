@@ -1,13 +1,37 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router";
 import UseAuth from "../Hooks/UseAuth";
+import Loading from "../Pages/Loading/Loading";
 import UserIcon from "../assets/userIcon.png";
+import UseUserRole from "../Hooks/UseUserRole";
+
+// 🎨 React Icons
+import {
+  FaHome,
+  FaUser,
+  FaHeart,
+  FaStar,
+  FaCreditCard,
+  FaUtensils,
+  FaPlusCircle,
+  FaGift,
+  FaClipboardList,
+  FaHandsHelping,
+  FaBox,
+  FaUsers,
+  FaShieldAlt,
+  FaLayerGroup,
+  FaRegStar,
+} from "react-icons/fa";
 
 const DashboardLayout = () => {
   const { user } = UseAuth();
+  const { role, roleLoading } = UseUserRole();
+  if (roleLoading) return <Loading />;
+
   const NavLinkClass = ({ isActive }) =>
-    `flex items-center text-lg font-semibold transition-colors ${
-      isActive ? "text-primary" : "hover:text-primary"
+    `flex items-center gap-2 text-lg font-semibold transition-colors ${
+      isActive ? "text-primary font-bold bg-" : "hover:text-primary"
     }`;
 
   return (
@@ -16,7 +40,7 @@ const DashboardLayout = () => {
 
       {/* Main content */}
       <div className="drawer-content flex flex-col min-h-screen">
-        {/* Top Navbar for small screens only */}
+        {/* Top Navbar for small screens */}
         <div className="navbar bg-base-300 lg:hidden">
           <div className="flex-none">
             <label
@@ -38,87 +62,198 @@ const DashboardLayout = () => {
               </svg>
             </label>
           </div>
-          <div className="flex-1 px-2"></div>
         </div>
 
         {/* Page content */}
         <div className="p-4 flex-1">
           <Outlet />
-          <h1></h1>
         </div>
       </div>
 
       {/* Sidebar */}
       <div className="drawer-side">
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-        <aside className="menu w-64 bg-secondary min-h-screen ">
-          {/* Logo */}
-
+        <aside className="menu w-64 bg-secondary min-h-screen">
           {/* User info */}
           {user && (
-            <div className=" flex justify-center items-center mb-3 mt-2">
+            <div className="flex justify-center items-center mb-3 mt-2">
               <img
-                className="w-10 rounded-full m-2 "
-                alt="user's photo"
+                className="w-10 rounded-full m-2"
+                alt="user"
                 src={user?.photoURL || UserIcon}
-                title={user && user.displayName}
+                title={user?.displayName}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = UserIcon;
                 }}
               />
-              <div>
-                <p className="font-semibold pt-2 text-lg">{user.displayName}</p>
-              </div>
+              <p className="font-semibold text-lg">{user.displayName}</p>
             </div>
           )}
-          <>
-            <li>
-              <NavLink to="/" className={NavLinkClass}>
-                Home
-              </NavLink>
-            </li>
-          </>
-          <>
-            <li>
-              <NavLink className={NavLinkClass} to="/dashboard/profile">
-                My Profile
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                className={NavLinkClass}
-                to="/dashboard/request-charity-role"
-              >
-                Request Charity Role
-              </NavLink>
-            </li>
-            <li>
-              <NavLink className={NavLinkClass} to="/dashboard/favorites">
-                Favorites
-              </NavLink>
-            </li>
-            <li>
-              <NavLink className={NavLinkClass} to="/dashboard/reviews">
-                My Reviews
-              </NavLink>
-            </li>
 
-            <li>
-              <NavLink
-                className={NavLinkClass}
-                to="/dashboard/transaction-history"
-              >
-                Transaction History
-              </NavLink>
-              <NavLink
-                className={NavLinkClass}
-                to="/dashboard/manage-users"
-              >
-                Manage Users{" "}
-              </NavLink>
-            </li>
-          </>
+          {/* Common Link */}
+          <li>
+            <NavLink to="/" className={NavLinkClass}>
+              <FaHome /> Home
+            </NavLink>
+          </li>
+
+          {/* User Role Links */}
+          {role === "user" && (
+            <>
+              <li>
+                <NavLink to="/dashboard/profile" className={NavLinkClass}>
+                  <FaUser /> My Profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/request-charity-role"
+                  className={NavLinkClass}
+                >
+                  <FaHandsHelping /> Request Charity Role
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/favorites" className={NavLinkClass}>
+                  <FaHeart /> Favorites
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/reviews" className={NavLinkClass}>
+                  <FaStar /> My Reviews
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/transaction-history"
+                  className={NavLinkClass}
+                >
+                  <FaCreditCard /> Transaction History
+                </NavLink>
+              </li>
+            </>
+          )}
+
+          {/* Restaurant Role Links */}
+          {role === "restaurant" && (
+            <>
+              <li>
+                <NavLink
+                  to="/dashboard/restaurant-profile"
+                  className={NavLinkClass}
+                >
+                  <FaUtensils /> Restaurant Profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/add-donation" className={NavLinkClass}>
+                  <FaPlusCircle /> Add Donation
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/my-donations" className={NavLinkClass}>
+                  <FaGift /> My Donations
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/requested-donations"
+                  className={NavLinkClass}
+                >
+                  <FaClipboardList /> Requested Donations
+                </NavLink>
+              </li>
+            </>
+          )}
+
+          {/* Charity Role Links */}
+          {role === "charity" && (
+            <>
+              <li>
+                <NavLink
+                  to="/dashboard/charity-profile"
+                  className={NavLinkClass}
+                >
+                  <FaUser /> Charity Profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/my-requests" className={NavLinkClass}>
+                  <FaClipboardList /> My Requests
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/my-pickups" className={NavLinkClass}>
+                  <FaBox /> My Pickups
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/received-donations"
+                  className={NavLinkClass}
+                >
+                  <FaGift /> Received Donations
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/transaction-history"
+                  className={NavLinkClass}
+                >
+                  <FaCreditCard /> Transaction History
+                </NavLink>
+              </li>
+            </>
+          )}
+
+          {/* Admin Role Links */}
+          {role === "admin" && (
+            <>
+              <li>
+                <NavLink to="/dashboard/admin-profile" className={NavLinkClass}>
+                  <FaShieldAlt /> Admin Profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/manage-donations"
+                  className={NavLinkClass}
+                >
+                  <FaGift /> Manage Donations
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/manage-users" className={NavLinkClass}>
+                  <FaUsers /> Manage Users
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/manage-role-requests"
+                  className={NavLinkClass}
+                >
+                  <FaLayerGroup /> Manage Role Requests
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/manage-requests"
+                  className={NavLinkClass}
+                >
+                  <FaClipboardList /> Manage Requests
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/feature-donations"
+                  className={NavLinkClass}
+                >
+                <FaRegStar></FaRegStar> Feature Donations
+                </NavLink>
+              </li>
+            </>
+          )}
         </aside>
       </div>
     </div>
