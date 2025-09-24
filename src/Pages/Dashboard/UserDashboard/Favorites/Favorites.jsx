@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import UseAuth from "../../../Hooks/UseAuth";
-import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import UseAuth from "../../../../Hooks/UseAuth";
+import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
 
 const Favorites = () => {
   const { user } = UseAuth();

@@ -13,15 +13,25 @@ import DonationDetails from "../Pages/DonationDetails/DonationDetails";
 import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../Layouts/DashbordLayout";
 import DashboardHome from "../Pages/Dashboard/DashboardHome/DashboardHome";
-import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
-import Favorites from "../Pages/Dashboard/Favorites/Favorites";
-import RequestCharityRole from "../Pages/Dashboard/RequestCharityRole/RequestCharityRole";
-import TransactionHistory from "../Pages/Dashboard/TransactionHistory/TransactionHistory";
-import MyReviews from "../Pages/Dashboard/MyReviews/MyReviews";
 import Payment from "../Pages/Payment/Payment";
-import ManageUsers from "../Pages/Dashboard/ManageUsers.jsx/ManageUsers";
+import ManageUsers from "../Pages/Dashboard/AdminDashboard/ManageUsers.jsx/ManageUsers";
 import ForbiddenPage from "../Pages/Error/ForbiddenPage";
 import AdminRoute from "./AdminRoute";
+import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
+import Favorites from "../Pages/Dashboard/UserDashboard/Favorites/Favorites";
+import MyReviews from "../Pages/Dashboard/UserDashboard/MyReviews/MyReviews";
+import TransactionHistory from "../Pages/Dashboard/UserDashboard/TransactionHistory/TransactionHistory";
+import RequestCharityRole from "../Pages/Dashboard/UserDashboard/RequestCharityRole/RequestCharityRole";
+import FeatureDonations from "../Pages/Dashboard/AdminDashboard/FeatureDonations/FeatureDonations";
+import ManageRoleRequests from "../Pages/Dashboard/AdminDashboard/ManageRoleRequests/ManageRoleRequests";
+import ManageRequests from "../Pages/Dashboard/AdminDashboard/ManageRequests/ManageRequests";
+import ManageDonations from "../Pages/Dashboard/AdminDashboard/ManageDonations/ManageDonations";
+import MyPickups from "../Pages/Dashboard/CharityDashboard/MyPickups/MyPickups";
+import MyRequests from "../Pages/Dashboard/CharityDashboard/MyRequests/MyRequests";
+import ReceivedDonations from "../Pages/Dashboard/CharityDashboard/ReceivedDonations/ReceivedDonations";
+import AddDonations from "../Pages/Dashboard/RestaurantDashboard/AddDonations/AddDonations";
+import MyDonations from "../Pages/Dashboard/RestaurantDashboard/MyDonations/MyDonations";
+import RequestedDonations from "../Pages/Dashboard/RestaurantDashboard/RequestedDonations/RequestedDonations";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -98,14 +108,12 @@ export const router = createBrowserRouter([
         index: true,
         element: <DashboardHome></DashboardHome>,
       },
+      // User's Routes..
       {
         path: "profile",
         element: <MyProfile></MyProfile>,
       },
-      {
-        path: "favorites",
-        element: <Favorites></Favorites>,
-      },
+      { path: "favorites", element: <Favorites></Favorites> },
       {
         path: "reviews",
         element: <MyReviews></MyReviews>,
@@ -122,6 +130,9 @@ export const router = createBrowserRouter([
         path: "payment-form",
         element: <Payment></Payment>,
       },
+
+      // Admin's routes
+
       {
         path: "manage-users",
         element: (
@@ -129,6 +140,68 @@ export const router = createBrowserRouter([
             <ManageUsers></ManageUsers>
           </AdminRoute>
         ),
+      },
+    
+      {
+        path: "feature-donations",
+        element: (
+          <AdminRoute>
+            <FeatureDonations></FeatureDonations>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "Manage-role-requests",
+        element: (
+          <AdminRoute>
+            <ManageRoleRequests></ManageRoleRequests>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-requests",
+        element: (
+          <AdminRoute>
+            {" "}
+            <ManageRequests></ManageRequests>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-donations",
+        element: (
+          <AdminRoute>
+            <ManageDonations></ManageDonations>
+          </AdminRoute>
+        ),
+      },
+
+    // Charity's Routes
+      {
+        path: "My-pickups",
+        element: <MyPickups></MyPickups>,
+      },
+      {
+        path: "My-requests",
+        element: <MyRequests></MyRequests>,
+      },
+      {
+        path: "Received-donations",
+        element: <ReceivedDonations></ReceivedDonations>,
+      },
+
+      // Restaurant's Routes
+      {
+        path: "add-donations",
+        element: <AddDonations></AddDonations>,
+      },
+      {
+        path: "my-donations",
+        element: <MyDonations></MyDonations>,
+      },
+      {
+        path: "requested-donations",
+        element: <RequestedDonations></RequestedDonations>,
       },
     ],
   },

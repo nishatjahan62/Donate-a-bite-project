@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
-import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
+import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
 
 const ManageUsers = () => {
   const axiosSecure = UseAxiosSecure();
@@ -19,12 +19,18 @@ const ManageUsers = () => {
   });
 
   // Role-changing functions
-  const makeAdmin = async (id) => handleRoleChange(id, "make-admin", "make this user an Admin");
-  const removeAdmin = async (id) => handleRoleChange(id, "remove-admin", "remove Admin role");
-  const makeCharity = async (id) => handleRoleChange(id, "make-charity", "make this user a Charity");
-  const removeCharity = async (id) => handleRoleChange(id, "remove-charity", "remove Charity role");
-  const makeRestaurant = async (id) => handleRoleChange(id, "make-restaurant", "make this user a Restaurant");
-  const removeRestaurant = async (id) => handleRoleChange(id, "remove-restaurant", "remove Restaurant role");
+  const makeAdmin = async (id) =>
+    handleRoleChange(id, "make-admin", "make this user an Admin");
+  const removeAdmin = async (id) =>
+    handleRoleChange(id, "remove-admin", "remove Admin role");
+  const makeCharity = async (id) =>
+    handleRoleChange(id, "make-charity", "make this user a Charity");
+  const removeCharity = async (id) =>
+    handleRoleChange(id, "remove-charity", "remove Charity role");
+  const makeRestaurant = async (id) =>
+    handleRoleChange(id, "make-restaurant", "make this user a Restaurant");
+  const removeRestaurant = async (id) =>
+    handleRoleChange(id, "remove-restaurant", "remove Restaurant role");
 
   // Generic role change handler with confirmation
   const handleRoleChange = async (id, action, confirmText) => {
@@ -70,7 +76,9 @@ const ManageUsers = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-4xl font-bold mb-6 text-center text-primary dark:text-white">Manage Users</h2>
+      <h2 className="text-4xl font-bold mb-6 text-center text-primary dark:text-white">
+        Manage Users
+      </h2>
 
       {/* 🔍 Search Bar */}
       <div className="flex justify-center mb-6">
@@ -102,7 +110,9 @@ const ManageUsers = () => {
               <tr key={user._id} className="border-b dark:border-gray-600">
                 <td className="border px-3 py-2">{user.name}</td>
                 <td className="border px-3 py-2">{user.email}</td>
-                <td className={`border px-3 py-2 ${roleTextColor(user.role)}`}>{user.role}</td>
+                <td className={`border px-3 py-2 ${roleTextColor(user.role)}`}>
+                  {user.role}
+                </td>
                 <td className="border flex justify-center items-center gap-2 px-2 py-2">
                   {/* Admin Buttons */}
                   {user.role === "admin" ? (
@@ -162,7 +172,9 @@ const ManageUsers = () => {
       </div>
 
       {users.length === 0 && (
-        <p className="text-center mt-4 text-gray-500 dark:text-gray-300">No users found.</p>
+        <p className="text-center mt-4 text-gray-500 dark:text-gray-300">
+          No users found.
+        </p>
       )}
     </div>
   );

@@ -126,7 +126,7 @@ const Register = () => {
                   accept="image/*"
                   onChange={handleImageChange}
                   className="w-full mt-1"
-                  required
+                  
                 />
               </div>
 

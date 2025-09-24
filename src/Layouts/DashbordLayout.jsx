@@ -27,12 +27,32 @@ import {
 const DashboardLayout = () => {
   const { user } = UseAuth();
   const { role, roleLoading } = UseUserRole();
+
   if (roleLoading) return <Loading />;
 
+  // Active/Inactive link styling
   const NavLinkClass = ({ isActive }) =>
-    `flex items-center gap-2 text-lg font-semibold transition-colors ${
-      isActive ? "text-primary font-bold bg-" : "hover:text-primary"
-    }`;
+    `flex items-center gap-2 text-lg font-semibold transition-colors rounded-lg px-3 py-2
+     ${isActive ? "text-primary font-bold bg-gray-200 dark:bg-gray-800" : "hover:text-primary"}`;
+
+  // Role-based profile icon + label
+  const profileIcon =
+    role === "restaurant"
+      ? <FaUtensils />
+      : role === "charity"
+      ? <FaHandsHelping />
+      : role === "admin"
+      ? <FaShieldAlt />
+      : <FaUser />;
+
+  const profileLabel =
+    role === "restaurant"
+      ? "Restaurant Profile"
+      : role === "charity"
+      ? "Charity Profile"
+      : role === "admin"
+      ? "Admin Profile"
+      : "My Profile";
 
   return (
     <div className="drawer drawer-mobile lg:drawer-open">
@@ -73,7 +93,7 @@ const DashboardLayout = () => {
       {/* Sidebar */}
       <div className="drawer-side">
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-        <aside className="menu w-64 bg-secondary min-h-screen">
+        <aside className="menu w-64 bg-secondary min-h-screen p-2">
           {/* User info */}
           {user && (
             <div className="flex justify-center items-center mb-3 mt-2">
@@ -98,14 +118,16 @@ const DashboardLayout = () => {
             </NavLink>
           </li>
 
-          {/* User Role Links */}
+          {/* Universal Profile Link */}
+          <li>
+            <NavLink to="/dashboard/profile" className={NavLinkClass}>
+              {profileIcon} {profileLabel}
+            </NavLink>
+          </li>
+
+          {/* Role-Specific Links */}
           {role === "user" && (
             <>
-              <li>
-                <NavLink to="/dashboard/profile" className={NavLinkClass}>
-                  <FaUser /> My Profile
-                </NavLink>
-              </li>
               <li>
                 <NavLink
                   to="/dashboard/request-charity-role"
@@ -135,19 +157,10 @@ const DashboardLayout = () => {
             </>
           )}
 
-          {/* Restaurant Role Links */}
           {role === "restaurant" && (
             <>
               <li>
-                <NavLink
-                  to="/dashboard/restaurant-profile"
-                  className={NavLinkClass}
-                >
-                  <FaUtensils /> Restaurant Profile
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/dashboard/add-donation" className={NavLinkClass}>
+                <NavLink to="/dashboard/add-donations" className={NavLinkClass}>
                   <FaPlusCircle /> Add Donation
                 </NavLink>
               </li>
@@ -167,17 +180,8 @@ const DashboardLayout = () => {
             </>
           )}
 
-          {/* Charity Role Links */}
           {role === "charity" && (
             <>
-              <li>
-                <NavLink
-                  to="/dashboard/charity-profile"
-                  className={NavLinkClass}
-                >
-                  <FaUser /> Charity Profile
-                </NavLink>
-              </li>
               <li>
                 <NavLink to="/dashboard/my-requests" className={NavLinkClass}>
                   <FaClipboardList /> My Requests
@@ -207,14 +211,8 @@ const DashboardLayout = () => {
             </>
           )}
 
-          {/* Admin Role Links */}
           {role === "admin" && (
             <>
-              <li>
-                <NavLink to="/dashboard/admin-profile" className={NavLinkClass}>
-                  <FaShieldAlt /> Admin Profile
-                </NavLink>
-              </li>
               <li>
                 <NavLink
                   to="/dashboard/manage-donations"
@@ -249,7 +247,7 @@ const DashboardLayout = () => {
                   to="/dashboard/feature-donations"
                   className={NavLinkClass}
                 >
-                <FaRegStar></FaRegStar> Feature Donations
+                  <FaRegStar /> Feature Donations
                 </NavLink>
               </li>
             </>

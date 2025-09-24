@@ -1,29 +1,56 @@
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import UseAuth from "../../../Hooks/UseAuth";
-import Button from "../../Shared/Button/Button";
+import UseAuth from "../../../../Hooks/UseAuth";
+import Button from "../../../Shared/Button/Button";
+import Swal from "sweetalert2";
+import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
 
 const RequestCharityRole = () => {
   const { user } = UseAuth();
   const navigate = useNavigate();
+  const axiosSecure = UseAxiosSecure();
 
   const [organizationName, setOrganizationName] = useState("");
   const [missionStatement, setMissionStatement] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Navigate to payment page with all form data
-    navigate("/dashboard/payment-form", {
-      state: {
-        name: user?.displayName || "Anonymous",
-        email: user?.email,
-        organizationName,
-        missionStatement,
-        amount: 25, // fixed payment
-        purpose: "Charity Role Request",
-      },
-    });
+    try {
+      // 🔍 Check if user already has a request
+      const { data } = await axiosSecure.get(
+        `/charity-request/check?email=${user?.email}`
+      );
+
+      if (data.exists) {
+        return Swal.fire({
+          icon: "warning",
+          title: "Request Already Exists",
+          text: "You already have a pending or approved charity request.",
+          confirmButtonColor: "var(--color-secondary)",
+        });
+      }
+
+      // ✅ If not, continue to payment
+      navigate("/dashboard/payment-form", {
+        state: {
+          name: user?.displayName || "Anonymous",
+          email: user?.email,
+          organizationName,
+          missionStatement,
+          amount: 25, // fixed payment
+          purpose: "Charity Role Request",
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Oops!",
+        text: "Something went wrong. Please try again later.",
+        confirmButtonColor: "var(--color-secondary)",
+      });
+    }
   };
 
   return (

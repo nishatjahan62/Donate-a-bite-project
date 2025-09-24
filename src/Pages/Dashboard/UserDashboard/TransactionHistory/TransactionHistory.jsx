@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
-import UseAuth from "../../../Hooks/UseAuth";
+import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
+import UseAuth from "../../../../Hooks/UseAuth";
 
 const TransactionHistory = () => {
   const { user } = UseAuth();

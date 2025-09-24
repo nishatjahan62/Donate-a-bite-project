@@ -6,12 +6,15 @@ import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 import { FaRegCommentDots } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import UseAuth from "../../Hooks/UseAuth";
+import UseUserRole from "../../Hooks/UseUserRole";
+import Loading from "../Loading/Loading";
 
 const DonationDetails = () => {
   const donation = useLoaderData();
   const axiosSecure = UseAxiosSecure();
   const queryClient = useQueryClient();
   const { user } = UseAuth();
+  const { role, roleLoading } = UseUserRole();
 
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [showReviewModal, setShowReviewModal] = useState(false);
@@ -101,6 +104,8 @@ const DonationDetails = () => {
     },
   });
 
+  if (roleLoading) return <Loading></Loading>;
+
   return (
     <div
       className="max-w-5xl py-5 lg:py-10 mx-auto p-6 border border-secondary rounded-2xl shadow-2xl mt-10 sm:mt-20
@@ -146,22 +151,30 @@ const DonationDetails = () => {
 
           {/* Buttons */}
           <div className="mt-6 flex gap-2">
-            <Button
-              size="sm"
-              label=" Save to Favorites"
-              onClick={() => saveToFavorites.mutate()}
-            />
-            <Button
-              size="md"
-              label=" Request Donation"
-              onClick={() => setShowRequestModal(true)}
-            />
-            <Button
-              size="md"
-              label="Add Review"
-              onClick={() => setShowReviewModal(true)}
-            />
-            {request?.status === "Accepted" && (
+            {(role === "user" || role === "charity") && (
+              <Button
+                size="sm"
+                label=" Save to Favorites"
+                onClick={() => saveToFavorites.mutate()}
+              />
+            )}
+
+            {role === "charity" && (
+              <Button
+                size="md"
+                label=" Request Donation"
+                onClick={() => setShowRequestModal(true)}
+              />
+            )}
+
+            {(role === "user" || role === "charity") && (
+              <Button
+                size="md"
+                label="Add Review"
+                onClick={() => setShowReviewModal(true)}
+              />
+            )}
+            {role === "charity" && request?.status === "Accepted" && (
               <Button
                 label="Confirm Pickup"
                 color="secondary"
