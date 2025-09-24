@@ -33,17 +33,23 @@ const DashboardLayout = () => {
   // Active/Inactive link styling
   const NavLinkClass = ({ isActive }) =>
     `flex items-center gap-2 text-lg font-semibold transition-colors rounded-lg px-3 py-2
-     ${isActive ? "text-primary font-bold bg-gray-200 dark:bg-gray-800" : "hover:text-primary"}`;
+     ${
+       isActive
+         ? "text-primary font-bold bg-gray-200 dark:bg-gray-800"
+         : "hover:text-primary"
+     }`;
 
   // Role-based profile icon + label
   const profileIcon =
-    role === "restaurant"
-      ? <FaUtensils />
-      : role === "charity"
-      ? <FaHandsHelping />
-      : role === "admin"
-      ? <FaShieldAlt />
-      : <FaUser />;
+    role === "restaurant" ? (
+      <FaUtensils />
+    ) : role === "charity" ? (
+      <FaHandsHelping />
+    ) : role === "admin" ? (
+      <FaShieldAlt />
+    ) : (
+      <FaUser />
+    );
 
   const profileLabel =
     role === "restaurant"
@@ -148,7 +154,7 @@ const DashboardLayout = () => {
               </li>
               <li>
                 <NavLink
-                  to="/dashboard/transaction-history"
+                  to="/dashboard/user-transaction-history"
                   className={NavLinkClass}
                 >
                   <FaCreditCard /> Transaction History
@@ -202,7 +208,7 @@ const DashboardLayout = () => {
               </li>
               <li>
                 <NavLink
-                  to="/dashboard/transaction-history"
+                  to="/dashboard/charity-transaction-history"
                   className={NavLinkClass}
                 >
                   <FaCreditCard /> Transaction History

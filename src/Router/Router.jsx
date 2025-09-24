@@ -20,7 +20,6 @@ import AdminRoute from "./AdminRoute";
 import MyProfile from "../Pages/Dashboard/MyProfile/MyProfile";
 import Favorites from "../Pages/Dashboard/UserDashboard/Favorites/Favorites";
 import MyReviews from "../Pages/Dashboard/UserDashboard/MyReviews/MyReviews";
-import TransactionHistory from "../Pages/Dashboard/UserDashboard/TransactionHistory/TransactionHistory";
 import RequestCharityRole from "../Pages/Dashboard/UserDashboard/RequestCharityRole/RequestCharityRole";
 import FeatureDonations from "../Pages/Dashboard/AdminDashboard/FeatureDonations/FeatureDonations";
 import ManageRoleRequests from "../Pages/Dashboard/AdminDashboard/ManageRoleRequests/ManageRoleRequests";
@@ -32,6 +31,8 @@ import ReceivedDonations from "../Pages/Dashboard/CharityDashboard/ReceivedDonat
 import AddDonations from "../Pages/Dashboard/RestaurantDashboard/AddDonations/AddDonations";
 import MyDonations from "../Pages/Dashboard/RestaurantDashboard/MyDonations/MyDonations";
 import RequestedDonations from "../Pages/Dashboard/RestaurantDashboard/RequestedDonations/RequestedDonations";
+import CharityTransactionHistory from "../Pages/Dashboard/CharityDashboard/CharityTransactionHistory/CharityTransactionHistory";
+import UserTransactionHistory from "../Pages/Dashboard/UserDashboard/UserTransactionHistory/UserTransactionHistory";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -119,8 +120,8 @@ export const router = createBrowserRouter([
         element: <MyReviews></MyReviews>,
       },
       {
-        path: "transaction-history",
-        element: <TransactionHistory></TransactionHistory>,
+        path: "user-transaction-history",
+        element: <UserTransactionHistory></UserTransactionHistory>,
       },
       {
         path: "request-charity-role",
@@ -141,7 +142,7 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-    
+
       {
         path: "feature-donations",
         element: (
@@ -176,7 +177,7 @@ export const router = createBrowserRouter([
         ),
       },
 
-    // Charity's Routes
+      // Charity's Routes
       {
         path: "My-pickups",
         element: <MyPickups></MyPickups>,
@@ -188,6 +189,10 @@ export const router = createBrowserRouter([
       {
         path: "Received-donations",
         element: <ReceivedDonations></ReceivedDonations>,
+      },
+      {
+        path: "charity-transaction-history",
+        element: <CharityTransactionHistory></CharityTransactionHistory>,
       },
 
       // Restaurant's Routes
