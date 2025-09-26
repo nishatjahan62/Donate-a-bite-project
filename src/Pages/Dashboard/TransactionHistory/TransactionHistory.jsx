@@ -7,6 +7,7 @@ const TransactionHistory = ({ email, role }) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     if (!email) return;
 
@@ -14,7 +15,6 @@ const TransactionHistory = ({ email, role }) => {
       .get(`/transactions/${email}`)
       .then((res) => {
         setTransactions(res.data);
-          console.log("Transactions data:", res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -28,7 +28,7 @@ const TransactionHistory = ({ email, role }) => {
   if (transactions.length === 0) {
     return (
       <div className="p-6">
-        <h2 className="text-2xl font-bold mb-4">Transaction History</h2>
+        <h2 className="text-3xl font-bold mb-4  text-center text-primary">Transaction History</h2>
         <p>No transactions found.</p>
       </div>
     );
@@ -36,7 +36,7 @@ const TransactionHistory = ({ email, role }) => {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">
+      <h2 className="text-3xl font-bold mb-4  text-center text-primary">
         {role === "charity"
           ? "Charity Transaction History"
           : "My Transaction History"}
