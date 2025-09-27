@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
+import Button from "../../../Shared/Button/Button";
 
 const ManageUsers = () => {
   const axiosSecure = UseAxiosSecure();
@@ -47,7 +48,14 @@ const ManageUsers = () => {
     try {
       const res = await axiosSecure.patch(`/users/${id}/${action}`);
       if (res.data.success) {
-        await Swal.fire("Success", res.data.message, "success");
+        await Swal.fire({
+          title: "Success",
+          text: res.data.message,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
         queryClient.invalidateQueries(["users"]);
       }
     } catch (err) {
@@ -87,7 +95,14 @@ const ManageUsers = () => {
     try {
       const res = await axiosSecure.delete(`/users/${id}`);
       if (res.data.success) {
-        await Swal.fire("Deleted!", res.data.message, "success");
+        await Swal.fire({
+          title: "Deleted!",
+          text: res.data.message,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
         queryClient.invalidateQueries(["users"]);
       }
     } catch (err) {
@@ -102,7 +117,7 @@ const ManageUsers = () => {
   if (isLoading) return <p className="text-center py-4">Loading users...</p>;
 
   return (
-    <div className="p-6">
+    <div className="p-6 dark:bg-secondary bg-gray-100 rounded-xl shadow-lg mx-5 sm:mx-8 lg:mx-10 mt-8 sm:mt-15">
       <h2 className="text-4xl font-bold mb-6 text-center text-primary dark:text-white">
         Manage Users
       </h2>
@@ -121,83 +136,71 @@ const ManageUsers = () => {
         </div>
       </div>
 
-      {/* 📝 Users Table */}
-      <div className="overflow-x-auto">
-        <table className="table-auto border-collapse w-full text-left dark:text-white">
-          <thead>
-            <tr className="bg-gray-100 dark:bg-gray-700">
-              <th className="border px-3 py-2">Name</th>
-              <th className="border px-3 py-2">Email</th>
-              <th className="border px-3 py-2">Role</th>
-              <th className="border px-3 py-2">Actions</th>
+      {/* Users Table */}
+      <div className="overflow-x-auto rounded">
+        <table className="w-full border border-secondary text-sm dark:text-gray-200">
+          <thead className="bg-primary text-white">
+            <tr>
+              <th className="p-3 text-left">Name</th>
+              <th className="p-3 text-left">Email</th>
+              <th className="p-3 text-center">Role</th>
+              <th className="p-3 text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user._id} className="border-b dark:border-gray-600">
-                <td className="border px-3 py-2">{user.name}</td>
-                <td className="border px-3 py-2">{user.email}</td>
-                <td className={`border px-3 py-2 ${roleTextColor(user.role)}`}>
+              <tr key={user._id} className="border-t dark:border-gray-700">
+                <td className="p-3 text-center">{user.name}</td>
+                <td className="p-3 text-center">{user.email}</td>
+                <td className={`p-3 text-center ${roleTextColor(user.role)}`}>
                   {user.role}
                 </td>
-                <td className="border flex justify-center items-center gap-2 px-2 py-2">
-                  {/* Admin Buttons */}
+                <td className="p-3 text-center flex  justify-center gap-2">
+                  {/* Keep your existing Buttons logic */}
                   {user.role === "admin" ? (
-                    <button
+                    <Button
+                      label="Remove Admin"
                       onClick={() => removeAdmin(user._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white sm:px-2 px-1 py-1 rounded text-sm sm:text-base"
-                    >
-                      Remove Admin
-                    </button>
+                      className="cursor-pointer bg-red-500 hover:bg-red-600 text-white  sm:px-2 rounded text-sm "
+                    ></Button>
                   ) : (
-                    <button
+                    <Button
+                      label=" Make Admin"
                       onClick={() => makeAdmin(user._id)}
-                      className="bg-green-500 hover:bg-green-600 text-white  sm:px-2 px-1 py-1 rounded text-sm sm:text-base"
-                    >
-                      Make Admin
-                    </button>
+                      className="cursor-pointer bg-green-500 hover:bg-green-600 text-white sm:px-2  sm:py-1 rounded text-sm sm:text-base"
+                    ></Button>
                   )}
-
-                  {/* Charity Buttons */}
                   {user.role === "charity" ? (
-                    <button
+                    <Button
                       onClick={() => removeCharity(user._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white  sm:px-2 px-1 py-1 rounded text-sm sm:text-base"
-                    >
-                      Remove Charity
-                    </button>
+                      label="Remove Charity"
+                      className="cursor-pointer bg-red-500 hover:bg-red-600 text-white  sm:px-2 rounded text-sm "
+                    ></Button>
                   ) : (
-                    <button
+                    <Button
                       onClick={() => makeCharity(user._id)}
-                      className="bg-blue-500 hover:bg-blue-600 text-white sm:px-2 px-1 py-1 rounded text-sm sm:text-base"
-                    >
-                      Make Charity
-                    </button>
+                      label="Make Charity"
+                      className="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white sm:px-2  sm:py-1 rounded text-sm sm:text-base"
+                    ></Button>
                   )}
-
-                  {/* Restaurant Buttons */}
                   {user.role === "restaurant" ? (
-                    <button
+                    <Button
+                      label="Remove Restaurant"
                       onClick={() => removeRestaurant(user._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white  sm:px-2 px-1 py-1 rounded text-sm sm:text-base"
-                    >
-                      Remove Restaurant
-                    </button>
+                      className="cursor-pointer bg-red-500 hover:bg-red-600 text-white  sm:px-2 rounded text-sm "
+                    ></Button>
                   ) : (
-                    <button
+                    <Button
+                      label="Make Restaurant"
                       onClick={() => makeRestaurant(user._id)}
-                      className="bg-purple-500 hover:bg-purple-600 text-white sm:px-2 px-1 py-1 rounded text-sm sm:text-base"
-                    >
-                      Make Restaurant
-                    </button>
+                      className=" cursor-pointer bg-purple-500 hover:bg-purple-600 text-white sm:px-2  sm:py-1 rounded text-sm sm:text-base"
+                    ></Button>
                   )}
-
-                  <button
+                  <Button
+                    label="Delete User"
                     onClick={() => deleteUser(user._id)}
-                    className="bg-gray-500 hover:bg-gray-600 text-white sm:px-2 px-1 py-1 rounded text-sm sm:text-base"
-                  >
-                    Delete User
-                  </button>
+                    className="cursor-pointer bg-gray-500 hover:bg-gray-600 text-white sm:px-2  sm:py-1.5 rounded text-sm sm:text-base"
+                  ></Button>
                 </td>
               </tr>
             ))}

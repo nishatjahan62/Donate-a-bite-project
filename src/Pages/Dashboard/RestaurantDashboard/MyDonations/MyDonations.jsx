@@ -65,7 +65,7 @@ const MyDonations = () => {
     My Donations
   </h1>
 
-  <div className="grid md:grid-cols-2 gap-6">
+  <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-6">
     {donations.map((donation) => (
       <div
         key={donation._id}
@@ -84,7 +84,7 @@ const MyDonations = () => {
           </h2>
 
           <p className="text-gray-600 dark:text-gray-300 mt-2">
-            Restaurant: {donation.restaurantName} - {donation.location}
+            Restaurant: {donation.restaurant?.name} - {donation.location}
           </p>
           <p className="text-gray-600 dark:text-gray-300 mt-1">
             Quantity: {donation.quantity}

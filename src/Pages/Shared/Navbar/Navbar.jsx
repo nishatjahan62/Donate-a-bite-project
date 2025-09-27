@@ -12,6 +12,7 @@ import UserIcon from "../../../assets/userIcon.png";
 const Navbar = () => {
   const { user, logOut } = UseAuth();
 
+
   // logout
   const handleLogOut = () => {
     logOut()
@@ -76,6 +77,14 @@ const Navbar = () => {
           </NavLink>
         </li>
       )}
+      {user &&
+      (
+            <li>
+              <NavLink to="/all-donations" className={NavLinkClass}>
+                All Donations
+              </NavLink>
+            </li>
+          )}
     </>
   );
   return (

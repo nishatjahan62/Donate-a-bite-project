@@ -106,7 +106,9 @@ const ManageDonations = () => {
 
       <div className="overflow-x-auto rounded">
         <table className="w-full border border-secondary text-sm dark:text-gray-200 ">
-  <thead className="bg-primary text-white">            <tr>
+          <thead className="bg-primary text-white">
+            {" "}
+            <tr>
               <th className="p-3 text-left">Title</th>
               <th className="p-3">Food Type</th>
               <th className="p-3">Restaurant</th>
@@ -121,8 +123,8 @@ const ManageDonations = () => {
               <tr key={d._id} className="border-t dark:border-gray-700">
                 <td className="p-3 text-center">{d.title}</td>
                 <td className="p-3 text-center">{d.foodType}</td>
-                <td className="p-3 text-center">{d.restaurantName}</td>
-                <td className="p-3 text-center">{d.restaurantEmail}</td>
+                <td className="p-3 text-center">{d.restaurant?.name}</td>
+                <td className="p-3 text-center">{d.restaurant?.email}</td>
                 <td className="p-3 text-center">{d.quantity}</td>
                 <td className="p-3 text-center">
                   <span
