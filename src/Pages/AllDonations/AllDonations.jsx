@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 import Button from "../Shared/Button/Button";
@@ -6,6 +6,9 @@ import { Link } from "react-router";
 
 const AllDonations = () => {
   const axios = UseAxiosSecure();
+
+  const [searchLocation, setSearchLocation] = useState("");
+  const [sortOption, setSortOption] = useState("");
 
   const {
     data: donations = [],
@@ -19,6 +22,31 @@ const AllDonations = () => {
     },
   });
 
+  // Filter and Sort donations
+  const filteredDonations = useMemo(() => {
+    let filtered = donations;
+
+    // Search by location
+    if (searchLocation.trim() !== "") {
+      filtered = filtered.filter((donation) =>
+        donation.restaurant?.location
+          ?.toLowerCase()
+          .includes(searchLocation.toLowerCase())
+      );
+    }
+
+    // Sort by quantity or pickupTime
+    if (sortOption === "quantity") {
+      filtered = filtered.slice().sort((a, b) => a.quantity - b.quantity);
+    } else if (sortOption === "pickupTime") {
+      filtered = filtered.slice().sort(
+        (a, b) => new Date(a.pickupTime) - new Date(b.pickupTime)
+      );
+    }
+
+    return filtered;
+  }, [donations, searchLocation, sortOption]);
+
   if (isLoading) return <p>Loading donations...</p>;
   if (isError) return <p>Error loading donations!</p>;
 
@@ -28,8 +56,28 @@ const AllDonations = () => {
         All Donations
       </h1>
 
+      {/* Search and Sort Controls */}
+      <div className="flex flex-col  sm:items-center sm:justify-between mb-6 gap-2">
+        <input
+          type="text"
+          placeholder="Search by location..."
+          value={searchLocation}
+          onChange={(e) => setSearchLocation(e.target.value)}
+          className="p-2 rounded border border-secondary dark:bg-gray-900 dark:text-white w-full sm:w-1/2"
+        />
+        <select
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          className="p-2 rounded border border-secondary dark:bg-gray-900 dark:text-white w-full sm:w-1/4"
+        >
+          <option value="">Sort by</option>
+          <option value="quantity">Quantity</option>
+          <option value="pickupTime">Pickup Time</option>
+        </select>
+      </div>
+
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {donations.map((donation) => (
+        {filteredDonations.map((donation) => (
           <div
             key={donation._id}
             className="border rounded-2xl p-4 shadow-2xl border-secondary dark:border-secondary bg-white dark:bg-gray-900"
@@ -55,9 +103,7 @@ const AllDonations = () => {
                 </p>
               )}
               <p>
-            <hr className="border-secondary dark:border-gray-700 my-2" />
-
-
+                <hr className="border-secondary dark:border-gray-700 my-2" />
                 <span className="font-bold">Quantity:</span> {donation.quantity}
               </p>
               <p>
@@ -68,8 +114,8 @@ const AllDonations = () => {
             <hr className="border-secondary dark:border-gray-700 my-2" />
 
             <Link to={`/donation-details/${donation._id}`}>
-            <Button className="w-full" label="View Details"></Button>
-          </Link>
+              <Button className="w-full" label="View Details"></Button>
+            </Link>
           </div>
         ))}
       </div>
