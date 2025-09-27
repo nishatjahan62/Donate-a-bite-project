@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-
 import { motion } from "framer-motion";
 import { FaClipboardList } from "react-icons/fa6";
 import UseAuth from "../../Hooks/UseAuth";
@@ -32,7 +31,7 @@ const LatestCharityRequests = () => {
   if (error) return <p className="text-primary">Failed to load requests.</p>;
 
   return (
-    <section className="p-6 bg-secondary mt-10 sm:mt-14 lg:mt-20 dark:bg-gray-900 mx-5 sm:mx-8 lg:mx-10 rounded-2xl ">
+    <section className="p-6 bg-secondary  sm:mt-14 lg:mt-20 dark:bg-gray-900 mx-5 sm:mx-8 lg:mx-10 rounded-2xl ">
       <h2 className="text-3xl text-center py-3 font-bold text-primary  mb-6">
         Latest Charity Requests
       </h2>
