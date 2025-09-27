@@ -72,6 +72,33 @@ const ManageUsers = () => {
     }
   };
 
+  // Delete handler
+  const deleteUser = async (id) => {
+    const confirmResult = await Swal.fire({
+      title: "Are you sure?",
+      text: "You are about to delete this user. This action cannot be undone.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete",
+    });
+
+    if (!confirmResult.isConfirmed) return;
+
+    try {
+      const res = await axiosSecure.delete(`/users/${id}`);
+      if (res.data.success) {
+        await Swal.fire("Deleted!", res.data.message, "success");
+        queryClient.invalidateQueries(["users"]);
+      }
+    } catch (err) {
+      Swal.fire(
+        "Error",
+        err.response?.data?.message || "Failed to delete user",
+        "error"
+      );
+    }
+  };
+
   if (isLoading) return <p className="text-center py-4">Loading users...</p>;
 
   return (
@@ -164,6 +191,13 @@ const ManageUsers = () => {
                       Make Restaurant
                     </button>
                   )}
+
+                  <button
+                    onClick={() => deleteUser(user._id)}
+                    className="bg-gray-500 hover:bg-gray-600 text-white sm:px-2 px-1 py-1 rounded text-sm sm:text-base"
+                  >
+                    Delete User
+                  </button>
                 </td>
               </tr>
             ))}

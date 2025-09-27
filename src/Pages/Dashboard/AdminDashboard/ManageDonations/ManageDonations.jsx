@@ -106,8 +106,7 @@ const ManageDonations = () => {
 
       <div className="overflow-x-auto rounded">
         <table className="w-full border border-secondary text-sm dark:text-gray-200 ">
-          <thead className="bg-secondary dark:bg-gray-800 text-primary">
-            <tr>
+  <thead className="bg-primary text-white">            <tr>
               <th className="p-3 text-left">Title</th>
               <th className="p-3">Food Type</th>
               <th className="p-3">Restaurant</th>
