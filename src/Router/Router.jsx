@@ -33,6 +33,7 @@ import MyDonations from "../Pages/Dashboard/RestaurantDashboard/MyDonations/MyDo
 import RequestedDonations from "../Pages/Dashboard/RestaurantDashboard/RequestedDonations/RequestedDonations";
 import CharityTransactionHistory from "../Pages/Dashboard/CharityDashboard/CharityTransactionHistory/CharityTransactionHistory";
 import UserTransactionHistory from "../Pages/Dashboard/UserDashboard/UserTransactionHistory/UserTransactionHistory";
+import RequestDetails from "../Components/LatestCharityRequests/RequestDetails";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -49,7 +50,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "all-donations",
-   element: (
+        element: (
           <PrivateRoute>
             <AllDonations></AllDonations>
           </PrivateRoute>
@@ -118,6 +119,7 @@ export const router = createBrowserRouter([
         path: "profile",
         element: <MyProfile></MyProfile>,
       },
+
       { path: "favorites", element: <Favorites></Favorites> },
       {
         path: "reviews",
@@ -212,6 +214,13 @@ export const router = createBrowserRouter([
         path: "requested-donations",
         element: <RequestedDonations></RequestedDonations>,
       },
+       {
+  path: "request-details/:id",
+  element: <RequestDetails />,
+},
+
+      
+
     ],
   },
 ]);

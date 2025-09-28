@@ -5,6 +5,7 @@ import UseAuth from "../../Hooks/UseAuth";
 import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 import UseUserRole from "../../Hooks/UseUserRole";
 import Button from "../../Pages/Shared/Button/Button";
+import { Link } from "react-router";
 
 const LatestCharityRequests = () => {
   const { user } = UseAuth();
@@ -30,12 +31,12 @@ const LatestCharityRequests = () => {
   if (error) return <p className="text-primary">Failed to load requests.</p>;
 
   return (
-    <section className="py-15 mt-15 bg-secondary sm:mt-14 lg:mt-20 dark:bg-gray-900 mx-5 sm:mx-8 lg:mx-10 rounded-2xl">
+    <section className="py-15 px-3 sm:px-10 mt-15 bg-secondary sm:mt-14 lg:mt-20 dark:bg-gray-900 mx-5 sm:mx-8 lg:mx-10 rounded-2xl">
       <h2 className="text-3xl text-center py-3 font-bold text-primary mb-6">
         Latest Charity Requests
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
         {requests.map((req) => (
           <motion.div
             key={req._id}
@@ -78,7 +79,12 @@ const LatestCharityRequests = () => {
 
             {/* Action Button */}
             {role === "restaurant" && (
-              <Button className="mt-auto w-full">View Request</Button>
+              <Link to={`/dashboard/request-details/${req._id}`}>
+                <Button
+                  label="View Request"
+                  className="mt-auto w-full"
+                ></Button>
+              </Link>
             )}
           </motion.div>
         ))}
