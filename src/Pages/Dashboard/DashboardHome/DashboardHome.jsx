@@ -4,17 +4,31 @@ import UseAuth from "../../../Hooks/UseAuth";
 import UseUserRole from "../../../Hooks/UseUserRole";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 
+// Recharts
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from "recharts";
+
 const DashboardHome = () => {
   const { user } = UseAuth();
   const { role } = UseUserRole();
   const axiosSecure = UseAxiosSecure();
+
   const [stats, setStats] = useState({
     donations: 0,
     requests: 0,
     favorites: 0,
     reviews: 0,
   });
+
   const [recentActivity, setRecentActivity] = useState([]);
+  const [donationChartData, setDonationChartData] = useState([]);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -22,42 +36,65 @@ const DashboardHome = () => {
         if (role === "restaurant") {
           const donationsRes = await axiosSecure.get(`/donations/restaurant/${user.email}`);
           const requestsRes = await axiosSecure.get(`/requests/restaurant/all`);
+
           setStats({
             donations: donationsRes.data.length,
             requests: requestsRes.data.filter(r => r.status === "Pending").length,
             favorites: 0,
             reviews: 0,
           });
+
           setRecentActivity(requestsRes.data.slice(0, 5));
+
+          // Prepare donation chart data
+          const statsObj = {};
+          donationsRes.data.forEach(donation => {
+            const type = donation.foodType || "Other";
+            statsObj[type] = (statsObj[type] || 0) + 1;
+          });
+          const chartData = Object.keys(statsObj).map(key => ({
+            name: key,
+            value: statsObj[key],
+          }));
+          setDonationChartData(chartData);
+
         } else if (role === "charity") {
           const requestsRes = await axiosSecure.get(`/requests/charity/${user.email}`);
           const pickupsRes = await axiosSecure.get(`/charity/my-pickups/${user.email}`);
+
           setStats({
             donations: requestsRes.data.length,
             requests: pickupsRes.data.length,
             favorites: 0,
             reviews: 0,
           });
+
           setRecentActivity(requestsRes.data.slice(0, 5));
+
         } else if (role === "user") {
           const favRes = await axiosSecure.get(`/favorites/${user.email}`);
           const txRes = await axiosSecure.get(`/transactions/${user.email}`);
+
           setStats({
             donations: 0,
             requests: 0,
             favorites: favRes.data.length,
             reviews: txRes.data.length,
           });
+
           setRecentActivity(txRes.data.slice(0, 5));
+
         } else if (role === "admin") {
           const donationsRes = await axiosSecure.get("/donations");
           const requestsRes = await axiosSecure.get("/admin/requests");
+
           setStats({
             donations: donationsRes.data.length,
             requests: requestsRes.data.length,
             favorites: 0,
             reviews: 0,
           });
+
           setRecentActivity(requestsRes.data.slice(0, 5));
         }
       } catch (err) {
@@ -109,6 +146,24 @@ const DashboardHome = () => {
           </div>
         </div>
       </div>
+
+      {/* Donation Statistics Chart for Restaurant */}
+      {role === "restaurant" && donationChartData.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md mt-6">
+          <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">
+            Donation Statistics
+          </h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={donationChartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+              <XAxis dataKey="name" stroke="#8884d8" />
+              <YAxis stroke="#8884d8" />
+              <Tooltip />
+              <Bar dataKey="value" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
 
       {/* Recent Activity */}
       <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
