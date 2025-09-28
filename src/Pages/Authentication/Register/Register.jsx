@@ -7,6 +7,8 @@ import SingUp from "../../../assets/Sign up.png";
 import useAxios from "../../../Hooks/UseAxios";
 import axios from "axios";
 import { motion } from "framer-motion";
+import LightLogo from "../../../assets/LightLogo.png";
+import DarkLogo from "../../../assets/DarkLogo.png";
 
 const Register = () => {
   const {
@@ -94,11 +96,27 @@ const Register = () => {
           transition={{ duration: 0.7 }}
         >
           <div className="w-full mx-w-md">
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+            <Link to={"/"}>
+                <div className="flex justify-start mb-4">
+                  <img
+                    src={LightLogo}
+                    alt="Light Logo"
+                    className=" lg:block dark:hidden w-32"
+                  />
+                  <img
+                    src={DarkLogo}
+                    alt="Dark Logo"
+                    className="hidden lg:dark:block w-32"
+                  />
+                
+                
+                </div>
+              </Link>
+            <h2 className="text-3xl font-bold text-primary">
               Create an account
             </h2>
             <p className="py-1 mb-6 text-lg text-gray-600 dark:text-gray-300">
-              Register with Donate-a-bite
+              Register with <span className="poppins text-primary">"Donate-a-bite"</span>
             </p>
             <form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
               <div>

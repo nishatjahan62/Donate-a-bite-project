@@ -51,7 +51,7 @@ const Navbar = () => {
 
   // NavLink with dark mode support
   const NavLinkClass = ({ isActive }) =>
-    `px-2 py-1 rounded text-lg ${
+    `px-2 py-1 rounded text-base ${
       isActive
         ? "font-extrabold border-b-2 text-secondary dark:text-primary"
         : "font-medium text-gray-800 dark:text-gray-200 hover:text-primary dark:hover:text-secondary-light"

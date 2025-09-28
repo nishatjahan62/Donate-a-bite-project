@@ -35,10 +35,10 @@ const DashboardLayout = () => {
 
   // Active/Inactive link styling
   const NavLinkClass = ({ isActive }) =>
-  `flex items-center gap-2 text-lg font-semibold transition-colors px-3 py-3
+  `flex items-center gap-2 text-base font-semibold transition-colors px-3 py-3
    ${
      isActive
-       ? "text-gary-700 bg-primary font-bold"
+       ? "text-gray-900 bg-primary font-bold"
        : "text-gray-800 dark:text-gray-200 hover:text-primary hover:bg-transparent"
    }`;
 
@@ -112,18 +112,15 @@ const DashboardLayout = () => {
                   <img
                     src={LightLogo}
                     alt="Light Logo"
-                    className="hidden lg:block dark:hidden w-32"
+                    className=" lg:block dark:hidden w-32"
                   />
                   <img
                     src={DarkLogo}
                     alt="Dark Logo"
                     className="hidden lg:dark:block w-32"
                   />
-                  <img
-                    src={OnlyLogo}
-                    alt="Small Screen Logo"
-                    className="block lg:hidden w-12"
-                  />
+                
+                
                 </div>
               </Link>
 

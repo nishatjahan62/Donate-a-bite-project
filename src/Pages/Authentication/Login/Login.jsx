@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 import UseAuth from "../../../Hooks/UseAuth";
 import SignIn from "../../../assets/Login.png";
 import { motion } from "framer-motion";
+import LightLogo from "../../../assets/LightLogo.png";
+import DarkLogo from "../../../assets/DarkLogo.png";
 
 const Login = () => {
   const {
@@ -56,11 +58,27 @@ const Login = () => {
           transition={{ duration: 0.7 }}
         >
           <div className="w-full max-w-md">
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">
+            <Link to={"/"}>
+              <div className="flex justify-start mb-4">
+                <img
+                  src={LightLogo}
+                  alt="Light Logo"
+                  className=" lg:block dark:hidden w-32"
+                />
+                <img
+                  src={DarkLogo}
+                  alt="Dark Logo"
+                  className="hidden lg:dark:block w-32"
+                />
+              </div>
+            </Link>
+
+            <h2 className="text-3xl font-bold text-primary mb-6">
               Welcome Back
             </h2>
             <p className="py-1 text-lg text-gray-700 dark:text-gray-300">
-              Login to your account
+              Login with{" "}
+              <span className="poppins text-primary">"Donate-a-bite"</span>
             </p>
             <form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
               <div>
