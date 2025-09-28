@@ -1,16 +1,28 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router";
+import ErrorImg from "../../../src/assets/Banners/ErrorImg.png"; // adjust the path if needed
+import { FaHome } from "react-icons/fa";
 
 const ErrorPage = () => {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 text-gray-800 px-4 text-center">
-      <h1 className="text-6xl font-extrabold mb-6">Oops! Something Went Wrong</h1>
-      <p className="text-lg max-w-md mb-6">
-        The page you are searching for seems to have wandered into the unknown. <br />
-        Please try refreshing, or return to the{' '}
-        <a href="/" className="text-blue-600 hover:underline font-semibold">
-          homepage
-        </a>.
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-red-100 via-red-200 to-red-300 text-center px-4">
+      <img
+        src={ErrorImg}
+        alt="Error"
+        className="w-64 md:w-96 mb-6 animate-bounce"
+      />
+      <h1 className="text-5xl md:text-6xl font-bold text-red-800 mb-4">
+        Oops!
+      </h1>
+      <p className="text-lg md:text-xl text-red-700 mb-8">
+        Something went wrong. The page you are looking for does not exist.
       </p>
+      <Link
+        to="/"
+        className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition-all duration-300"
+      >
+        <FaHome /> Go Back Home
+      </Link>
     </div>
   );
 };
