@@ -11,7 +11,6 @@ const LatestCharityRequests = () => {
   const axiosSecure = UseAxiosSecure();
   const { role } = UseUserRole(user?.email);
 
-  // TanStack Query v5
   const {
     data: requests = [],
     isLoading,
@@ -20,7 +19,6 @@ const LatestCharityRequests = () => {
     queryKey: ["latestCharityRequests"],
     queryFn: async () => {
       const res = await axiosSecure.get("/requests/restaurant/all");
-      // Filter out role requests & get latest 3
       return res.data
         .filter((req) => req.purpose !== "Charity Role Request")
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -32,12 +30,12 @@ const LatestCharityRequests = () => {
   if (error) return <p className="text-primary">Failed to load requests.</p>;
 
   return (
-    <section className="p-6 bg-secondary  sm:mt-14 lg:mt-20 dark:bg-gray-900 mx-5 sm:mx-8 lg:mx-10 rounded-2xl ">
-      <h2 className="text-3xl text-center py-3 font-bold text-primary  mb-6">
+    <section className="p-6 bg-secondary sm:mt-14 lg:mt-20 dark:bg-gray-900 mx-5 sm:mx-8 lg:mx-10 rounded-2xl">
+      <h2 className="text-3xl text-center py-3 font-bold text-primary mb-6">
         Latest Charity Requests
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {requests.map((req) => (
           <motion.div
             key={req._id}
@@ -47,9 +45,17 @@ const LatestCharityRequests = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            {/* Placeholder charity image */}
-            <div className="w-16 h-16 rounded-full bg-secondary dark:bg-gray-700 flex items-center justify-center text-white font-bold text-xl mx-auto">
-              {req.charityName ? req.charityName.charAt(0) : "C"}
+            {/* Charity Image or Fallback */}
+            <div className="w-16 h-16 rounded-full bg-secondary dark:bg-gray-700 flex items-center justify-center text-white font-bold text-xl mx-auto overflow-hidden">
+              {req.charityImage ? (
+                <img
+                  src={req.charityImage}
+                  alt={req.charityName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span>{req.charityName ? req.charityName.charAt(0) : "C"}</span>
+              )}
             </div>
 
             {/* Charity Name */}
@@ -58,7 +64,7 @@ const LatestCharityRequests = () => {
             </h3>
 
             {/* Description with icon */}
-            <div className="flex  gap-2 text-gray-600 dark:text-gray-300 justify-center">
+            <div className="flex gap-2 text-gray-600 dark:text-gray-300 justify-center">
               <FaClipboardList className="mt-1 text-secondary dark:text-primary" />
               <p className="text-sm">
                 {req.description || "No description provided"}
