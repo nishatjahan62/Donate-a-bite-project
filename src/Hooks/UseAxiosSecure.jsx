@@ -2,7 +2,7 @@ import axios from "axios";
 
 const UseAxiosSecure = () => {
   const instance = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://assignment-12-server-one-eosin.vercel.app",
   });
 
   instance.interceptors.request.use(

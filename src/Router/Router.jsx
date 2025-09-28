@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/donation/${params.id}`),
+          fetch(`https://assignment-12-server-one-eosin.vercel.app/donation/${params.id}`),
       },
     ],
   },

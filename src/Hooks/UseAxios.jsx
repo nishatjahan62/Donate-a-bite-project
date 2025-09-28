@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 const axiosIntense = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: "https://assignment-12-server-one-eosin.vercel.app/",
 });
 
 const useAxios = () => {

@@ -55,13 +55,16 @@ const AuthProvider = ({ children }) => {
 
       if (currentUser?.email) {
         try {
-          const res = await fetch("http://localhost:5000/jwt", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: currentUser.email }),
-          });
+          const res = await fetch(
+            "https://assignment-12-server-one-eosin.vercel.app/jwt",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email: currentUser.email }),
+            }
+          );
 
           const data = await res.json();
 
