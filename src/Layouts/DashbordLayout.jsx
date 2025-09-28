@@ -1,9 +1,12 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 import UseAuth from "../Hooks/UseAuth";
 import Loading from "../Pages/Loading/Loading";
 import UserIcon from "../assets/userIcon.png";
 import UseUserRole from "../Hooks/UseUserRole";
+import LightLogo from "../assets/LightLogo.png";
+import DarkLogo from "../assets/DarkLogo.png";
+import OnlyLogo from "../assets/onlyicon.png";
 
 // 🎨 React Icons
 import {
@@ -100,20 +103,56 @@ const DashboardLayout = () => {
       <div className="drawer-side">
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
         <aside className="menu w-64 bg-secondary min-h-screen p-2">
-          {/* User info */}
+          {/* User & Logo Section */}
           {user && (
-            <div className="flex justify-center items-center mb-3 mt-2">
-              <img
-                className="w-10 rounded-full m-2"
-                alt="user"
-                src={user?.photoURL || UserIcon}
-                title={user?.displayName}
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = UserIcon;
-                }}
-              />
-              <p className="font-semibold text-lg">{user.displayName}</p>
+            <div className="flex flex-col items-center p-4 ">
+              {/* Logo */}
+              <Link to={'/'}><div className="flex justify-center mb-4">
+                <img
+                  src={LightLogo}
+                  alt="Light Logo"
+                  className="hidden lg:block dark:hidden w-32"
+                />
+                <img
+                  src={DarkLogo}
+                  alt="Dark Logo"
+                  className="hidden lg:dark:block w-32"
+                />
+                <img
+                  src={OnlyLogo}
+                  alt="Small Screen Logo"
+                  className="block lg:hidden w-12"
+                />
+              </div></Link>
+
+              {/* User Info */}
+              <div className="flex items-center gap-3 p-3">
+                {/* User Image */}
+                <div className="relative w-16 h-16 flex-shrink-0">
+                  <img
+                    className="w-full h-full rounded-full object-cover border-2 border-primary"
+                    alt={user?.displayName || "User"}
+                    src={user?.photoURL || UserIcon}
+                    title={user?.displayName}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = UserIcon;
+                    }}
+                  />
+                </div>
+
+                {/* User Info */}
+                <div className="flex flex-col justify-center">
+                  <h2 className="font-semibold text-lg text-gray-800 dark:text-gray-100">
+                    {user.displayName}
+                  </h2>
+                  <span className="text-sm text-gray-700 dark:text-gray-700">
+                    {role
+                      ? role.charAt(0).toUpperCase() + role.slice(1)
+                      : "User"}
+                  </span>
+                </div>
+              </div>
             </div>
           )}
 

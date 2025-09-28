@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router";
+import { Link, Links, NavLink } from "react-router";
 import UseAuth from "../../../Hooks/UseAuth";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
@@ -111,19 +111,25 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <div className="flex items-center">
-          <img
-            src={LightLogo}
-            alt="Light Logo"
-            className="hidden lg:block dark:hidden w-35"
-          />
-          <img
-            src={DarkLogo}
-            alt="Dark Logo"
-            className="hidden lg:dark:block w-35"
-          />
-          <img src={OnlyLogo} alt="Small Screen Logo" className="block lg:hidden w-10" />
-        </div>
+          <Link to={'/'}><div className="flex justify-center mb-4">
+                <img
+                  src={LightLogo}
+                  alt="Light Logo"
+                  className="hidden lg:block dark:hidden w-32"
+                />
+                <img
+                  src={DarkLogo}
+                  alt="Dark Logo"
+                  className="hidden lg:dark:block w-32"
+                />
+                <img
+                  src={OnlyLogo}
+                  alt="Small Screen Logo"
+                  className="block lg:hidden w-12"
+                />
+              </div></Link>
+
+
       </div>
 
       <div className="navbar-center hidden lg:flex">

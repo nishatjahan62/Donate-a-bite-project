@@ -14,37 +14,38 @@ const Footer = () => {
           font-nunito bg-[#F8F8F8] dark:bg-gray-900 text-gray-800 dark:text-gray-200
         "
       >
-        <div
-          className="flex lg:flex-row flex-col lg:items-center justify-around lg:gap-10 p-2 pt-5"
-        >
+        <div className="flex lg:flex-row flex-col lg:items-center justify-around lg:gap-10 p-2 pt-5">
           {/* Logo + Links */}
-          <div>
-            <ul className="space-y-1.5">
-              <li>
-                <img
-                  src={LightLogo}
-                  alt="Light Logo"
-                  className="hidden lg:block dark:hidden w-35"
-                />
-                <img
-                  src={DarkLogo}
-                  alt="Dark Logo"
-                  className="hidden lg:dark:block w-35"
-                />
-                <img
-                  src={OnlyLogo}
-                  alt="Small Screen Logo"
-                  className="block lg:hidden w-10"
-                />
-              </li>
-              <li className="font-semibold hover:text-[--color-secondary] transition">
-                <Link to="/about-us">About us</Link>
-              </li>
-              <li className="font-semibold hover:text-[--color-secondary] transition">
-                <Link to="/all-donations">All Donations</Link>
-              </li>
-            </ul>
-          </div>
+          <Link>
+            {" "}
+            <div>
+              <ul className="space-y-1.5">
+                <li>
+                  <img
+                    src={LightLogo}
+                    alt="Light Logo"
+                    className="hidden lg:block dark:hidden w-35"
+                  />
+                  <img
+                    src={DarkLogo}
+                    alt="Dark Logo"
+                    className="hidden lg:dark:block w-35"
+                  />
+                  <img
+                    src={OnlyLogo}
+                    alt="Small Screen Logo"
+                    className="block lg:hidden w-10"
+                  />
+                </li>
+                <li className="font-semibold hover:text-[--color-secondary] transition">
+                  <Link to="/about-us">About us</Link>
+                </li>
+                <li className="font-semibold hover:text-[--color-secondary] transition">
+                  <Link to="/all-donations">All Donations</Link>
+                </li>
+              </ul>
+            </div>
+          </Link>
 
           {/* Terms Section */}
           <ul className="space-y-1.5">
