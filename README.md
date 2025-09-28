@@ -6,6 +6,20 @@
 
 📚 **Welcome to Donate-A-Bite** — A MERN stack used an online Local Food Waste Reduction Platform  where restaurants donate surplus food, charities request and pick up donations, and users browse listings or request to become charities.
 
+---
+
+🔗 **Live Demo**  
+Frontend =>  [Firebase](https://ph-b11-assignment-12.web.app/)
+
+Backend =>  [Vercel](https://assignment-12-server-one-eosin.vercel.app/)
+
+
+---
+🎯 **Purpose**  
+Donate-A-Bite is designed to minimize local food waste while supporting community charities. Users can save favorite donations, charities can manage requests, and restaurants can share surplus food efficiently. Admins oversee the entire platform for smooth operations. The platform combines modern web technologies with clean UI/UX for a seamless experience.
+
+---
+
 🚀 **Donate-A-Bite has 4 roles**, each with specific responsibilities:
 
 ---

@@ -35,12 +35,12 @@ const DashboardLayout = () => {
 
   // Active/Inactive link styling
   const NavLinkClass = ({ isActive }) =>
-    `flex items-center gap-2 text-lg font-semibold transition-colors rounded-lg px-3 py-2
-     ${
-       isActive
-         ? "text-primary font-bold bg-gray-200 dark:bg-gray-800"
-         : "hover:text-primary"
-     }`;
+  `flex items-center gap-2 text-lg font-semibold transition-colors px-3 py-3
+   ${
+     isActive
+       ? "text-gary-700 bg-primary font-bold"
+       : "text-gray-800 dark:text-gray-200 hover:text-primary hover:bg-transparent"
+   }`;
 
   // Role-based profile icon + label
   const profileIcon =
@@ -107,23 +107,25 @@ const DashboardLayout = () => {
           {user && (
             <div className="flex flex-col items-center p-4 ">
               {/* Logo */}
-              <Link to={'/'}><div className="flex justify-center mb-4">
-                <img
-                  src={LightLogo}
-                  alt="Light Logo"
-                  className="hidden lg:block dark:hidden w-32"
-                />
-                <img
-                  src={DarkLogo}
-                  alt="Dark Logo"
-                  className="hidden lg:dark:block w-32"
-                />
-                <img
-                  src={OnlyLogo}
-                  alt="Small Screen Logo"
-                  className="block lg:hidden w-12"
-                />
-              </div></Link>
+              <Link to={"/"}>
+                <div className="flex justify-center mb-4">
+                  <img
+                    src={LightLogo}
+                    alt="Light Logo"
+                    className="hidden lg:block dark:hidden w-32"
+                  />
+                  <img
+                    src={DarkLogo}
+                    alt="Dark Logo"
+                    className="hidden lg:dark:block w-32"
+                  />
+                  <img
+                    src={OnlyLogo}
+                    alt="Small Screen Logo"
+                    className="block lg:hidden w-12"
+                  />
+                </div>
+              </Link>
 
               {/* User Info */}
               <div className="flex items-center gap-3 p-3">
@@ -144,7 +146,7 @@ const DashboardLayout = () => {
                 {/* User Info */}
                 <div className="flex flex-col justify-center">
                   <h2 className="font-semibold text-lg text-gray-800 dark:text-gray-100">
-                    {user.displayName}
+                    {user.displayName?.split(" ")[0] || ""}
                   </h2>
                   <span className="text-sm text-gray-700 dark:text-gray-700">
                     {role
