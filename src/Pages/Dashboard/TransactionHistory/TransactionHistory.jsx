@@ -7,7 +7,6 @@ const TransactionHistory = ({ email, role }) => {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     if (!email) return;
 
@@ -28,39 +27,62 @@ const TransactionHistory = ({ email, role }) => {
   if (transactions.length === 0) {
     return (
       <div className="p-6">
-        <h2 className="text-3xl font-bold mb-4  text-center text-primary">Transaction History</h2>
-        <p>No transactions found.</p>
+        <h2 className="text-3xl font-bold mb-4 text-center text-primary">
+          Transaction History
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300 text-center">
+          No transactions found.
+        </p>
       </div>
     );
   }
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-4  text-center text-primary">
+      <h2 className="text-3xl font-bold mb-4 text-center text-primary">
         {role === "charity"
           ? "Charity Transaction History"
           : "My Transaction History"}
       </h2>
 
       <div className="overflow-x-auto">
-        <table className="table-auto w-full border-collapse border border-gray-300">
+        <table className="table-auto w-full border-collapse border border-gray-300 dark:border-gray-700">
           <thead>
-            <tr className="bg-gray-100 text-center">
-              <th className="border px-4 py-2">Transaction ID</th>
-              <th className="border px-4 py-2">Amount ($)</th>
-              <th className="border px-4 py-2">Purpose</th>
-              <th className="border px-4 py-2">Request Status</th>
-              <th className="border px-4 py-2">Request Date</th>
+            <tr className="bg-gray-100 dark:bg-gray-800 text-center">
+              <th className="border px-4 py-2 dark:border-gray-700 dark:text-gray-200">
+                Transaction ID
+              </th>
+              <th className="border px-4 py-2 dark:border-gray-700 dark:text-gray-200">
+                Amount ($)
+              </th>
+              <th className="border px-4 py-2 dark:border-gray-700 dark:text-gray-200">
+                Purpose
+              </th>
+              <th className="border px-4 py-2 dark:border-gray-700 dark:text-gray-200">
+                Request Status
+              </th>
+              <th className="border px-4 py-2 dark:border-gray-700 dark:text-gray-200">
+                Request Date
+              </th>
             </tr>
           </thead>
           <tbody>
             {transactions.map((tx) => (
-              <tr key={tx._id} className="text-center">
-                <td className="border px-4 py-2">{tx.transactionId}</td>
-                <td className="border px-4 py-2">{tx.amount}</td>
-                <td className="border px-4 py-2">{tx.purpose}</td>
+              <tr
+                key={tx._id}
+                className="text-center bg-white dark:bg-gray-900"
+              >
+                <td className="border px-4 py-2 dark:border-gray-700 dark:text-gray-300">
+                  {tx.transactionId}
+                </td>
+                <td className="border px-4 py-2 dark:border-gray-700 dark:text-gray-300">
+                  {tx.amount}
+                </td>
+                <td className="border px-4 py-2 dark:border-gray-700 dark:text-gray-300">
+                  {tx.purpose}
+                </td>
                 <td
-                  className={`border px-4 py-2 font-semibold ${
+                  className={`border px-4 py-2 font-semibold dark:border-gray-700 ${
                     tx.requestStatus === "Approved"
                       ? "text-green-600"
                       : tx.requestStatus === "Rejected"
@@ -70,7 +92,7 @@ const TransactionHistory = ({ email, role }) => {
                 >
                   {tx.requestStatus}
                 </td>
-                <td className="border px-4 py-2">
+                <td className="border px-4 py-2 dark:border-gray-700 dark:text-gray-300">
                   {new Date(tx.createdAt).toLocaleString()}
                 </td>
               </tr>

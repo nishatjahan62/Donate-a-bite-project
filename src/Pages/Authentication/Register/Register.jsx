@@ -79,7 +79,7 @@ const Register = () => {
 
   return (
     <motion.div
-      className="w-full min-h-screen bg-base-200 flex items-center justify-center"
+      className="w-full min-h-screen bg-base-200 dark:bg-gray-900 flex items-center justify-center transition-colors duration-300"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -94,44 +94,55 @@ const Register = () => {
           transition={{ duration: 0.7 }}
         >
           <div className="w-full mx-w-md">
-            <h2 className="text-3xl font-bold text-gray-800">Create an account</h2>
-            <p className="py-1 mb-6 text-lg">Register with Donate-a-bite</p>
+            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+              Create an account
+            </h2>
+            <p className="py-1 mb-6 text-lg text-gray-600 dark:text-gray-300">
+              Register with Donate-a-bite
+            </p>
             <form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-600">Name</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Name
+                </label>
                 <input
                   type="text"
                   {...register("name", { required: "Name is required" })}
-                  className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400"
+                  className="w-full px-4 py-2 mt-1 border rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-400"
                   placeholder="Your name"
                 />
                 {errors.name && <p className="text-sm text-red-500">{errors.name.message}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600">Email</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Email
+                </label>
                 <input
                   type="email"
                   {...register("email", { required: "Email is required" })}
-                  className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400"
+                  className="w-full px-4 py-2 mt-1 border rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-400"
                   placeholder="you@example.com"
                 />
                 {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600">Profile Image</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Profile Image
+                </label>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full mt-1"
-                  
+                  className="w-full mt-1 dark:text-gray-200"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-600">Password</label>
+                <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
+                  Password
+                </label>
                 <input
                   type="password"
                   {...register("password", {
@@ -141,11 +152,11 @@ const Register = () => {
                       noUpperCase: (value) =>
                         !/[A-Z]/.test(value) || "Password must not contain capital letters",
                       noSpecialChar: (value) =>
-                        !/[!@#$%^&*(),.?":{}|<>]/.test(value) ||
+                        !/[!@#$%^&*(),.?\":{}|<>]/.test(value) ||
                         "Password must not contain special characters",
                     },
                   })}
-                  className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-400"
+                  className="w-full px-4 py-2 mt-1 border rounded-md bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-400"
                   placeholder="Enter your password"
                 />
                 {errors.password && (
@@ -158,10 +169,10 @@ const Register = () => {
                 className="cursor-pointer rounded w-full py-2.5 overflow-hidden group bg-primary relative hover:to-secondary text-white hover:ring-2 hover:ring-offset-2 hover:ring-primary transition-all ease-out duration-300"
               >
                 <span className="absolute right-0 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-                <span className="relative text-black">Sign up</span>
+                <span className="relative text-black dark:text-white">Sign up</span>
               </button>
 
-              <p className="text-sm text-center text-gray-600">
+              <p className="text-sm text-center text-gray-600 dark:text-gray-300">
                 Already have an account?{" "}
                 <Link to="/auth/login" className="text-teal-600 hover:underline font-bold">
                   Sign In here
@@ -173,7 +184,7 @@ const Register = () => {
 
         {/* Image container */}
         <motion.div
-          className="w-full lg:w-1/2 bg-[#FAFDF0] flex items-center justify-center p-10"
+          className="w-full lg:w-1/2 bg-[#FAFDF0] dark:bg-gray-800 flex items-center justify-center p-10 transition-colors duration-300"
           initial={{ x: 200, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.7 }}

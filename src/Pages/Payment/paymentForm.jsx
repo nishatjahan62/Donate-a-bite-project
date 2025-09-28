@@ -24,7 +24,7 @@ const PaymentForm = () => {
     e.preventDefault();
     if (!stripe || !elements) return;
 
-    // 🔹 Show confirmation first
+    // 🔹 Confirmation
     const confirm = await Swal.fire({
       title: "Confirm Payment",
       text: `Are you sure you want to pay $${amount} for Charity Role Request?`,
@@ -34,7 +34,7 @@ const PaymentForm = () => {
       cancelButtonText: "Cancel",
     });
 
-    if (!confirm.isConfirmed) return; // stop if cancelled
+    if (!confirm.isConfirmed) return;
 
     setProcessing(true);
 
@@ -82,11 +82,11 @@ const PaymentForm = () => {
           amount,
         });
 
-        // 🔹 Show success after confirm
+        // 🔹 Success
         Swal.fire({
           title: "Paid",
           text: "Your charity role request has been submitted and is pending admin approval.",
-          icon: "Success",
+          icon: "success",
           showConfirmButton: false,
           timer: 3000,
         });
@@ -102,15 +102,26 @@ const PaymentForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[70vh] bg-gray-50">
-      <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-[--color-secondary]">
+    <div className="flex justify-center items-center min-h-[70vh] bg-gray-50 dark:bg-gray-900 p-4">
+      <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6 text-[--color-secondary] dark:text-teal-400">
           Complete Your Payment
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="p-3 border rounded-xl bg-gray-50">
-            <CardElement options={{ style: { base: { fontSize: "17px" } } }} />
+          <div className="p-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700">
+            <CardElement
+              options={{
+                style: {
+                  base: {
+                    fontSize: "17px",
+                    color: "#fff",
+                    "::placeholder": { color: "#9ca3af" },
+                  },
+                  invalid: { color: "#f87171" },
+                },
+              }}
+            />
           </div>
 
           {error && <p className="text-red-500 mt-3">{error}</p>}

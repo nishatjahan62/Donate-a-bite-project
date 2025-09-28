@@ -1,4 +1,3 @@
-// Stories.jsx
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectCoverflow } from "swiper/modules";
@@ -42,38 +41,54 @@ const stories = [
 
 const Stories = () => {
   return (
-    <section className="bg-secondary py-20 px-4 mx-5 sm:mx-8 lg:mx-10 font-sans mt-20 rounded-2xl">
+    <section className="dark bg-gray-900 py-20 px-4 sm:mx-8 lg:mx-10 font-sans mt-20 rounded-2xl">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl font-bold text-primary mb-12">
+        <h2 className="text-4xl font-bold text-primary dark:text-white mb-12">
           Community Stories
         </h2>
 
-        <Swiper
-          modules={[Autoplay, EffectCoverflow]}
-          effect="coverflow"
-          grabCursor={true}
-          centeredSlides={true}
-          slidesPerView={3}
-          loop={true}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
-          coverflowEffect={{
-            rotate: 0,
-            stretch: 0,
-            depth: 100,
-            modifier: 2.5,
-            slideShadows: false,
-          }}
-          className="px-4"
-        >
-          {stories.map((story, index) => (
-            <SwiperSlide key={index}>
-              <StoryCard story={story} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+       <Swiper
+  modules={[Autoplay, EffectCoverflow]}
+  grabCursor={true}
+  centeredSlides={true}
+  loop={true}
+  autoplay={{
+    delay: 3000,
+    disableOnInteraction: false,
+  }}
+  breakpoints={{
+    0: {
+      slidesPerView: 1, // small screens -> 1 card full width
+      spaceBetween: 0,
+      effect: "slide", // simple slide for mobile
+    },
+    768: {
+      slidesPerView: 1, // medium screens -> still 1 card
+      spaceBetween: 0,
+      effect: "slide",
+    },
+    1024: {
+      slidesPerView: 3, // large screens -> 3 cards with coverflow
+      spaceBetween: 30,
+      effect: "coverflow",
+    },
+  }}
+  coverflowEffect={{
+    rotate: 0,
+    stretch: 0,
+    depth: 100,
+    modifier: 2.5,
+    slideShadows: false,
+  }}
+  className="px-4"
+>
+  {stories.map((story, index) => (
+    <SwiperSlide key={index}>
+      <StoryCard story={story} />
+    </SwiperSlide>
+  ))}
+</Swiper>
+
       </div>
     </section>
   );

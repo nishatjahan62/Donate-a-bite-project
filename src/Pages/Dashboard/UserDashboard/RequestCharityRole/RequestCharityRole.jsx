@@ -54,40 +54,47 @@ const RequestCharityRole = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh] bg-gray-50 p-4">
+    <div className="flex justify-center items-center min-h-[80vh] bg-gray-50 dark:bg-gray-900 p-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)]"
+        className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 w-full max-w-md 
+                   transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)]"
       >
-        <h2 className="text-3xl font-extrabold text-center mb-8 text-primary">
+        <h2 className="text-3xl font-extrabold text-center mb-8 text-primary dark:text-teal-400">
           Charity Role Request
         </h2>
 
         {/* User Name */}
         <div className="mb-5">
-          <label className="block text-sm font-semibold mb-2">Name</label>
+          <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
+            Name
+          </label>
           <input
             type="text"
             value={user?.displayName || ""}
             readOnly
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 
+                       rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
           />
         </div>
 
         {/* User Email */}
         <div className="mb-5">
-          <label className="block text-sm font-semibold mb-2">Email</label>
+          <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
+            Email
+          </label>
           <input
             type="email"
             value={user?.email || ""}
             readOnly
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 
+                       rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
           />
         </div>
 
         {/* Organization Name */}
         <div className="mb-5">
-          <label className="block text-sm font-semibold mb-2">
+          <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
             Organization Name
           </label>
           <input
@@ -95,21 +102,23 @@ const RequestCharityRole = () => {
             required
             value={organizationName}
             onChange={(e) => setOrganizationName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 
+                       rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
             placeholder="Enter your organization name"
           />
         </div>
 
         {/* Mission Statement */}
         <div className="mb-6">
-          <label className="block text-sm font-semibold mb-2">
+          <label className="block text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
             Mission Statement
           </label>
           <textarea
             required
             value={missionStatement}
             onChange={(e) => setMissionStatement(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 
+                       rounded-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200"
             placeholder="Describe your mission..."
             rows="5"
           />
@@ -117,9 +126,9 @@ const RequestCharityRole = () => {
 
         {/* Payment Amount */}
         <div className="mb-6 text-center">
-          <p className="font-semibold text-lg">
+          <p className="font-semibold text-lg text-gray-700 dark:text-gray-300">
             Payment Amount:{" "}
-            <span className="text-[--color-primary] font-bold text-xl">
+            <span className="text-[--color-primary] dark:text-teal-400 font-bold text-xl">
               $25
             </span>
           </p>

@@ -2,7 +2,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import UseAuth from "../../../../Hooks/UseAuth";
 import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
 
-
 const MyReviews = () => {
   const { user } = UseAuth();
   const axiosSecure = UseAxiosSecure();
@@ -27,18 +26,35 @@ const MyReviews = () => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (reviews.length === 0) return <p className="p-5">You haven't submitted any reviews yet.</p>;
+  if (isLoading)
+    return <p className="p-5 text-center text-gray-700 dark:text-gray-300">Loading...</p>;
+
+  if (reviews.length === 0)
+    return (
+      <p className="p-5 text-center text-gray-700 dark:text-gray-300">
+        You haven't submitted any reviews yet.
+      </p>
+    );
 
   return (
     <div className="p-5 space-y-4">
       {reviews.map((rev) => (
-        <div key={rev._id} className="border rounded p-3 shadow">
-          <h3 className="font-bold">{rev.donationTitle}</h3>
-          <p>{rev.restaurantName}</p>
-          <p><small>{new Date(rev.createdAt).toLocaleString()}</small></p>
-          <p>{rev.description}</p>
-          <button onClick={() => handleDelete(rev._id)} className="btn btn-sm btn-error mt-2">
+        <div
+          key={rev._id}
+          className="border rounded p-3 shadow bg-white dark:bg-gray-800 
+                     border-gray-300 dark:border-gray-700 
+                     text-gray-800 dark:text-gray-200"
+        >
+          <h3 className="font-bold text-lg">{rev.donationTitle}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">{rev.restaurantName}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            {new Date(rev.createdAt).toLocaleString()}
+          </p>
+          <p className="mt-2">{rev.description}</p>
+          <button
+            onClick={() => handleDelete(rev._id)}
+            className="btn btn-sm btn-error mt-3"
+          >
             Delete
           </button>
         </div>

@@ -12,9 +12,9 @@ const icons = {
 const StatCard = ({ stat }) => {
   const { icon, endValue, suffix, label } = stat;
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6 text-center flex flex-col items-center space-y-3 hover:shadow-xl transition">
+    <div className="bg-white dark:bg-gray-600 shadow-lg rounded-2xl p-6 text-center flex flex-col items-center space-y-3 hover:shadow-xl transition">
       <div>{icons[icon]}</div>
-      <h3 className="text-4xl font-extrabold text-primary">
+      <h3 className="text-4xl font-extrabold text-primary dark:text-white">
         <CountUp end={endValue} duration={2.5} separator="," suffix={suffix} />
       </h3>
       <p className="text-gray-600 dark:text-gray-300 font-medium">{label}</p>

@@ -26,25 +26,35 @@ const Favorites = () => {
     }
   };
 
-  if (isLoading) return <p>Loading...</p>;
-  if (favorites.length === 0) return <p className="p-5">No favorites yet.</p>;
+  if (isLoading) return <p className="p-5 text-center">Loading...</p>;
+  if (favorites.length === 0)
+    return (
+      <p className="p-5 text-center text-gray-700 dark:text-gray-300">
+        No favorites yet.
+      </p>
+    );
 
   return (
     <div className="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {favorites.map((fav) => (
-        <div key={fav._id} className="border rounded p-3 shadow">
+        <div
+          key={fav._id}
+          className="border rounded p-3 shadow bg-white dark:bg-gray-800 
+                     border-gray-300 dark:border-gray-700 
+                     text-gray-800 dark:text-gray-200"
+        >
           <img
             src={fav.donationImage}
             alt={fav.donationTitle}
             className="w-full h-40 object-cover rounded"
           />
-          <h3 className="font-bold mt-2">{fav.donationTitle}</h3>
-          <p>
+          <h3 className="font-bold mt-2 text-lg">{fav.donationTitle}</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             {fav.restaurantName} - {fav.location}
           </p>
-          <p>Status: {fav.status}</p>
+          <p className="mt-1">Status: {fav.status}</p>
           <p>Quantity: {fav.quantity}</p>
-          <div className="flex justify-between mt-2">
+          <div className="flex justify-between mt-3">
             <button
               onClick={() => handleRemove(fav._id)}
               className="btn btn-sm btn-error"
