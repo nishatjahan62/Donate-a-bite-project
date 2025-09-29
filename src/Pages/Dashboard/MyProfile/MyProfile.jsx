@@ -3,6 +3,7 @@ import UseAuth from "../../../Hooks/UseAuth";
 import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import UseUserRole from "../../../Hooks/UseUserRole";
 import UserIcon from "../../../assets/userIcon.png";
+import Loading from "../../Loading/Loading";
 
 const MyProfile = () => {
   const { user } = UseAuth();
@@ -36,7 +37,7 @@ const MyProfile = () => {
     }
   }, [user, axiosSecure]);
 
-  if (roleLoading || !profile) return <p>Loading...</p>;
+  if (roleLoading || !profile) return <Loading></Loading>
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import UseAuth from "../../../../Hooks/UseAuth";
 import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
+import Loading from "../../../Loading/Loading";
 
 const Favorites = () => {
   const { user } = UseAuth();
@@ -26,7 +27,7 @@ const Favorites = () => {
     }
   };
 
-  if (isLoading) return <p className="p-5 text-center">Loading...</p>;
+  if (isLoading) return <Loading></Loading>
   if (favorites.length === 0)
     return (
       <p className="p-5 text-center text-gray-700 dark:text-gray-300">

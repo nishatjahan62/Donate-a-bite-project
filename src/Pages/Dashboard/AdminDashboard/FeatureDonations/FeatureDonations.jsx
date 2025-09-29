@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
 import Button from "../../../Shared/Button/Button"; // assuming you have a Button component
+import Loading from "../../../Loading/Loading";
 const FeatureDonations = () => {
   const axiosSecure = UseAxiosSecure();
   const queryClient = useQueryClient();
@@ -26,7 +27,7 @@ const FeatureDonations = () => {
   });
 
   if (isLoading)
-    return <p className="text-center py-10 text-primary">Loading...</p>;
+    return <Loading></Loading>;
 
   return (
     <div className="p-6 dark:bg-secondary bg-gray-100 rounded-xl shadow-lg mx-5 sm:mx-8 lg:mx-10 mt-10 sm:mt-15">

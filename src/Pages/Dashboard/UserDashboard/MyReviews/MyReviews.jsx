@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import UseAuth from "../../../../Hooks/UseAuth";
 import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
+import Loading from "../../../Loading/Loading";
 
 const MyReviews = () => {
   const { user } = UseAuth();
@@ -27,7 +28,7 @@ const MyReviews = () => {
   };
 
   if (isLoading)
-    return <p className="p-5 text-center text-gray-700 dark:text-gray-300">Loading...</p>;
+    return <Loading></Loading>
 
   if (reviews.length === 0)
     return (

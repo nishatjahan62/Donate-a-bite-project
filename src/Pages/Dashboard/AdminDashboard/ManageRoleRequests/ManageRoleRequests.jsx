@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
 import Button from "../../../Shared/Button/Button";
+import Loading from "../../../Loading/Loading";
 
 const ManageRoleRequests = () => {
   const axiosSecure = UseAxiosSecure();
@@ -79,7 +80,7 @@ const ManageRoleRequests = () => {
     });
   };
 
-  if (isLoading) return <p className="text-center">Loading...</p>;
+  if (isLoading) return <Loading></Loading>
 
   return (
     <div className="p-6 bg-gray-50 dark:bg-gray-900 rounded-xl shadow-lg mx-2 sm:mx-3 lg:mx-4 mt-10 sm:mt-15">

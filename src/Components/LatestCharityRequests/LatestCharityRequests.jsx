@@ -6,6 +6,7 @@ import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
 import UseUserRole from "../../Hooks/UseUserRole";
 import Button from "../../Pages/Shared/Button/Button";
 import { Link } from "react-router";
+import Loading from "../../Pages/Loading/Loading";
 
 const LatestCharityRequests = () => {
   const { user } = UseAuth();
@@ -19,7 +20,7 @@ const LatestCharityRequests = () => {
   } = useQuery({
     queryKey: ["latestCharityRequests"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/requests/restaurant/all");
+      const res = await axiosSecure.get("/charity-requests/latest");
       return res.data
         .filter((req) => req.purpose !== "Charity Role Request")
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -27,7 +28,7 @@ const LatestCharityRequests = () => {
     },
   });
 
-  if (isLoading) return <p className="text-primary">Loading...</p>;
+  if (isLoading) return <Loading></Loading>;
   if (error) return <p className="text-primary">Failed to load requests.</p>;
 
   return (

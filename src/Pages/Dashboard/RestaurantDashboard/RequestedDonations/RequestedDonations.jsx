@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import UseAxiosSecure from "../../../../Hooks/UseAxiosSecure";
 import Swal from "sweetalert2";
 import { FaClipboardList } from "react-icons/fa6";
+import Loading from "../../../Loading/Loading";
 
 const RequestedDonations = () => {
   const axiosSecure = UseAxiosSecure();
@@ -60,7 +61,7 @@ const RequestedDonations = () => {
 };
 
   if (isLoading)
-    return <p className="text-center text-primary py-4">Loading...</p>;
+    return <Loading></Loading>
 
   return (
     <div className="p-4 dark:bg-gray-900 min-h-screen">
