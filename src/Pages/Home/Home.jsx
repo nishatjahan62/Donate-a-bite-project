@@ -6,6 +6,7 @@ import Banner from "../../Components/hero/Banner";
 import LatestCharityRequests from "../../Components/LatestCharityRequests/LatestCharityRequests";
 import Faq from "../../Components/Faq/Faq";
 import HowDonationsHelp from "../../Components/HowDonationsHelp/HowDonationsHelp";
+import ConnectedPartners from "../../Components/ConnectedPartners/ConnectedPartners";
 
 const Home = () => {
   return (
@@ -32,9 +33,14 @@ const Home = () => {
       <div>
         {" "}
         <Faq></Faq>
-      </div>  <div>
+      </div>{" "}
+      <div>
         {" "}
         <HowDonationsHelp></HowDonationsHelp>
+      </div>
+      <div>
+        {" "}
+        <ConnectedPartners></ConnectedPartners>
       </div>
     </div>
   );
