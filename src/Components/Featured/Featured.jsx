@@ -26,7 +26,7 @@ const Featured = () => {
 
   return (
     <div>
-      <h2 className="text-center font-bold text-4xl text-primary py-10 poppins ">
+      <h2 className="text-center font-bold text-4xl text-primary pb-16 poppins ">
         Featured Donations
       </h2>
       <Swiper

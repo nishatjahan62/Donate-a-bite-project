@@ -41,9 +41,9 @@ const stories = [
 
 const Stories = () => {
   return (
-    <section className="bg-secondary dark:bg-gray-900 py-20 px-4 sm:mx-8 lg:mx-10 font-sans mt-20 rounded-2xl">
+    <section className="bg-secondary dark:bg-gray-900 py-16 px-4 sm:px-10 font-sans  rounded-2xl">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl font-bold text-primary dark:text-white mb-12">
+        <h2 className="text-4xl font-bold text-primary dark:text-white pb-16">
           Community Stories
         </h2>
 

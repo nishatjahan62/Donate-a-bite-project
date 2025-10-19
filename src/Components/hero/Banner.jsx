@@ -23,17 +23,17 @@ const Banner = () => {
         speed={500} // transition speed
       >
         <SwiperSlide>
-          <div className="mx-5 sm:mx-8 lg:mx-10">
+          <div className="">
             <img className="rounded-2xl" src={banner01} alt="Banner 1" />
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="mx-5 sm:mx-8 lg:mx-10">
+          <div className="">
             <img className="rounded-2xl" src={banner02} alt="Banner 2" />
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="mx-5 sm:mx-8 lg:mx-10">
+          <div className="">
             <img className="rounded-2xl" src={banner03} alt="Banner 3" />
           </div>
         </SwiperSlide>

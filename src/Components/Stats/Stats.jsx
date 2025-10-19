@@ -20,9 +20,9 @@ const Stats = () => {
   ];
 
   return (
-    <section className="bg-secondary dark:bg-[#1E293B] py-16 mt-20 mx-5 sm:mx-8 lg:mx-10 rounded-2xl nunito">
+    <section className=" dark:bg-[#1E293B] rounded-2xl nunito  px-4">
       <div className="max-w-7xl mx-auto px-6 text-center">
-        <h2 className="text-4xl font-bold text-primary dark:text-white poppins mb-12">
+        <h2 className="text-4xl font-bold text-primary dark:text-white poppins pb-16">
           Our Collective Impact
         </h2>
 
