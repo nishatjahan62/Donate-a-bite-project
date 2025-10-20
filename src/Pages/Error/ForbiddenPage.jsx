@@ -1,5 +1,7 @@
 import React from "react";
 import { AiFillLock } from "react-icons/ai";
+import Button from "../Shared/Button/Button";
+import { Link } from "react-router";
 
 const ForbiddenPage = () => {
   return (
@@ -11,15 +13,12 @@ const ForbiddenPage = () => {
         Access Forbidden
       </h1>
       <p className="text-lg text-gray-600 max-w-md mb-6">
-        You don’t have permission to view this page.  
-        Please contact an administrator if you think this is a mistake.
+        You don’t have permission to view this page. Please contact an
+        administrator if you think this is a mistake.
       </p>
-      <a
-        href="/"
-        className="px-6 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 transition"
-      >
-        Go Back Home
-      </a>
+      <Link to={'/'}>
+        <Button label="  Go Back Home" className=""></Button>
+      </Link>{" "}
     </div>
   );
 };

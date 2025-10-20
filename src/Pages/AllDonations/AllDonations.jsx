@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DonationCard from "../../Components/donationCard/DonationCard";
 import useAxios from "../../Hooks/UseAxios";
+import Button from "../Shared/Button/Button";
 
 const UNIT_PRIORITY = {
   kg: 0,
@@ -11,11 +12,10 @@ const UNIT_PRIORITY = {
   portion: 1,
   pcs: 1,
   piece: 1,
-  default: 2, 
+  default: 2,
 };
 
 const parseQuantity = (donation) => {
-
   const q = donation?.quantity;
   const qUnit = donation?.quantityUnit || donation?.unit || null;
 
@@ -29,7 +29,11 @@ const parseQuantity = (donation) => {
     if (match) {
       const rawNum = match[1].replace(",", ".");
       const value = Number(rawNum);
-      const unit = match[2] ? match[2].toLowerCase() : (qUnit ? String(qUnit).toLowerCase() : null);
+      const unit = match[2]
+        ? match[2].toLowerCase()
+        : qUnit
+        ? String(qUnit).toLowerCase()
+        : null;
       if (!Number.isNaN(value)) return { value, unit: unit || null };
     }
   }
@@ -42,6 +46,7 @@ const AllDonations = () => {
   const [filteredDonations, setFilteredDonations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sortType, setSortType] = useState("");
 
   const axios = useAxios();
@@ -80,45 +85,30 @@ const AllDonations = () => {
     setFilteredDonations(filtered);
   }, [searchTerm, donations]);
 
-  // sorting function 
+  // Sorting
   const handleSort = (type) => {
     setSortType(type);
-    let arr = [...filteredDonations];
+    setDropdownOpen(false);
+
+    const arr = [...filteredDonations];
 
     const getKey = (donation) => {
       const { value, unit } = parseQuantity(donation);
       const unitKey = unit ? unit.toLowerCase() : "default";
       const priority = UNIT_PRIORITY[unitKey] ?? UNIT_PRIORITY.default;
-  
       const numeric = value === null || Number.isNaN(value) ? null : Number(value);
       return { priority, numeric, unit: unitKey };
     };
 
-    if (type === "quantityAsc") {
-      arr.sort((a, b) => {
-        const A = getKey(a);
-        const B = getKey(b);
-        if (A.numeric === null && B.numeric === null) return 0;
-        if (A.numeric === null) return 1;
-        if (B.numeric === null) return -1;
-        if (A.priority !== B.priority) return A.priority - B.priority;
-        return A.numeric - B.numeric;
-      });
-    } else if (type === "quantityDesc") {
-      arr.sort((a, b) => {
-        const A = getKey(a);
-        const B = getKey(b);
-        if (A.numeric === null && B.numeric === null) return 0;
-        if (A.numeric === null) return 1;
-        if (B.numeric === null) return -1;
-        if (A.priority !== B.priority) return A.priority - B.priority; // keep same group order but we will flip numeric
-        return B.numeric - A.numeric;
-      });
-    } else if (type === "titleAsc") {
-      arr.sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
-    } else if (type === "titleDesc") {
-      arr.sort((a, b) => String(b.title || "").localeCompare(String(a.title || "")));
-    }
+    arr.sort((a, b) => {
+      const A = getKey(a);
+      const B = getKey(b);
+      if (A.numeric === null && B.numeric === null) return 0;
+      if (A.numeric === null) return 1;
+      if (B.numeric === null) return -1;
+      if (A.priority !== B.priority) return A.priority - B.priority;
+      return type === "asc" ? A.numeric - B.numeric : B.numeric - A.numeric;
+    });
 
     setFilteredDonations(arr);
   };
@@ -127,71 +117,58 @@ const AllDonations = () => {
     return <p className="text-center mt-10 text-secondary">Loading donations...</p>;
 
   return (
-    <div className="lg:mt-40 sm:mt-34 mt-30">
-    <div className="text-center py-3 pb-16">
-  <h2 className="text-3xl poppins font-bold text-primary">
-    All Donations
-  </h2>
-  <p className="text-white dark:text-gray-300 text-lg">
-    Explore Every Act of Generosity
-  </p>
-</div>
+    <div className="p-6 lg:mt-26 sm:mt-20 mt-16">
+      <div className="text-center py-3 pb-10">
+        <h2 className="text-3xl font-bold text-primary">All Donations</h2>
+        <p className="text-gray-600 dark:text-gray-300 text-lg">
+          Explore Every Act of Generosity
+        </p>
+      </div>
 
-
+      {/* Search and Sorting */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
         <input
           type="text"
           placeholder="Search by title, restaurant, or type..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full sm:w-1/2 px-4 py-2 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary dark:bg-gray-800 dark:text-gray-100"
+          className="w-full sm:w-1/2 px-4 py-2 border border-secondary rounded-lg 
+                     focus:outline-none focus:ring-2 focus:ring-secondary 
+                     dark:bg-gray-800 dark:text-gray-100"
         />
 
-        <div className="flex flex-wrap gap-3">
-          <button
-            onClick={() => handleSort("quantityAsc")}
-            className={`px-4 py-2 rounded-lg border-2 ${
-              sortType === "quantityAsc"
-                ? "bg-secondary text-white border-secondary"
-                : "border-secondary text-secondary"
-            }`}
-          >
-            Quantity ↑ (kg → portions)
-          </button>
+        {/* Dropdown */}
+       {/* Dropdown */}
+<div className="relative">
+  <Button label=" Sort by Quantity"
+    onClick={() => setDropdownOpen((prev) => !prev)}
+    className={`px-4 py-2 rounded-lg border-2 flex items-center gap-2 
+      ${dropdownOpen ? "text-white" : ""}`}
+  >
+   
+    <span className="text-lg">{dropdownOpen ? "▲" : "▼"}</span>
+  </Button>
 
-          <button
-            onClick={() => handleSort("quantityDesc")}
-            className={`px-4 py-2 rounded-lg border-2 ${
-              sortType === "quantityDesc"
-                ? "bg-secondary text-white border-secondary"
-                : "border-secondary text-secondary"
-            }`}
-          >
-            Quantity ↓ (kg → portions)
-          </button>
+  {dropdownOpen && (
+    <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg border border-secondary dark:border-gray-700 z-10">
+      <button
+        onClick={() => handleSort("asc")}
+        className={`block w-full text-left px-4 py-2 rounded-t-lg 
+          ${sortType === "asc" ? "text-primary font-semibold" : "hover:text-primary "}`}
+      >
+        Ascending (kg → portions)
+      </button>
+      <button
+        onClick={() => handleSort("desc")}
+        className={`block w-full text-left px-4 py-2 rounded-b-lg 
+          ${sortType === "desc" ? "text-primary font-semibold" : "hover:text-primary"}`}
+      >
+        Descending (kg → portions)
+      </button>
+    </div>
+  )}
+</div>
 
-          <button
-            onClick={() => handleSort("titleAsc")}
-            className={`px-4 py-2 rounded-lg border-2 ${
-              sortType === "titleAsc"
-                ? "bg-primary text-white border-primary"
-                : "border-primary text-primary"
-            }`}
-          >
-            Title A–Z
-          </button>
-
-          <button
-            onClick={() => handleSort("titleDesc")}
-            className={`px-4 py-2 rounded-lg border-2 ${
-              sortType === "titleDesc"
-                ? "bg-primary text-white border-primary"
-                : "border-primary text-primary"
-            }`}
-          >
-            Title Z–A
-          </button>
-        </div>
       </div>
 
       {/* Grid */}

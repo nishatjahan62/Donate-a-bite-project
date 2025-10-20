@@ -26,8 +26,8 @@ const PendingDonations= () => {
   if (loading) return <p className="text-center mt-10">Loading pending donations...</p>;
 
   return (
-    <div className="p-6 lg:mt-40 sm:mt-34 mt-30">
-      <h1 className="text-2xl text-center font-bold mb-4 text-primary poppins">
+    <div className="p-6  lg:mt-26 sm:mt-20 mt-16">
+      <h1 className="text-3xl text-center font-bold mb-4 text-primary poppins">
         Pending Donations
       </h1>
 
