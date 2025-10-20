@@ -11,7 +11,7 @@ const Footer = () => {
       <footer
         className="
           lg:footer-horizontal mt-10 md:mt-15 lg:mt-20 p-5 pt-5 md:px-10 lg:px-20
-          font-nunito bg-[#F8F8F8] dark:bg-gray-900 text-gray-800 dark:text-gray-200
+          font-nunito bg-secondary dark:bg-gray-900 text-gray-800 dark:text-gray-200
         "
       >
         <div className="flex lg:flex-row flex-col lg:items-center justify-around lg:gap-10 p-2 pt-5">

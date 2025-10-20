@@ -10,7 +10,7 @@ import banner03 from "../../assets/Banners/B03.jpg";
 
 const Banner = () => {
   return (
-    <div className="lg:my-18 my-12">
+    <div className="lg:mt-40 sm:mt-34 mt-30  ">
       <Swiper
         modules={[Autoplay]}
         spaceBetween={20}

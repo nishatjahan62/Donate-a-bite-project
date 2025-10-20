@@ -26,17 +26,21 @@ const Featured = () => {
 
   return (
     <div>
-      <h2 className="text-center font-bold text-4xl text-primary pb-16 poppins ">
-        Featured Donations
-      </h2>
+      <div className="text-center py-3 pb-16">
+        {" "}
+        <h2 className="text-3xl font-bold text-primary ">Featured Donations</h2>
+        <p className=" text-gray-700 dark:text-gray-300 text-base">
+          Spotlight on Impactful Donations
+        </p>
+      </div>
+
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={20}
         slidesPerView={1}
         breakpoints={{
           0: { slidesPerView: 1 },
           640: { slidesPerView: 1.5 },
-          1024: { slidesPerView: 3 },
+          1024: { slidesPerView: 4 },
         }}
         autoplay={{
           delay: 2500,

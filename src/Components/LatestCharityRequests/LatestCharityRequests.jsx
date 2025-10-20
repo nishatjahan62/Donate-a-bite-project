@@ -33,9 +33,15 @@ const LatestCharityRequests = () => {
 
   return (
     <section className="py-16 px-4 sm:px-10 bg-secondary dark:bg-gray-900  rounded-2xl">
-      <h2 className="text-3xl text-center py-3 font-bold text-primary mb-6">
-        Latest Charity Requests
-      </h2>
+      <div className="text-center py-3 pb-16">
+        {" "}
+        <h2 className="text-3xl poppins font-bold text-primary ">
+          Latest Charity Requests
+        </h2>
+        <p className=" text-white dark:text-gray-300 text-lg">
+          Respond to the Call for Compassion
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
         {requests.map((req) => (

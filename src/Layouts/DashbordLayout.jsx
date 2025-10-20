@@ -25,6 +25,7 @@ import {
   FaShieldAlt,
   FaLayerGroup,
   FaRegStar,
+  FaChartPie,
 } from "react-icons/fa";
 
 const DashboardLayout = () => {
@@ -35,12 +36,12 @@ const DashboardLayout = () => {
 
   // Active/Inactive link styling
   const NavLinkClass = ({ isActive }) =>
-  `flex items-center gap-2 text-base font-semibold transition-colors px-3 py-3
-   ${
-     isActive
-       ? "text-gray-900 bg-primary font-bold"
-       : "text-gray-800 dark:text-gray-200 hover:text-primary hover:bg-transparent"
-   }`;
+    `flex items-center gap-2 text-base font-semibold transition-colors px-3 py-3
+     ${
+       isActive
+         ? "text-gray-900 bg-primary font-bold"
+         : "text-gray-800 dark:text-gray-200 hover:text-primary hover:bg-transparent"
+     }`;
 
   // Role-based profile icon + label
   const profileIcon =
@@ -69,34 +70,42 @@ const DashboardLayout = () => {
 
       {/* Main content */}
       <div className="drawer-content flex flex-col min-h-screen">
-        {/* Top Navbar for small screens */}
-        <div className="navbar bg-base-300 lg:hidden">
-          <div className="flex-none">
-            <label
-              htmlFor="dashboard-drawer"
-              className="btn btn-square btn-ghost"
+        {/* Fixed Dashboard Navbar */}
+        <nav className="fixed top-0 left-0 w-full z-50 bg-secondary px-4 py-3 flex justify-between items-center shadow-md">
+          <Link to="/" className="flex items-center gap-2">
+            <img src={OnlyLogo} alt="Logo" className="w-8 h-8" />
+            <span className="font-bold text-lg text-grey">Dashboard</span>
+          </Link>
+          <div className="flex items-center gap-3">
+            <img
+              src={user?.photoURL || UserIcon}
+              alt={user?.displayName}
+              className="w-10 h-10 rounded-full border-2 border-primary"
+            />
+            <span className="text-grey font-medium">
+              {user?.displayName?.split(" ")[0] || "User"}
+            </span>
+            <Link
+              to="/logout"
+              className="bg-primary text-white px-3 py-1 rounded hover:bg-white hover:text-primary transition"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                className="inline-block w-6 h-6 stroke-current"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </label>
+              Logout
+            </Link>
           </div>
-        </div>
+        </nav>
+
+        {/* Spacer for fixed navbar */}
+        <div className="h-16"></div>
 
         {/* Page content */}
-        <div className="p-4 flex-1">
+        <div className="flex-1 p-4">
           <Outlet />
         </div>
+
+        {/* Footer */}
+        <footer className="bg-primary dark:bg-secondary text-center p-3 text-white">
+          &copy; {new Date().getFullYear()} DonateA. All rights reserved.
+        </footer>
       </div>
 
       {/* Sidebar */}
@@ -108,7 +117,7 @@ const DashboardLayout = () => {
             <div className="flex flex-col items-center p-4 ">
               {/* Logo */}
               <Link to={"/"}>
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mt-14 my-4">
                   <img
                     src={LightLogo}
                     alt="Light Logo"
@@ -119,17 +128,14 @@ const DashboardLayout = () => {
                     alt="Dark Logo"
                     className="hidden lg:dark:block w-32"
                   />
-                
-                
                 </div>
               </Link>
 
               {/* User Info */}
               <div className="flex items-center gap-3 p-3">
-                {/* User Image */}
                 <div className="relative w-16 h-16 flex-shrink-0">
                   <img
-                    className="w-full h-full rounded-full object-cover border-2 border-primary"
+                    className="w-full h-full rounded-full object-cover border-2 border-primary shadow-2xl"
                     alt={user?.displayName || "User"}
                     src={user?.photoURL || UserIcon}
                     title={user?.displayName}
@@ -139,13 +145,11 @@ const DashboardLayout = () => {
                     }}
                   />
                 </div>
-
-                {/* User Info */}
                 <div className="flex flex-col justify-center">
                   <h2 className="font-semibold text-lg text-gray-800 dark:text-gray-100">
                     {user.displayName?.split(" ")[0] || ""}
                   </h2>
-                  <span className="text-sm text-gray-700 dark:text-gray-700">
+                  <span className="text-sm text-gray-700 dark:text-gray-400">
                     {role
                       ? role.charAt(0).toUpperCase() + role.slice(1)
                       : "User"}
@@ -159,6 +163,12 @@ const DashboardLayout = () => {
           <li>
             <NavLink to="/" className={NavLinkClass}>
               <FaHome /> Home
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/dashboard/over-view" className={NavLinkClass}>
+              <FaChartPie /> Overview
             </NavLink>
           </li>
 

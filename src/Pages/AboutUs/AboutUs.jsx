@@ -11,7 +11,7 @@ import { MdSecurity } from "react-icons/md";
 
 const AboutUs = () => {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 sm:py-14 my-5 sm:my-20 rounded-2xl px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8 sm:py-14 lg:mt-40 sm:mt-34 mt-30 rounded-2xl px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header and Mission Statement */}
         <div className="text-center mb-16 border-b border-secondary/50 pb-8">

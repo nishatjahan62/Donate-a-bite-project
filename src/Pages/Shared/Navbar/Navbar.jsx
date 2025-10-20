@@ -53,8 +53,8 @@ const Navbar = () => {
   const NavLinkClass = ({ isActive }) =>
     `px-2 py-1 rounded text-base ${
       isActive
-        ? "font-extrabold border-b-2 text-secondary dark:text-primary"
-        : "font-medium text-gray-800 dark:text-gray-200 hover:text-primary dark:hover:text-secondary-light"
+        ? "font-bold border-b-4 border-primary text-grey"
+        : "font-medium text-grey dark:text-gray-200 hover:text-primary dark:hover:text-secondary-light"
     }`;
 
   const navItems = (
@@ -69,6 +69,11 @@ const Navbar = () => {
           About Us
         </NavLink>
       </li>
+      <li>
+        <NavLink to="/all-donations" className={NavLinkClass}>
+          All Donations
+        </NavLink>
+      </li>
       {user && (
         <li>
           <NavLink to="/dashboard" className={NavLinkClass}>
@@ -76,18 +81,47 @@ const Navbar = () => {
           </NavLink>
         </li>
       )}
+
       {user && (
-        <li>
-          <NavLink to="/all-donations" className={NavLinkClass}>
-            All Donations
-          </NavLink>
+        <li tabIndex={0} className="dropdown dropdown-hover">
+          <span className="px-2 py-1 rounded text-base font-medium text-grey dark:text-gray-200 hover:text-primary dark:hover:text-secondary-light flex items-center gap-1">
+            Donations
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </span>
+          <ul
+            tabIndex="-1"
+            className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+          >
+            <li>
+              <NavLink to="/donations/verified" className={NavLinkClass}>
+                Verified Donations
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/donations/pending" className={NavLinkClass}>
+                Pending Donations
+              </NavLink>
+            </li>
+          </ul>
         </li>
       )}
     </>
   );
 
   return (
-    <div className="navbar bg-[#F8F8F8] dark:bg-[#1E2939] shadow-sm lg:px-20 font-poppins px-8 text-gray-800 dark:text-gray-200">
+    <div className="navbar fixed top-0 z-5 left-0 w-full bg-secondary/80 dark:bg-[#1E2939]/90 shadow-sm lg:px-20 font-poppins px-8 text-gray-800 dark:text-gray-200 backdrop-blur-md ">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="lg:hidden pr-2">
@@ -111,25 +145,25 @@ const Navbar = () => {
           </ul>
         </div>
 
-          <Link to={'/'}><div className="flex justify-center mb-4">
-                <img
-                  src={LightLogo}
-                  alt="Light Logo"
-                  className="hidden lg:block dark:hidden w-32"
-                />
-                <img
-                  src={DarkLogo}
-                  alt="Dark Logo"
-                  className="hidden lg:dark:block w-32"
-                />
-                <img
-                  src={OnlyLogo}
-                  alt="Small Screen Logo"
-                  className="block lg:hidden w-12"
-                />
-              </div></Link>
-
-
+        <Link to={"/"}>
+          <div className="flex justify-center mb-4">
+            <img
+              src={LightLogo}
+              alt="Light Logo"
+              className="hidden lg:block dark:hidden w-32"
+            />
+            <img
+              src={DarkLogo}
+              alt="Dark Logo"
+              className="hidden lg:dark:block w-32"
+            />
+            <img
+              src={OnlyLogo}
+              alt="Small Screen Logo"
+              className="block lg:hidden w-12"
+            />
+          </div>
+        </Link>
       </div>
 
       <div className="navbar-center hidden lg:flex">
@@ -161,11 +195,11 @@ const Navbar = () => {
         {user ? (
           <div className="flex items-center gap-2">
             <div className="hidden lg:flex items-center">
-              <h3 className="pr-2 font-semibold text-base text-gray-800 dark:text-gray-200">
+              <h3 className="pr-2 font-semibold text-base text-grey dark:text-gray-200">
                 Hello
               </h3>
               <p className="font-semibold text-lg text-green-800 dark:text-green-400">
-                {(user.displayName?.split(" ")[0]) || ""}
+                {user.displayName?.split(" ")[0] || ""}
               </p>
               <div className="w-10 rounded-full mx-2 cursor-pointer">
                 <img

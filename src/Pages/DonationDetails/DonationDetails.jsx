@@ -108,7 +108,7 @@ const DonationDetails = () => {
 
   return (
     <div
-      className="max-w-5xl py-5 lg:py-10 mx-auto p-6 border border-secondary rounded-2xl shadow-2xl mt-10 sm:mt-20
+      className="max-w-5xl py-5 lg:py-10 mx-auto p-6 border border-secondary rounded-2xl shadow-2xl lg:mt-40 sm:mt-34 mt-30
                     bg-white dark:bg-black text-black dark:text-gray-200"
     >
       <div className="flex flex-col md:flex-row gap-8">

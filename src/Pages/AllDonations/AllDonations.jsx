@@ -1,124 +1,209 @@
-import React, { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
-import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
-import Button from "../Shared/Button/Button";
-import { Link } from "react-router";
+import React, { useEffect, useState } from "react";
+import DonationCard from "../../Components/donationCard/DonationCard";
+import useAxios from "../../Hooks/UseAxios";
+
+const UNIT_PRIORITY = {
+  kg: 0,
+  kilogram: 0,
+  kilograms: 0,
+  kgs: 0,
+  portions: 1,
+  portion: 1,
+  pcs: 1,
+  piece: 1,
+  default: 2, 
+};
+
+const parseQuantity = (donation) => {
+
+  const q = donation?.quantity;
+  const qUnit = donation?.quantityUnit || donation?.unit || null;
+
+  if (typeof q === "number") {
+    const unit = qUnit ? String(qUnit).trim().toLowerCase() : null;
+    return { value: q, unit: unit || null };
+  }
+
+  if (typeof q === "string") {
+    const match = q.trim().match(/^([\d.,]+)\s*([a-zA-Z]+)?/);
+    if (match) {
+      const rawNum = match[1].replace(",", ".");
+      const value = Number(rawNum);
+      const unit = match[2] ? match[2].toLowerCase() : (qUnit ? String(qUnit).toLowerCase() : null);
+      if (!Number.isNaN(value)) return { value, unit: unit || null };
+    }
+  }
+
+  return { value: null, unit: qUnit ? String(qUnit).toLowerCase() : null };
+};
 
 const AllDonations = () => {
-  const axios = UseAxiosSecure();
+  const [donations, setDonations] = useState([]);
+  const [filteredDonations, setFilteredDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortType, setSortType] = useState("");
 
-  const [searchLocation, setSearchLocation] = useState("");
-  const [sortOption, setSortOption] = useState("");
+  const axios = useAxios();
 
-  const {
-    data: donations = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["all-verified-donations"],
-    queryFn: async () => {
-      const res = await axios.get("/all-donations");
-      return res.data;
-    },
-  });
+  useEffect(() => {
+    const fetchDonations = async () => {
+      try {
+        const res = await axios.get("/donations/all");
+        setDonations(res.data);
+        setFilteredDonations(res.data);
+      } catch (err) {
+        console.error("Failed to fetch donations:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDonations();
+  }, [axios]);
 
-  // Filter and Sort donations
-  const filteredDonations = useMemo(() => {
-    let filtered = donations;
-
-    // Search by location
-    if (searchLocation.trim() !== "") {
-      filtered = filtered.filter((donation) =>
-        donation.restaurant?.location
-          ?.toLowerCase()
-          .includes(searchLocation.toLowerCase())
+  // Search
+  useEffect(() => {
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) {
+      setFilteredDonations(donations);
+      return;
+    }
+    const filtered = donations.filter((donation) => {
+      const { title = "", foodType = "", restaurant = {} } = donation;
+      const name = restaurant?.name || "";
+      return (
+        String(title).toLowerCase().includes(term) ||
+        String(foodType).toLowerCase().includes(term) ||
+        String(name).toLowerCase().includes(term)
       );
+    });
+    setFilteredDonations(filtered);
+  }, [searchTerm, donations]);
+
+  // sorting function 
+  const handleSort = (type) => {
+    setSortType(type);
+    let arr = [...filteredDonations];
+
+    const getKey = (donation) => {
+      const { value, unit } = parseQuantity(donation);
+      const unitKey = unit ? unit.toLowerCase() : "default";
+      const priority = UNIT_PRIORITY[unitKey] ?? UNIT_PRIORITY.default;
+  
+      const numeric = value === null || Number.isNaN(value) ? null : Number(value);
+      return { priority, numeric, unit: unitKey };
+    };
+
+    if (type === "quantityAsc") {
+      arr.sort((a, b) => {
+        const A = getKey(a);
+        const B = getKey(b);
+        if (A.numeric === null && B.numeric === null) return 0;
+        if (A.numeric === null) return 1;
+        if (B.numeric === null) return -1;
+        if (A.priority !== B.priority) return A.priority - B.priority;
+        return A.numeric - B.numeric;
+      });
+    } else if (type === "quantityDesc") {
+      arr.sort((a, b) => {
+        const A = getKey(a);
+        const B = getKey(b);
+        if (A.numeric === null && B.numeric === null) return 0;
+        if (A.numeric === null) return 1;
+        if (B.numeric === null) return -1;
+        if (A.priority !== B.priority) return A.priority - B.priority; // keep same group order but we will flip numeric
+        return B.numeric - A.numeric;
+      });
+    } else if (type === "titleAsc") {
+      arr.sort((a, b) => String(a.title || "").localeCompare(String(b.title || "")));
+    } else if (type === "titleDesc") {
+      arr.sort((a, b) => String(b.title || "").localeCompare(String(a.title || "")));
     }
 
-    // Sort by quantity or pickupTime
-    if (sortOption === "quantity") {
-      filtered = filtered.slice().sort((a, b) => a.quantity - b.quantity);
-    } else if (sortOption === "pickupTime") {
-      filtered = filtered.slice().sort(
-        (a, b) => new Date(a.pickupTime) - new Date(b.pickupTime)
-      );
-    }
+    setFilteredDonations(arr);
+  };
 
-    return filtered;
-  }, [donations, searchLocation, sortOption]);
-
-  if (isLoading) return <p>Loading donations...</p>;
-  if (isError) return <p>Error loading donations!</p>;
+  if (loading)
+    return <p className="text-center mt-10 text-secondary">Loading donations...</p>;
 
   return (
-    <div className="p-4 mx-5 sm:mx-8 dark:bg-black dark:text-white min-h-screen">
-      <h1 className="text-3xl text-center font-bold text-primary mb-6 py-5">
-        All Donations
-      </h1>
+    <div className="lg:mt-40 sm:mt-34 mt-30">
+    <div className="text-center py-3 pb-16">
+  <h2 className="text-3xl poppins font-bold text-primary">
+    All Donations
+  </h2>
+  <p className="text-white dark:text-gray-300 text-lg">
+    Explore Every Act of Generosity
+  </p>
+</div>
 
-      {/* Search and Sort Controls */}
-      <div className="flex flex-col  sm:items-center sm:justify-between mb-6 gap-2">
+
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8">
         <input
           type="text"
-          placeholder="Search by location..."
-          value={searchLocation}
-          onChange={(e) => setSearchLocation(e.target.value)}
-          className="p-2 rounded border border-secondary dark:bg-gray-900 dark:text-white w-full sm:w-1/2"
+          placeholder="Search by title, restaurant, or type..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full sm:w-1/2 px-4 py-2 border border-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary dark:bg-gray-800 dark:text-gray-100"
         />
-        <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-          className="p-2 rounded border border-secondary dark:bg-gray-900 dark:text-white w-full sm:w-1/4"
-        >
-          <option value="">Sort by</option>
-          <option value="quantity">Quantity</option>
-          <option value="pickupTime">Pickup Time</option>
-        </select>
-      </div>
 
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredDonations.map((donation) => (
-          <div
-            key={donation._id}
-            className="border rounded-2xl p-4 shadow-2xl border-secondary dark:border-secondary bg-white dark:bg-gray-900"
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => handleSort("quantityAsc")}
+            className={`px-4 py-2 rounded-lg border-2 ${
+              sortType === "quantityAsc"
+                ? "bg-secondary text-white border-secondary"
+                : "border-secondary text-secondary"
+            }`}
           >
-            <img
-              src={donation.image || "/placeholder.png"}
-              alt={donation.title}
-              className="w-full h-48 object-cover rounded-md mb-4"
-            />
-            <h2 className="text-2xl py-2 font-semibold text-primary">
-              {donation.title}
-            </h2>
+            Quantity ↑ (kg → portions)
+          </button>
 
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-              <p>
-                <span className="font-bold">Restaurant:</span>{" "}
-                {donation.restaurant?.name} <br />
-                {donation.restaurant?.location}
-              </p>
-              {donation.charityName && (
-                <p>
-                  <span className="font-bold">Charity:</span> {donation.charityName}
-                </p>
-              )}
-              <p>
-                <hr className="border-secondary dark:border-gray-700 my-2" />
-                <span className="font-bold">Quantity:</span> {donation.quantity}
-              </p>
-              <p>
-                <span className="font-bold">Status:</span> {donation.status}
-              </p>
-            </div>
+          <button
+            onClick={() => handleSort("quantityDesc")}
+            className={`px-4 py-2 rounded-lg border-2 ${
+              sortType === "quantityDesc"
+                ? "bg-secondary text-white border-secondary"
+                : "border-secondary text-secondary"
+            }`}
+          >
+            Quantity ↓ (kg → portions)
+          </button>
 
-            <hr className="border-secondary dark:border-gray-700 my-2" />
+          <button
+            onClick={() => handleSort("titleAsc")}
+            className={`px-4 py-2 rounded-lg border-2 ${
+              sortType === "titleAsc"
+                ? "bg-primary text-white border-primary"
+                : "border-primary text-primary"
+            }`}
+          >
+            Title A–Z
+          </button>
 
-            <Link to={`/donation-details/${donation._id}`}>
-              <Button className="w-full" label="View Details"></Button>
-            </Link>
-          </div>
-        ))}
+          <button
+            onClick={() => handleSort("titleDesc")}
+            className={`px-4 py-2 rounded-lg border-2 ${
+              sortType === "titleDesc"
+                ? "bg-primary text-white border-primary"
+                : "border-primary text-primary"
+            }`}
+          >
+            Title Z–A
+          </button>
+        </div>
       </div>
+
+      {/* Grid */}
+      {filteredDonations.length === 0 ? (
+        <p className="text-center text-gray-500 mt-10">No donations found.</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 items-stretch">
+          {filteredDonations.map((donation) => (
+            <DonationCard key={donation._id} donation={donation} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

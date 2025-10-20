@@ -75,7 +75,7 @@ const ConnectedPartners = () => {
   return (
     <section className="py-20 px-6 md:px-20  transition-colors duration-300  shadow-lg border-t-4 border-l-4 border-secondary rounded-2xl ">
       <div className="max-w-4xl mx-auto text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary">
+        <h2 className="text-3xl poppins md:text-4xl font-bold text-primary">
           Our Connected Restaurants & Charities
         </h2>
         <p className="mt-3 text-gray-700 dark:text-gray-300 text-lg">

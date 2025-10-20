@@ -43,52 +43,57 @@ const Stories = () => {
   return (
     <section className="bg-secondary dark:bg-gray-900 py-16 px-4 sm:px-10 font-sans  rounded-2xl">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl font-bold text-primary dark:text-white pb-16">
-          Community Stories
-        </h2>
+        <div className="text-center py-3 pb-16">
+          {" "}
+          <h2 className="text-3xl poppins font-bold text-primary ">
+            Community Stories
+          </h2>
+          <p className=" text-white dark:text-gray-300 text-lg">
+            From the Community, For the Community
+          </p>
+        </div>
 
-       <Swiper
-  modules={[Autoplay, EffectCoverflow]}
-  grabCursor={true}
-  centeredSlides={true}
-  loop={true}
-  autoplay={{
-    delay: 3000,
-    disableOnInteraction: false,
-  }}
-  breakpoints={{
-    0: {
-      slidesPerView: 1, // small screens -> 1 card full width
-      spaceBetween: 0,
-      effect: "slide", // simple slide for mobile
-    },
-    768: {
-      slidesPerView: 1, // medium screens -> still 1 card
-      spaceBetween: 0,
-      effect: "slide",
-    },
-    1024: {
-      slidesPerView: 3, // large screens -> 3 cards with coverflow
-      spaceBetween: 30,
-      effect: "coverflow",
-    },
-  }}
-  coverflowEffect={{
-    rotate: 0,
-    stretch: 0,
-    depth: 100,
-    modifier: 2.5,
-    slideShadows: false,
-  }}
-  className="px-4"
->
-  {stories.map((story, index) => (
-    <SwiperSlide key={index}>
-      <StoryCard story={story} />
-    </SwiperSlide>
-  ))}
-</Swiper>
-
+        <Swiper
+          modules={[Autoplay, EffectCoverflow]}
+          grabCursor={true}
+          centeredSlides={true}
+          loop={true}
+          autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          breakpoints={{
+            0: {
+              slidesPerView: 1, // small screens -> 1 card full width
+              spaceBetween: 0,
+              effect: "slide", // simple slide for mobile
+            },
+            768: {
+              slidesPerView: 1, // medium screens -> still 1 card
+              spaceBetween: 0,
+              effect: "slide",
+            },
+            1024: {
+              slidesPerView: 3, // large screens -> 3 cards with coverflow
+              spaceBetween: 30,
+              effect: "coverflow",
+            },
+          }}
+          coverflowEffect={{
+            rotate: 0,
+            stretch: 0,
+            depth: 100,
+            modifier: 2.5,
+            slideShadows: false,
+          }}
+          className="px-4"
+        >
+          {stories.map((story, index) => (
+            <SwiperSlide key={index}>
+              <StoryCard story={story} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </section>
   );

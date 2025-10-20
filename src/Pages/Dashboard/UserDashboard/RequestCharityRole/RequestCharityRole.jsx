@@ -54,13 +54,13 @@ const RequestCharityRole = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh] bg-gray-50 dark:bg-gray-900 p-4">
+    <div className="flex justify-center items-center dark:bg-gray-900 ">
       <form
         onSubmit={handleSubmit}
-        className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 w-full max-w-md 
+        className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl mx-5 px-8 py-16 w-full 
                    transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.1)]"
       >
-        <h2 className="text-3xl font-extrabold text-center mb-8 text-primary dark:text-teal-400">
+        <h2 className="text-3xl font-bold text-center text-primary poppins dark:text-teal-400 pb-10">
           Charity Role Request
         </h2>
 
@@ -136,7 +136,7 @@ const RequestCharityRole = () => {
 
         {/* Submit Button */}
         <div className="flex justify-center">
-          <Button type="submit" label="Pay" />
+          <Button type="submit" label="Pay the Amount" />
         </div>
       </form>
     </div>

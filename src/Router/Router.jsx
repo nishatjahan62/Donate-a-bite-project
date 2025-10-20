@@ -7,7 +7,6 @@ import Login from "../Pages/Authentication/Login/Login";
 import Register from "../Pages/Authentication/Register/Register";
 import ErrorLayout from "../Layouts/ErrorLayout";
 import AboutUs from "../Pages/AboutUs/AboutUs";
-import AllDonations from "../Pages/AllDonations/AllDonations";
 import ForgetPassword from "../Pages/Authentication/ForgetPassword/ForgetPassword";
 import DonationDetails from "../Pages/DonationDetails/DonationDetails";
 import PrivateRoute from "./PrivateRoute";
@@ -34,6 +33,10 @@ import RequestedDonations from "../Pages/Dashboard/RestaurantDashboard/Requested
 import CharityTransactionHistory from "../Pages/Dashboard/CharityDashboard/CharityTransactionHistory/CharityTransactionHistory";
 import UserTransactionHistory from "../Pages/Dashboard/UserDashboard/UserTransactionHistory/UserTransactionHistory";
 import RequestDetails from "../Components/LatestCharityRequests/RequestDetails";
+import OverView from "../Pages/Dashboard/OverView/OverView";
+import VerifiedDonations from "../Pages/Donations/VerifiedDonations";
+import AllDonations from "../Pages/AllDonations/AllDonations";
+import PendingDonations from "../Pages/Donations/PendingDonations";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -49,22 +52,32 @@ export const router = createBrowserRouter([
         Component: AboutUs,
       },
       {
-        path: "all-donations",
+        path: "/all-donations",
+        Component: AllDonations,
+      },
+      {
+        path: "donations/verified",
         element: (
           <PrivateRoute>
-            <AllDonations></AllDonations>
+            <VerifiedDonations></VerifiedDonations>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "donations/pending",
+        element: (
+          <PrivateRoute>
+            <PendingDonations></PendingDonations>{" "}
           </PrivateRoute>
         ),
       },
       {
         path: "donation-details/:id",
-        element: (
-          <PrivateRoute>
-            <DonationDetails></DonationDetails>
-          </PrivateRoute>
-        ),
+        element: <DonationDetails></DonationDetails>,
         loader: ({ params }) =>
-          fetch(`https://assignment-12-server-one-eosin.vercel.app/donation/${params.id}`),
+          fetch(
+            `https://assignment-12-server-one-eosin.vercel.app/donation/${params.id}`
+          ),
       },
     ],
   },
@@ -113,6 +126,10 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <DashboardHome></DashboardHome>,
+      },
+      {
+        path: "over-view",
+        element: <OverView></OverView>,
       },
       // User's Routes..
       {
@@ -214,13 +231,10 @@ export const router = createBrowserRouter([
         path: "requested-donations",
         element: <RequestedDonations></RequestedDonations>,
       },
-       {
-  path: "request-details/:id",
-  element: <RequestDetails />,
-},
-
-      
-
+      {
+        path: "request-details/:id",
+        element: <RequestDetails />,
+      },
     ],
   },
 ]);

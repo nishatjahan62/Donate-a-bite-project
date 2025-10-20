@@ -15,6 +15,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
+const PRIMARY_COLOR = "#f4a261"; // Main text color
+const SECONDARY_COLOR = "#2a9d8f"; // Border & chart fill
+
 const DashboardHome = () => {
   const { user } = UseAuth();
   const { role } = UseUserRole();
@@ -46,7 +49,6 @@ const DashboardHome = () => {
 
           setRecentActivity(requestsRes.data.slice(0, 5));
 
-          // Prepare donation chart data
           const statsObj = {};
           donationsRes.data.forEach(donation => {
             const type = donation.foodType || "Other";
@@ -105,6 +107,13 @@ const DashboardHome = () => {
     fetchStats();
   }, [user.email, role, axiosSecure]);
 
+  const statsForChart = [
+    { name: "Donations", value: stats.donations },
+    { name: "Requests", value: stats.requests },
+    { name: "Favorites", value: stats.favorites },
+    { name: "Reviews", value: stats.reviews },
+  ];
+
   return (
     <div className="p-6 space-y-6">
       {/* Hero */}
@@ -115,59 +124,63 @@ const DashboardHome = () => {
         </p>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 flex items-center gap-4">
-          <FaGift className="text-3xl text-primary dark:text-green-400" />
-          <div>
-            <p className="text-xl font-bold dark:text-gray-100">{stats.donations}</p>
-            <p className="text-gray-700 dark:text-gray-300">Donations</p>
+      {/* Stats Charts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {statsForChart.map((stat, idx) => (
+          <div
+            key={idx}
+            className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-md"
+            style={{
+              borderTop: `4px solid ${SECONDARY_COLOR}`,
+              borderLeft: `4px solid ${SECONDARY_COLOR}`,
+            }}
+          >
+            <p className="text-xl font-bold mb-2" style={{ color: PRIMARY_COLOR }}>
+              {stat.value}
+            </p>
+            <p className="text-gray-700 dark:text-gray-300">{stat.name}</p>
+            <div className="mt-2 h-20">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={[{ name: stat.name, value: stat.value }]}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={SECONDARY_COLOR} />
+                  <XAxis dataKey="name" stroke={PRIMARY_COLOR} />
+                  <YAxis stroke={PRIMARY_COLOR} />
+                  <Tooltip />
+                  <Bar dataKey="value" fill={SECONDARY_COLOR} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-        </div>
-        <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 flex items-center gap-4">
-          <FaClipboardList className="text-3xl text-green-500 dark:text-green-400" />
-          <div>
-            <p className="text-xl font-bold dark:text-gray-100">{stats.requests}</p>
-            <p className="text-gray-700 dark:text-gray-300">Requests</p>
-          </div>
-        </div>
-        <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 flex items-center gap-4">
-          <FaHeart className="text-3xl text-pink-500 dark:text-pink-400" />
-          <div>
-            <p className="text-xl font-bold dark:text-gray-100">{stats.favorites}</p>
-            <p className="text-gray-700 dark:text-gray-300">Favorites</p>
-          </div>
-        </div>
-        <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 flex items-center gap-4">
-          <FaStar className="text-3xl text-yellow-400 dark:text-yellow-300" />
-          <div>
-            <p className="text-xl font-bold dark:text-gray-100">{stats.reviews}</p>
-            <p className="text-gray-700 dark:text-gray-300">Reviews</p>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Donation Statistics Chart for Restaurant */}
+      {/* Donation Chart for Restaurant */}
       {role === "restaurant" && donationChartData.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md mt-6">
-          <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md mt-6"
+          style={{ borderTop: `4px solid ${SECONDARY_COLOR}`, borderLeft: `4px solid ${SECONDARY_COLOR}` }}
+        >
+          <h2 className="text-xl font-semibold mb-4" style={{ color: PRIMARY_COLOR }}>
             Donation Statistics
           </h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={donationChartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
-              <XAxis dataKey="name" stroke="#8884d8" />
-              <YAxis stroke="#8884d8" />
+              <CartesianGrid strokeDasharray="3 3" stroke={SECONDARY_COLOR} />
+              <XAxis dataKey="name" stroke={PRIMARY_COLOR} />
+              <YAxis stroke={PRIMARY_COLOR} />
               <Tooltip />
-              <Bar dataKey="value" fill="#8884d8" />
+              <Bar dataKey="value" fill={SECONDARY_COLOR} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       )}
 
       {/* Recent Activity */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md">
-        <h2 className="text-xl font-semibold mb-4 dark:text-gray-100">Recent Activity</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md"
+        style={{ borderTop: `4px solid ${SECONDARY_COLOR}`, borderLeft: `4px solid ${SECONDARY_COLOR}` }}
+      >
+        <h2 className="text-xl font-semibold mb-4" style={{ color: PRIMARY_COLOR }}>
+          Recent Activity
+        </h2>
         <ul className="space-y-3">
           {recentActivity.length === 0 && (
             <li className="text-gray-500 dark:text-gray-400">No recent activity</li>
