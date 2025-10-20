@@ -24,7 +24,7 @@ const LatestCharityRequests = () => {
       return res.data
         .filter((req) => req.purpose !== "Charity Role Request")
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-        .slice(0, 3);
+        .slice(0,4);
     },
   });
 
@@ -43,11 +43,11 @@ const LatestCharityRequests = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 ">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 ">
         {requests.map((req) => (
           <motion.div
             key={req._id}
-            className="bg-white dark:bg-gray-800 border border-secondary rounded-2xl p-6 flex flex-col gap-4 shadow-md hover:shadow-xl text-center mx-auto w-[70%] sm:w-full"
+            className="bg-white dark:bg-gray-700 w-full shadow-md border-t-4 border-l-4 border-secondary rounded-2xl text-center flex flex-col items-center space-y-3 py-8 px-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
             whileHover={{ scale: 1.05 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

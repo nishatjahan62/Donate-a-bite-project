@@ -57,11 +57,11 @@ const ConnectedPartners = () => {
 
       {/* Description / email */}
       <div className="flex gap-2 text-gray-600 dark:text-gray-300 justify-center">
-  <FaEnvelope className="mt-1 text-secondary dark:text-primary" />
-  <p className="text-sm">
-    {item.email || item.description || "No details"}
-  </p>
-</div>
+        <FaEnvelope className="mt-1 text-secondary dark:text-primary" />
+        <p className="text-sm">
+          {item.email || item.description || "No details"}
+        </p>
+      </div>
 
       {/* Optional link button */}
       {item.link && (
@@ -85,12 +85,12 @@ const ConnectedPartners = () => {
       </div>
 
       <h3 className="text-2xl font-semibold mb-8 text-primary">Restaurants</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
         {restaurants.map(renderCard)}
       </div>
 
       <h3 className="text-2xl font-semibold mb-8 text-primary">Charities</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4  gap-6 ">
         {charities.map(renderCard)}
       </div>
     </section>

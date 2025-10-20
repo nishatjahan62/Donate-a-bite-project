@@ -14,8 +14,8 @@ const Featured = () => {
   useEffect(() => {
     const fetchDonations = async () => {
       try {
-        const res = await axiosSecure.get("/featured-donations"); // backend route
-        setDonations(res.data); // save to state
+        const res = await axiosSecure.get("/featured-donations");
+        setDonations(res.data);
       } catch (error) {
         console.error("Error fetching featured donations:", error);
       }
@@ -25,22 +25,24 @@ const Featured = () => {
   }, [axiosSecure]);
 
   return (
-    <div>
+    <div className="pb-6">
+      {/* Title Section */}
       <div className="text-center py-3 pb-16">
-        {" "}
-        <h2 className="text-3xl font-bold text-primary ">Featured Donations</h2>
-        <p className=" text-gray-700 dark:text-gray-300 text-base">
+        <h2 className="text-3xl font-bold text-primary">Featured Donations</h2>
+        <p className="text-gray-700 dark:text-gray-300 text-base">
           Spotlight on Impactful Donations
         </p>
       </div>
 
+      {/* Swiper Section */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
+
         slidesPerView={1}
         breakpoints={{
           0: { slidesPerView: 1 },
           640: { slidesPerView: 1.5 },
-          1024: { slidesPerView: 3 },
+          1024: { slidesPerView: 3.5 },
         }}
         autoplay={{
           delay: 2500,
@@ -48,6 +50,12 @@ const Featured = () => {
         }}
         navigation
         pagination={{ clickable: true }}
+        style={{
+          "--swiper-navigation-size": "22px", 
+          "--swiper-navigation-color": "#2a9d8f",
+          "--swiper-pagination-bottom": "-6px", 
+          "--swiper-pagination-color": "#2a9d8f", 
+        }}
       >
         {donations.map((donation) => (
           <SwiperSlide key={donation._id}>

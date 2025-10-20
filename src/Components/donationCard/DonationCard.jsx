@@ -14,9 +14,9 @@ const DonationCard = ({ donation }) => {
   } = donation;
 
   return (
-    <div className="flex flex-col mx-auto w-full max-w-sm bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden hover:shadow-lg transition h-full">
+    <div className="flex flex-col mx-auto  max-w-sm bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-lg transition h-full text-center sm:text-left">
       {/* Image */}
-      <img src={image} alt={foodType} className="w-full h-48 object-cover" />
+      <img src={image} alt={foodType} className="w-full h-48 object-cover rounded-2xl" />
 
       {/* Content */}
       <div className="flex flex-col flex-grow p-4">
@@ -43,7 +43,7 @@ const DonationCard = ({ donation }) => {
 
           {/* Status Badge */}
           <span
-            className={`mt-3 px-3 py-1 rounded-lg text-sm font-semibold self-start ${
+            className={`mt-3 px-3 py-1 rounded-lg text-sm font-semibold flex mx-auto sm:mx-0 self-start ${
               status === "Available"
                 ? "bg-green-200 text-green-800"
                 : "bg-red-200 text-red-800"
@@ -54,9 +54,9 @@ const DonationCard = ({ donation }) => {
         </div>
 
         {/* Button - always bottom aligned */}
-        <div className="mt-4">
+        <div className="mt-4 px-7">
           <Link to={`/donation-details/${_id}`}>
-            <Button className="w-full" label="View Details" />
+            <Button className="w-full " label="View Details" />
           </Link>
         </div>
       </div>

@@ -10,7 +10,7 @@ import ConnectedPartners from "../../Components/ConnectedPartners/ConnectedPartn
 
 const Home = () => {
   return (
-    <div className="mx-5 sm:mx-10 lg:mx-12 space-y-28">
+    <div className="mx-3 sm:mx-8 lg:mx-10 lg:space-y-20 sm:space-y-16 space-y-10">
       <div>
         {" "}
         <Banner></Banner>{" "}
