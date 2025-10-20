@@ -40,7 +40,7 @@ const Featured = () => {
         breakpoints={{
           0: { slidesPerView: 1 },
           640: { slidesPerView: 1.5 },
-          1024: { slidesPerView: 4 },
+          1024: { slidesPerView: 3 },
         }}
         autoplay={{
           delay: 2500,
