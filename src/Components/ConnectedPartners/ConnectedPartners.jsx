@@ -31,14 +31,19 @@ const ConnectedPartners = () => {
   const renderCard = (item) => (
     <motion.div
       key={item._id}
-      className="bg-white dark:bg-gray-800 border border-secondary rounded-2xl p-6 flex flex-col gap-4 shadow-md hover:shadow-xl text-center mx-auto w-[70%] sm:w-full"
-      whileHover={{ scale: 1.05 }}
+      className="relative group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
+      rounded-2xl p-6 flex flex-col gap-5 text-center shadow-md hover:shadow-xl 
+      transition-all duration-500 hover:-translate-y-2 overflow-hidden"
+      whileHover={{ scale: 1.03 }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      {/* Image or fallback */}
-      <div className="w-16 h-16 rounded-full bg-secondary dark:bg-gray-700 flex items-center justify-center text-white font-bold text-xl mx-auto overflow-hidden">
+      {/* Hover Border */}
+      <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-secondary transition-all duration-500 pointer-events-none"></div>
+
+      {/* Image */}
+      <div className="relative w-20 h-20 rounded-full mx-auto overflow-hidden ring-2 ring-secondary/40 shadow-sm group-hover:ring-primary transition-all duration-500">
         {item.photoURL ? (
           <img
             src={item.photoURL}
@@ -46,52 +51,75 @@ const ConnectedPartners = () => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <span>{item.name ? item.name.charAt(0) : "P"}</span>
+          <div className="w-full h-full flex items-center justify-center bg-secondary text-white text-2xl font-bold">
+            {item.name ? item.name.charAt(0) : "?"}
+          </div>
         )}
       </div>
 
       {/* Name */}
-      <h3 className="text-xl sm:text-2xl font-bold text-primary text-center">
+      <h3 className="text-xl font-bold  text-primary transition-colors duration-300">
         {item.name}
       </h3>
 
-      {/* Description / email */}
-      <div className="flex gap-2 text-gray-600 dark:text-gray-300 justify-center">
-        <FaEnvelope className="mt-1 text-secondary dark:text-primary" />
-        <p className="text-sm">
-          {item.email || item.description || "No details"}
-        </p>
+      {/* Email or Description */}
+      <div className="flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
+        <FaEnvelope className="text-secondary dark:text-primary" />
+        <p className="text-sm">{item.email || item.description || "No details"}</p>
       </div>
 
-      {/* Optional link button */}
+      {/* Visit Button */}
       {item.link && (
         <a href={item.link} target="_blank" rel="noopener noreferrer">
-          <Button label="Visit" className="mt-auto w-full" />
+          <Button
+            label="Visit"
+            className="mt-3 w-full bg-secondary hover:bg-primary text-white font-semibold py-2 rounded-xl transition-all duration-300"
+          />
         </a>
       )}
     </motion.div>
   );
 
   return (
-    <section className="py-20 px-6 md:px-20  transition-colors duration-300  shadow-lg border-t-4 border-l-4 border-secondary rounded-2xl ">
-      <div className="max-w-4xl mx-auto text-center mb-16">
-        <h2 className="text-3xl poppins md:text-4xl font-bold text-primary">
-          Our Connected Restaurants & Charities
+    <section className="py-20 px-6 md:px-20  dark:bg-gray-900 transition-colors duration-300 rounded-2xl bg-secondary border-secondary shadow-inner">
+      <div className="max-w-5xl mx-auto text-center mb-16">
+        <h2 className="text-3xl font-bold text-primary">
+          Our Connected Partners
         </h2>
-        <p className="mt-3 text-gray-700 dark:text-gray-300 text-lg">
-          Meet the restaurants and charities contributing to reducing food
-          waste.
+        <p className="text-white dark:text-gray-300 text-base">
+          Meet the restaurants and charities working together to reduce food
+          waste and serve the community better.
         </p>
       </div>
 
-      <h3 className="text-2xl font-semibold mb-8 text-primary">Restaurants</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
-        {restaurants.map(renderCard)}
-      </div>
+      <div className="space-y-5 sm:space-y-10 lg:space-y-14 ">
+        {/* Restaurants Section */}
+        <div>
+          <h3 className="text-2xl  font-semibold text-primary mb-2 text-center underline decoration-secondary underline-offset-8">
+            Restaurants
+          </h3>
+          <p className="text-center text-white/90 dark:text-gray-400 mb-8 text-sm md:text-base">
+            These restaurants generously share surplus meals to fight hunger and minimize waste.
+          </p>
 
-      <h3 className="text-2xl font-semibold mb-8 text-primary">Charities</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4  gap-6 ">
-        {charities.map(renderCard)}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+            {restaurants.map(renderCard)}
+          </div>
+        </div>
+
+        {/* Charities Section */}
+        <div>
+          <h3 className="text-2xl  font-semibold text-primary mb-2 text-center underline decoration-secondary underline-offset-8">
+            Charities
+          </h3>
+          <p className="text-center text-white/90 dark:text-gray-400 mb-8 text-sm md:text-base">
+            Our charity partners distribute collected food to those who need it most.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+            {charities.map(renderCard)}
+          </div>
+        </div>
       </div>
     </section>
   );

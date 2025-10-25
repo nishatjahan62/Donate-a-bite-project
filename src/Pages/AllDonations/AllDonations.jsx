@@ -122,7 +122,7 @@ const AllDonations = () => {
     );
 
   return (
-    <div className="mt-20 sm:mt-20 lg:mt-26 px-4 sm:px-6 lg:px-8">
+    <div className="mt-20 sm:mt-20 lg:mt-26 px-4 sm:px-6 lg:px-10">
       {/* Title */}
       <div className="text-center py-3 pb-10">
         <h2 className="text-3xl font-bold text-primary">All Donations</h2>
@@ -149,9 +149,9 @@ const AllDonations = () => {
           <Button
             label="Sort by Quantity"
             onClick={() => setDropdownOpen((prev) => !prev)}
-            className="w-full md:w-auto px-4 py-2 rounded-lg border-2 border-secondary 
+            className="w-full md:w-auto px-4 py-2 rounded-lg 
                        flex items-center justify-between gap-2 text-secondary 
-                       hover:bg-secondary hover:text-white transition"
+                       transition"
           >
             <span className="text-lg ">{dropdownOpen ? "▲" : "▼"}</span>
           </Button>
@@ -189,7 +189,7 @@ const AllDonations = () => {
           No donations found.
         </p>
       ) : (
-        <div className="grid gap-6 
+        <div className="grid gap-6 lg:gap-16 
                         grid-cols-1 
                         sm:grid-cols-2 
                         md:grid-cols-2 

@@ -6,21 +6,34 @@ const StoryCard = ({ story }) => {
   const swiperSlide = useSwiperSlide();
 
   return (
-   <div
-      // Adjusted padding and margin for better small-screen fit
-      className={`w-full p-4 sm:px-6 mx-0 rounded-2xl shadow-lg transition-all duration-300 text-left transform ${
-        swiperSlide.isActive ? "scale-100 opacity-100" : "scale-90 opacity-60"
-      } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`}
+    <div
+      className={`w-full h-[350px] sm:h-[360px] p-4 sm:px-6 mx-0 rounded-2xl shadow-lg transition-all duration-300 text-left transform
+        ${
+          swiperSlide.isActive
+            ? "scale-100 opacity-100"
+            : "scale-95 opacity-70"
+        }
+        bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex flex-col`}
     >
-      <img
-        src={image}
-        alt={title}
-        className="w-full sm:h-full h-40 px-2 object-cover rounded-xl mb-4"
-      />
-      <h3 className="text-2xl font-semibold mb-2 text-center text-primary dark:text-white">
-        {title}
-      </h3>
-      <p className="text-lg text-center">{description}</p>
+      {/* Image section */}
+      <div className="w-full h-48 flex-shrink-0">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover rounded-xl"
+        />
+      </div>
+
+      {/* Text section */}
+      <div className="flex flex-col justify-between flex-grow mt-4">
+        <h3 className="text-xl sm:text-2xl font-semibold text-center text-primary dark:text-white">
+          {title}
+        </h3>
+
+        <p className="text-sm sm:text-base text-center line-clamp-4">
+          {description}
+        </p>
+      </div>
     </div>
   );
 };

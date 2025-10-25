@@ -7,6 +7,7 @@ import LatestCharityRequests from "../../Components/LatestCharityRequests/Latest
 import Faq from "../../Components/Faq/Faq";
 import HowDonationsHelp from "../../Components/HowDonationsHelp/HowDonationsHelp";
 import ConnectedPartners from "../../Components/ConnectedPartners/ConnectedPartners";
+import AwardsSection from "../../Components/AwardsSection/AwardsSection";
 
 const Home = () => {
   return (
@@ -37,6 +38,10 @@ const Home = () => {
       <div>
         {" "}
         <HowDonationsHelp></HowDonationsHelp>
+      </div>
+        <div>
+        {" "}
+        <AwardsSection></AwardsSection>
       </div>
       <div>
         {" "}
