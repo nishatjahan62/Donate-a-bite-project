@@ -12,10 +12,9 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <div className="nunito">
-      {" "}
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <div className=" font-urbanist  ">
+          <div>
             <RouterProvider router={router} />
           </div>
         </AuthProvider>

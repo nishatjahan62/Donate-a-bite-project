@@ -98,7 +98,7 @@ const ConnectedPartners = () => {
           <h3 className="text-2xl  font-semibold text-primary mb-2 text-center underline decoration-secondary underline-offset-8">
             Restaurants
           </h3>
-          <p className="text-center text-white/90 dark:text-gray-400 mb-8 text-sm md:text-base">
+          <p className="text-center text-white/90 dark:text-gray-300 mb-8 text-sm md:text-base">
             These restaurants generously share surplus meals to fight hunger and minimize waste.
           </p>
 
@@ -112,7 +112,7 @@ const ConnectedPartners = () => {
           <h3 className="text-2xl  font-semibold text-primary mb-2 text-center underline decoration-secondary underline-offset-8">
             Charities
           </h3>
-          <p className="text-center text-white/90 dark:text-gray-400 mb-8 text-sm md:text-base">
+          <p className="text-center text-white/90 dark:text-gray-300 mb-8 text-sm md:text-base">
             Our charity partners distribute collected food to those who need it most.
           </p>
 

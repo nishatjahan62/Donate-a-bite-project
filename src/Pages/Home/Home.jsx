@@ -11,12 +11,11 @@ import AwardsSection from "../../Components/AwardsSection/AwardsSection";
 
 const Home = () => {
   return (
-    <div className="mx-3 sm:mx-8 lg:mx-10 lg:space-y-20 sm:space-y-16 space-y-10">
+    <div className="lg:space-y-20 sm:space-y-16 space-y-10">
       <div>
-        {" "}
-        <Banner></Banner>{" "}
+        <Banner></Banner>
       </div>
-      <div>
+      <div className="mx-3 sm:mx-8 lg:mx-10 lg:space-y-20 sm:space-y-16 space-y-10"><div>
         <Featured></Featured>
       </div>
       <div>
@@ -46,7 +45,7 @@ const Home = () => {
       <div>
         {" "}
         <ConnectedPartners></ConnectedPartners>
-      </div>
+      </div></div>
     </div>
   );
 };

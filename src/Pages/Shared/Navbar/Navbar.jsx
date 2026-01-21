@@ -50,7 +50,7 @@ const Navbar = () => {
   const NavLinkClass = ({ isActive }) =>
     `px-2 py-1 rounded text-base ${
       isActive
-        ? "font-bold border-b-4 border-primary text-grey"
+        ? "font-bold border-b-4 border-primary text-grey dark:text-white"
         : "font-medium text-grey dark:text-gray-200 hover:text-primary dark:hover:text-secondary-light"
     }`;
 
@@ -118,7 +118,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar fixed top-0 z-5 left-0 w-full bg-secondary/80 dark:bg-[#1E2939]/90 shadow-sm lg:px-20 font-poppins px-8 text-gray-800 dark:text-gray-200 backdrop-blur-md ">
+    <div className="navbar fixed top-0 left-0 w-full z-50 bg-transparent backdrop-blur-xl transition-all duration-500 shadow-sm lg:px-20 font-poppins px-8   ">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="lg:hidden pr-2">

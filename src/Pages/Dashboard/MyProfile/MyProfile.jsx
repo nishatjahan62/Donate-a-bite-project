@@ -4,233 +4,324 @@ import UseAxiosSecure from "../../../Hooks/UseAxiosSecure";
 import UseUserRole from "../../../Hooks/UseUserRole";
 import UserIcon from "../../../assets/userIcon.png";
 import Loading from "../../Loading/Loading";
+import Swal from "sweetalert2";
 
 const MyProfile = () => {
   const { user } = UseAuth();
   const axiosSecure = UseAxiosSecure();
   const { role, roleLoading } = UseUserRole();
+
   const [profile, setProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [isSaving, setIsSaving] = useState(false);
 
-  // Fetch profile from backend
+  const [formData, setFormData] = useState({
+    name: "",
+    photoURL: "",
+    address: "",
+    contact: "",
+    mission: "",
+    restaurantName: "",
+    charityName: "",
+    lastLogin: "",
+    createdAt: "",
+  });
+
+  // ✅ Prevents overwriting user input while editing
   useEffect(() => {
-    if (user?.email) {
+    if (user?.email && !isEditing) {
       axiosSecure
         .get(`/users/${user.email}`)
         .then((res) => {
-          const p = res.data;
+          const p = res.data || {};
           setProfile(p);
           setFormData({
-            name: p.name || "",
-            photoURL: p.photoURL || "",
-            address: p.address || "",
-            contact: p.contact || "",
-            mission: p.mission || "",
-            restaurantName: p.restaurantName || "",
-            charityName: p.charityName || "",
-            lastLogin: p.lastLogin || "",
-            createdAt: p.createdAt || "",
+            name: p.name ?? "",
+            photoURL: p.photoURL ?? "",
+            address: p.address ?? "",
+            contact: p.contact ?? "",
+            mission: p.mission ?? "",
+            restaurantName: p.restaurantName ?? "",
+            charityName: p.charityName ?? "",
+            lastLogin: p.lastLogin ?? "",
+            createdAt: p.createdAt ?? "",
           });
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error("Error fetching profile:", err));
     }
-  }, [user, axiosSecure]);
+  }, [user, axiosSecure, isEditing]);
 
-  if (roleLoading || !profile) return <Loading></Loading>
+  if (roleLoading || !profile) return <Loading />;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
+  const originalEditable = {
+    name: profile.name ?? "",
+    photoURL: profile.photoURL ?? "",
+    address: profile.address ?? "",
+    contact: profile.contact ?? "",
+    mission: profile.mission ?? "",
+    restaurantName: profile.restaurantName ?? "",
+    charityName: profile.charityName ?? "",
+  };
+
+  const currentEditable = {
+    name: formData.name,
+    photoURL: formData.photoURL,
+    address: formData.address,
+    contact: formData.contact,
+    mission: formData.mission,
+    restaurantName: formData.restaurantName,
+    charityName: formData.charityName,
+  };
+
+  const hasChanges =
+    JSON.stringify(currentEditable) !== JSON.stringify(originalEditable);
+
   const handleSave = async () => {
+    if (!hasChanges) {
+      Swal.fire("No changes", "You haven't modified anything.", "info");
+      return;
+    }
+
+    setIsSaving(true);
     try {
-      const res = await axiosSecure.put(`/users/${user.email}`, formData);
-      setProfile(res.data);
-      setIsEditing(false);
+      const res = await axiosSecure.put(`/users/${user.email}`, currentEditable);
+      if (res.data?.modifiedCount > 0 || res.data?.success) {
+        Swal.fire("Success!", "Profile updated.", "success");
+        setProfile((prev) => ({ ...prev, ...currentEditable }));
+        setIsEditing(false);
+      }
     } catch (err) {
-      console.error(err);
+      Swal.fire("Error", err.response?.data?.message || "Failed to save", "error");
+    } finally {
+      setIsSaving(false);
     }
   };
 
+  const formatDate = (date) =>
+    date ? new Date(date).toLocaleDateString() : "N/A";
+
+  const displayName =
+    profile.name ||
+    profile.restaurantName ||
+    profile.charityName ||
+    user?.displayName ||
+    "User";
+
   const Card = ({ title, children }) => (
     <div className="flex justify-center items-center p-6 mt-10 lg:mt-20">
-      <div className="w-full max-w-md bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 border dark:border-gray-700">
-        <h2 className="text-2xl font-bold text-center mb-4 text-primary">{title}</h2>
+      <div className="w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 border dark:border-gray-700">
+        <h2 className="text-3xl font-bold text-center mb-6 text-primary">
+          {title}
+        </h2>
         {children}
       </div>
     </div>
   );
 
-  // Helper for safe date formatting
-  const formatDate = (date) => (date ? new Date(date).toLocaleDateString() : "N/A");
-
-  // Shared image display
-  const ProfileImage = ({ src, alt }) => (
-    <div className="flex justify-center mb-4">
+  const ProfileImage = () => (
+    <div className="flex justify-center mb-6">
       <img
-        src={src || UserIcon}
-        alt={alt}
-        className="w-28 h-28 rounded-full border-4 border-secondary"
+        src={formData.photoURL || profile.photoURL || UserIcon}
+        alt="Profile"
+        className="w-32 h-32 rounded-full border-4 border-secondary object-cover shadow-md"
+        onError={(e) => (e.target.src = UserIcon)}
       />
     </div>
   );
 
-  // Edit form for inline editing
   const EditForm = () => (
-    <div className="space-y-3">
-      <input
-        type="text"
-        name="name"
-        placeholder="Name"
-        value={formData.name}
-        onChange={handleChange}
-        className="w-full border rounded px-3 py-2"
-      />
-      <input
-        type="text"
-        name="photoURL"
-        placeholder="Photo URL"
-        value={formData.photoURL}
-        onChange={handleChange}
-        className="w-full border rounded px-3 py-2"
-      />
+    <div className="space-y-5">
+      {/* Name */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Name
+        </label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          className="mt-1 w-full border rounded-lg px-4 py-2 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:outline-none"
+          placeholder="Enter your name"
+        />
+      </div>
+
+      {/* Photo URL */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Photo URL
+        </label>
+        <input
+          type="url"
+          name="photoURL"
+          value={formData.photoURL}
+          onChange={handleChange}
+          className="mt-1 w-full border rounded-lg px-4 py-2 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:outline-none"
+          placeholder="https://example.com/photo.jpg"
+        />
+      </div>
+
+      {/* Role-specific fields */}
       {role === "restaurant" && (
         <>
-          <input
-            type="text"
-            name="restaurantName"
-            placeholder="Restaurant Name"
-            value={formData.restaurantName}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
-          <input
-            type="text"
-            name="address"
-            placeholder="Address"
-            value={formData.address}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Restaurant Name
+            </label>
+            <input
+              type="text"
+              name="restaurantName"
+              value={formData.restaurantName}
+              onChange={handleChange}
+              className="mt-1 w-full border rounded-lg px-4 py-2 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Address
+            </label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              className="mt-1 w-full border rounded-lg px-4 py-2 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:outline-none"
+            />
+          </div>
         </>
       )}
+
       {role === "charity" && (
         <>
-          <input
-            type="text"
-            name="charityName"
-            placeholder="Charity Name"
-            value={formData.charityName}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
-          <input
-            type="text"
-            name="mission"
-            placeholder="Mission"
-            value={formData.mission}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Charity Name
+            </label>
+            <input
+              type="text"
+              name="charityName"
+              value={formData.charityName}
+              onChange={handleChange}
+              className="mt-1 w-full border rounded-lg px-4 py-2 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              Mission
+            </label>
+            <textarea
+              name="mission"
+              value={formData.mission}
+              onChange={handleChange}
+              rows={4}
+              className="mt-1 w-full border rounded-lg px-4 py-2 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:outline-none"
+            />
+          </div>
         </>
       )}
-      <input
-        type="text"
-        name="contact"
-        placeholder="Contact"
-        value={formData.contact}
-        onChange={handleChange}
-        className="w-full border rounded px-3 py-2"
-      />
-      <div className="flex justify-end gap-2 mt-2">
+
+      {/* Contact */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Contact
+        </label>
+        <input
+          type="text"
+          name="contact"
+          value={formData.contact}
+          onChange={handleChange}
+          className="mt-1 w-full border rounded-lg px-4 py-2 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-primary focus:outline-none"
+          placeholder="Phone / Email"
+        />
+      </div>
+
+      {/* Buttons */}
+      <div className="flex justify-end gap-4 mt-8">
         <button
-          onClick={() => setIsEditing(false)}
-          className="px-4 py-2 rounded bg-gray-300 dark:bg-gray-700"
+          onClick={() => {
+            setIsEditing(false);
+            setFormData({ ...formData, ...originalEditable });
+          }}
+          disabled={isSaving}
+          className="px-6 py-2.5 rounded-lg bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 transition"
         >
           Cancel
         </button>
         <button
           onClick={handleSave}
-          className="px-4 py-2 rounded bg-primary text-white"
+          disabled={isSaving || !hasChanges}
+          className={`px-6 py-2.5 rounded-lg text-white font-medium transition ${
+            isSaving || !hasChanges
+              ? "bg-gray-500"
+              : "bg-primary hover:bg-secondary"
+          }`}
         >
-          Save
+          {isSaving ? "Saving..." : "Save Changes"}
         </button>
       </div>
     </div>
   );
 
-  // Profile display for non-edit mode
   const ProfileView = () => (
-    <div className="space-y-2 text-center">
-      {role === "user" && <p className="text-lg font-semibold text-secondary">{profile.name}</p>}
-      {role === "admin" && <p className="text-lg font-semibold text-secondary">{profile.name}</p>}
-      {role === "restaurant" && (
-        <p className="text-lg font-semibold text-secondary">{profile.restaurantName}</p>
-      )}
-      {role === "charity" && (
-        <p className="text-lg font-semibold text-secondary">{profile.charityName}</p>
-      )}
-
+    <div className="text-center space-y-4">
+      <p className="text-2xl font-bold text-secondary">{displayName}</p>
       <p className="text-gray-600 dark:text-gray-300">{profile.email}</p>
 
-      {/* Role info */}
       {role !== "user" && (
-        <p className="text-gray-700 dark:text-gray-400">
+        <p className="text-lg">
           <strong className="text-primary">Role:</strong>{" "}
           {role.charAt(0).toUpperCase() + role.slice(1)}
         </p>
       )}
 
-      {/* Optional fields */}
       {role === "restaurant" && profile.address && (
-        <p className="text-gray-700 dark:text-gray-400">
+        <p>
           <strong className="text-primary">Address:</strong> {profile.address}
         </p>
       )}
+
       {profile.contact && (
-        <p className="text-gray-700 dark:text-gray-400">
+        <p>
           <strong className="text-primary">Contact:</strong> {profile.contact}
         </p>
       )}
+
       {role === "charity" && profile.mission && (
-        <p className="text-gray-700 dark:text-gray-400 italic">“{profile.mission}”</p>
-      )}
-      {role === "admin" && profile.lastLogin && (
-        <p className="text-gray-700 dark:text-gray-400">
-          <strong className="text-primary">Last Login:</strong>{" "}
-          {new Date(profile.lastLogin).toLocaleString()}
+        <p className="italic text-gray-600 dark:text-gray-400">
+          “{profile.mission}”
         </p>
       )}
-      {role === "user" && profile.createdAt && (
-        <p className="text-gray-700 dark:text-gray-400">
-          <strong className="text-primary">Joined:</strong>{" "}
-          {formatDate(profile.createdAt)}
+
+      {profile.createdAt && (
+        <p className="text-sm text-gray-500">
+          Joined: {formatDate(profile.createdAt)}
         </p>
       )}
 
       <button
         onClick={() => setIsEditing(true)}
-        className="mt-4 px-4 py-2 bg-primary text-white rounded"
+        className="mt-6 px-8 py-3 bg-primary text-white rounded-lg hover:bg-secondary transition font-medium text-lg"
       >
-        Edit
+        Edit Profile
       </button>
     </div>
   );
 
   return (
     <Card title={`${role.charAt(0).toUpperCase() + role.slice(1)} Profile`}>
-      <ProfileImage
-        src={formData.photoURL || profile.photoURL}
-        alt={
-          profile.name ||
-          profile.restaurantName ||
-          profile.charityName ||
-          "Profile Image"
-        }
-      />
-      {isEditing ? <EditForm /> : <ProfileView />}
+      <ProfileImage />
+      {/* ✅ Added key props to re-render properly */}
+      {isEditing ? <EditForm key="edit" /> : <ProfileView key="view" />}
     </Card>
   );
 };
