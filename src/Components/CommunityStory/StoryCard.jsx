@@ -7,14 +7,13 @@ const StoryCard = ({ story }) => {
 
   return (
     <div
-      className={`w-full h-[350px] sm:h-[360px] p-4 sm:px-6 mx-0 rounded-2xl shadow-lg text-left
-        bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex flex-col
-        hover:border-2 hover:border-primary hover:-translate-y-1
+      className={`w-full h-[350px] sm:h-[360px] p-4 sm:px-6 mx-0 rounded-2xl shadow-lg transition-all duration-300 text-left transform hover:-translate-y-2 hover:shadow-2xl 
         ${
           swiperSlide.isActive
             ? "scale-100 opacity-100"
             : "scale-95 opacity-70"
-        }`}
+        }
+        bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex flex-col`}
     >
       {/* Image section */}
       <div className="w-full h-48 flex-shrink-0">
