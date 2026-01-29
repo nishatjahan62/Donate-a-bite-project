@@ -51,7 +51,7 @@ const Navbar = () => {
     `px-2 py-1 rounded text-base ${
       isActive
         ? "font-bold border-b-4 border-primary text-grey dark:text-white"
-        : "font-medium text-grey dark:text-gray-200 hover:text-primary dark:hover:text-secondary-light"
+        : "font-medium text-grey dark:text-white hover:text-primary dark:hover:text-secondary-light"
     }`;
 
   const navItems = (
