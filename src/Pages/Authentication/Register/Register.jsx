@@ -165,7 +165,7 @@ const Register = () => {
                   type="password"
                   {...register("password", {
                     required: "Password is required",
-                    maxLength: { value: 6, message: "Password must be less than 6 characters" },
+                    minLength: { value: 6, message: "Password must be greater than 6 characters" },
                     validate: {
                       noUpperCase: (value) =>
                         !/[A-Z]/.test(value) || "Password must not contain capital letters",

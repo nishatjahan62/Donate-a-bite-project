@@ -8,6 +8,8 @@ import SignIn from "../../../assets/Login.png";
 import { motion } from "framer-motion";
 import LightLogo from "../../../assets/LightLogo.png";
 import DarkLogo from "../../../assets/DarkLogo.png";
+import UseUserRole from "../../../Hooks/UseUserRole";
+import Button from "../../Shared/Button/Button";
 
 const Login = () => {
   const {
@@ -20,6 +22,7 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/";
   const [authError, setAuthError] = useState("");
   const { signIn } = UseAuth();
+  const {role}=UseUserRole()
 
   const onsubmit = (data) => {
     const { email, password } = data;
@@ -39,7 +42,44 @@ const Login = () => {
       .catch(() => {
         setAuthError("Login failed. Please check your credentials.");
       });
+
   };
+
+      // Login according to Roles:
+      const demoAccounts={
+        admin :{
+          email:"admin@gmail.com",
+          pass:"admin1"
+        },
+        charity :{
+          email:"charity@gmail.com",
+          pass:"charity"
+        },
+        restaurant :{
+          email:"restaurant@gmail.com",
+          pass:"restaurant"
+        }
+      }
+
+  // handle the demo logins 
+      const handleDemoLogin =(role)=>{
+        const account = demoAccounts[role];
+        setAuthError("")
+        signIn(account.email, account.pass)
+        .then(()=>{
+          Swal.fire({
+          title: "Login Successful!",
+          text: `You have successfully logged in as ${role}.`,
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(from);
+        })
+        .catch(()=>{
+          setAuthError("Login failed")
+        })
+      }
 
   return (
     <motion.div
@@ -73,14 +113,14 @@ const Login = () => {
               </div>
             </Link>
 
-            <h2 className="text-3xl font-bold text-primary mb-6">
+            <h2 className="text-3xl font-bold text-primary mb-3">
               Welcome Back
             </h2>
-            <p className="py-1 text-lg text-gray-700 dark:text-gray-300">
+            <p className=" text-lg text-gray-700 dark:text-gray-300">
               Login with{" "}
               <span className="poppins text-primary">"Donate-a-bite"</span>
             </p>
-            <form onSubmit={handleSubmit(onsubmit)} className="space-y-4">
+            <form onSubmit={handleSubmit(onsubmit)} className="space-y-2.5">
               <div>
                 <label className="block text-sm font-medium text-gray-600 dark:text-gray-300">
                   Email
@@ -118,17 +158,22 @@ const Login = () => {
 
               {authError && <p className="text-red-500 text-sm">{authError}</p>}
 
-              <button
+              <Button
                 type="submit"
-                className="cursor-pointer rounded w-full py-2.5 overflow-hidden group bg-primary relative hover:to-secondary text-white hover:ring-2 hover:ring-offset-2 hover:ring-primary transition-all ease-out duration-300"
+                 label="Sign In"
+                className="cursor-pointer rounded w-full "
               >
-                <span className="absolute right-0 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-                <span className="relative">Sign In</span>
-              </button>
-
-              <p className="hover:underline">
+              </Button>
+              <p className="hover:underline dark:text-white text-sm">
                 <Link to="/auth/forget-password">Forget Password?</Link>
               </p>
+                 <h2 className="text-primary text-xl pb-1 text-center font-semibold">Role wise Login</h2>
+             <div className="flex flex-col lg:flex-row lg:items-center space-y-1.5 lg:space-y-0 lg:space-x-1.5">
+  <Button type="button" label="Login as Admin" size="sm" onClick={()=> handleDemoLogin("admin")} />
+  <Button type="button" label="Login as Charity" size="sm" onClick={()=> handleDemoLogin("charity")}   />
+  <Button type="button" label="Login as Restaurant" size="sm" onClick={()=> handleDemoLogin("restaurant")} />
+</div>
+
               <p className="text-sm text-center text-gray-600 dark:text-gray-400">
                 Don’t have an account?{" "}
                 <Link
@@ -140,8 +185,8 @@ const Login = () => {
               </p>
             </form>
 
-            <div className="w-full text-center mt-4">
-              <p className="text-gray-600 dark:text-gray-400">OR</p>
+            <div className="w-full text-center pt-1">
+              <p className="text-gray-600 dark:text-gray-400 pb-2">OR</p>
               <GoogleLogin />
             </div>
           </div>

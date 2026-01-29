@@ -81,7 +81,7 @@ const Navbar = () => {
 
       {user && (
         <li tabIndex={0} className="dropdown dropdown-hover">
-          <span className="px-2 py-1 rounded text-base font-medium text-grey dark:text-gray-200 hover:text-primary dark:hover:text-secondary-light flex items-center gap-1">
+          <span className="px-2 py-1 rounded text-base font-medium text-black dark:text-white hover:text-primary dark:hover:text-secondary-light flex items-center gap-1">
             Donations
             <svg
               className="w-4 h-4"
@@ -99,7 +99,7 @@ const Navbar = () => {
           </span>
           <ul
             tabIndex="-1"
-            className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+            className="dropdown-content menu bg-base-100 dark:bg-gray-900 rounded-box z-1 w-52 p-2 shadow-sm"
           >
             <li>
               <NavLink to="/donations/verified" className={NavLinkClass}>
@@ -188,7 +188,7 @@ const Navbar = () => {
               <h3 className="pr-2 font-semibold text-base text-grey dark:text-gray-200">
                 Hello
               </h3>
-              <p className="font-semibold text-lg text-green-800 dark:text-green-400">
+              <p className="font-semibold text-lg text-primary">
                 {user.displayName?.split(" ")[0] || ""}
               </p>
              <Link to="/dashboard/profile"> <div className="w-10 rounded-full mx-2 cursor-pointer">
