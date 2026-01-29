@@ -142,7 +142,7 @@ const Footer = () => {
       {/* Copyright */}
       <div className="text-center py-4 text-gray-400 text-sm">
         © {new Date().getFullYear()} - All rights reserved by{" "}
-        <span className="text-[--color-secondary] font-semibold">GroveGardener Ltd</span>
+        <span className="text-[--color-secondary] font-semibold">donate-a-bite Ltd</span>
       </div>
     </footer>
   );

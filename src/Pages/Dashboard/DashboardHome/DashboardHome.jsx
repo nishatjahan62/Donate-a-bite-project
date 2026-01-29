@@ -7,13 +7,7 @@ import {
   FaUsers,
   FaBox,
 } from "react-icons/fa";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { motion } from "framer-motion";
 import UseAuth from "../../../Hooks/UseAuth";
 import UseUserRole from "../../../Hooks/UseUserRole";
@@ -41,8 +35,10 @@ const DashboardHome = () => {
           axiosSecure.get(`/transactions/${user.email}`),
         ]);
 
-        const favorites = favRes.status === "fulfilled" ? favRes.value.data || [] : [];
-        const reviews = reviewRes.status === "fulfilled" ? reviewRes.value.data || [] : [];
+        const favorites =
+          favRes.status === "fulfilled" ? favRes.value.data || [] : [];
+        const reviews =
+          reviewRes.status === "fulfilled" ? reviewRes.value.data || [] : [];
 
         const favCount = favorites.length || 0;
         const reviewCount = reviews.length || 0;
@@ -59,21 +55,47 @@ const DashboardHome = () => {
           const donations = donationsRes.data || [];
           const requests = requestsRes.data || [];
 
-          const totalCharities = allUsers.filter((u) => u.role === "charity").length;
-          const totalRestaurants = allUsers.filter((u) => u.role === "restaurant").length;
+          const totalCharities = allUsers.filter(
+            (u) => u.role === "charity",
+          ).length;
+          const totalRestaurants = allUsers.filter(
+            (u) => u.role === "restaurant",
+          ).length;
 
           setStats([
-            { label: "Total Donations", value: donations.length || 0, icon: <FaGift /> },
-            { label: "Total Requests", value: requests.length || 0, icon: <FaClipboardList /> },
-            { label: "Total Charities", value: totalCharities || 0, icon: <FaUsers /> },
-            { label: "Total Restaurants", value: totalRestaurants || 0, icon: <FaBox /> },
+            {
+              label: "Total Donations",
+              value: donations.length || 0,
+              icon: <FaGift />,
+            },
+            {
+              label: "Total Requests",
+              value: requests.length || 0,
+              icon: <FaClipboardList />,
+            },
+            {
+              label: "Total Charities",
+              value: totalCharities || 0,
+              icon: <FaUsers />,
+            },
+            {
+              label: "Total Restaurants",
+              value: totalRestaurants || 0,
+              icon: <FaBox />,
+            },
             { label: "Favorites", value: favCount, icon: <FaHeart /> },
             { label: "Reviews", value: reviewCount, icon: <FaStar /> },
           ]);
 
-          const completed = donations.filter((d) => d.status === "Completed").length;
-          const pending = donations.filter((d) => d.status === "Pending").length;
-          const verified = donations.filter((d) => d.status === "Verified").length;
+          const completed = donations.filter(
+            (d) => d.status === "Completed",
+          ).length;
+          const pending = donations.filter(
+            (d) => d.status === "Pending",
+          ).length;
+          const verified = donations.filter(
+            (d) => d.status === "Verified",
+          ).length;
 
           setChartData([
             { name: "Completed", value: completed || 0 },
@@ -96,15 +118,36 @@ const DashboardHome = () => {
           const pickups = myPickups.data || [];
           const donations = myDonations.data || [];
 
-          const completed = reqData.filter((r) => r.status === "Completed").length;
-          const inProgress = reqData.filter((r) => r.status === "In Progress").length;
+          const completed = reqData.filter(
+            (r) => r.status === "Completed",
+          ).length;
+          const inProgress = reqData.filter(
+            (r) => r.status === "In Progress",
+          ).length;
           const pending = reqData.filter((r) => r.status === "Pending").length;
 
           setStats([
-            { label: "My Donations", value: donations.length || 0, icon: <FaGift /> },
-            { label: "My Pickups", value: pickups.length || 0, icon: <FaClipboardList /> },
-            { label: "My Requests", value: reqData.length || 0, icon: <FaUsers /> },
-            { label: "Received Donations", value: donations.filter(d => d.status === "Completed").length || 0, icon: <FaHeart /> },
+            {
+              label: "My Donations",
+              value: donations.length || 0,
+              icon: <FaGift />,
+            },
+            {
+              label: "My Pickups",
+              value: pickups.length || 0,
+              icon: <FaClipboardList />,
+            },
+            {
+              label: "My Requests",
+              value: reqData.length || 0,
+              icon: <FaUsers />,
+            },
+            {
+              label: "Received Donations",
+              value:
+                donations.filter((d) => d.status === "Completed").length || 0,
+              icon: <FaHeart />,
+            },
             { label: "Favorites", value: favCount, icon: <FaHeart /> },
             { label: "Reviews", value: reviewCount, icon: <FaStar /> },
           ]);
@@ -126,13 +169,27 @@ const DashboardHome = () => {
           ]);
 
           const donations = donationsRes.data || [];
-          const completed = donations.filter((d) => d.status === "Completed").length;
-          const pending = donations.filter((d) => d.status === "Pending").length;
-          const verified = donations.filter((d) => d.status === "Verified").length;
+          const completed = donations.filter(
+            (d) => d.status === "Completed",
+          ).length;
+          const pending = donations.filter(
+            (d) => d.status === "Pending",
+          ).length;
+          const verified = donations.filter(
+            (d) => d.status === "Verified",
+          ).length;
 
           setStats([
-            { label: "My Donations", value: donations.length || 0, icon: <FaGift /> },
-            { label: "Requested Donations", value: requestsRes.data.length || 0, icon: <FaClipboardList /> },
+            {
+              label: "My Donations",
+              value: donations.length || 0,
+              icon: <FaGift />,
+            },
+            {
+              label: "Requested Donations",
+              value: requestsRes.data.length || 0,
+              icon: <FaClipboardList />,
+            },
             { label: "Favorites", value: favCount, icon: <FaHeart /> },
             { label: "Reviews", value: reviewCount, icon: <FaStar /> },
           ]);
@@ -148,8 +205,12 @@ const DashboardHome = () => {
 
         // --- USER ---
         if (role === "user") {
-          const completed = reviews.filter((r) => r.status === "Completed").length;
-          const inProgress = reviews.filter((r) => r.status === "In Progress").length;
+          const completed = reviews.filter(
+            (r) => r.status === "Completed",
+          ).length;
+          const inProgress = reviews.filter(
+            (r) => r.status === "In Progress",
+          ).length;
           const pending = reviews.filter((r) => r.status === "Pending").length;
 
           setStats([
@@ -181,7 +242,9 @@ const DashboardHome = () => {
           Welcome, {user?.displayName || "Guest"} 👋
         </h1>
         <p className="text-lg mt-2 text-gray-500">
-          {role ? `${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard Overview` : "Dashboard Overview"}
+          {role
+            ? `${role.charAt(0).toUpperCase() + role.slice(1)} Dashboard Overview`
+            : "Dashboard Overview"}
         </p>
       </div>
 
@@ -196,11 +259,15 @@ const DashboardHome = () => {
               borderColor: "#2a9d8f",
               boxShadow: "0 15px 25px rgba(30, 64, 175, 0.3)",
             }}
-            className="flex flex-col items-center p-6 border border-secondary rounded-2xl shadow-lg cursor-pointer transition-all duration-300 bg-white"
+            className="flex flex-col items-center p-6 border border-secondary rounded-2xl shadow-lg cursor-pointer transition-all duration-300  bg-white dark:bg-gray-800 "
           >
             <div className="text-5xl text-primary mb-3">{card.icon}</div>
-            <h3 className="text-lg font-medium text-gray-600">{card.label}</h3>
-            <p className="text-3xl font-bold text-primary mt-2">{card.value || 0}</p>
+            <h3 className="text-lg font-medium text-gray-600 dark:text-white">
+              {card.label}
+            </h3>
+            <p className="text-3xl font-bold text-primary mt-2">
+              {card.value || 0}
+            </p>
           </motion.div>
         ))}
       </div>
@@ -208,19 +275,32 @@ const DashboardHome = () => {
       {/* Recent Activity + Works Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activity */}
-        <motion.div whileHover={{ scale: 1.02 }} className="bg-white rounded-2xl shadow-md p-6">
-          <h2 className="text-xl font-semibold text-primary mb-4">Recent Activity</h2>
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6"
+        >
+          <h2 className="text-xl font-semibold text-primary mb-4">
+            Recent Activity
+          </h2>
           <ul className="space-y-3">
             {recentActivity.length === 0 ? (
               <li className="text-gray-400">No recent activity</li>
             ) : (
               recentActivity.map((item, idx) => (
-                <li key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="font-medium text-gray-800">
-                    {item.donationTitle || item.purpose || item.transactionId || "Activity"}
+                <li
+                  key={idx}
+                  className="flex justify-between items-center p-3 bg-white dark:bg-gray-900 rounded-lg"
+                >
+                  <span className="font-medium text-gray-800 dark:text-white">
+                    {item.donationTitle ||
+                      item.purpose ||
+                      item.transactionId ||
+                      "Activity"}
                   </span>
                   <span className="text-sm text-gray-500">
-                    {new Date(item.createdAt || item.created_at).toLocaleDateString()}
+                    {new Date(
+                      item.createdAt || item.created_at,
+                    ).toLocaleDateString()}
                   </span>
                 </li>
               ))
@@ -229,8 +309,14 @@ const DashboardHome = () => {
         </motion.div>
 
         {/* Works Chart */}
-        <motion.div whileHover={{ scale: 1.02 }} className="bg-white rounded-2xl shadow-md p-6">
-          <h2 className="text-xl font-semibold text-primary mb-6">Works Overview</h2>
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6"
+        >
+          <h2 className="text-xl font-semibold text-primary dark:text-white mb-6">
+            Works Overview
+          </h2>
+
           <div className="relative w-full h-64">
             <ResponsiveContainer>
               <PieChart>
@@ -251,7 +337,13 @@ const DashboardHome = () => {
                 </Pie>
                 <Tooltip
                   formatter={(value, name) => [`${value}`, `${name}`]}
-                  contentStyle={{ borderRadius: "8px", borderColor: "#f4a261" }}
+                  contentStyle={{
+                    borderRadius: "8px",
+                    borderColor: "#f4a261",
+                    backgroundColor: "white",
+                    color: "black",
+                  }}
+                  wrapperStyle={{ backgroundColor: "transparent" }}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -260,9 +352,15 @@ const DashboardHome = () => {
           {/* Legend */}
           <div className="flex justify-center gap-4 mt-4 flex-wrap">
             {chartData.map((d, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm">
-                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[i % COLORS.length] }}></span>
-                {d.name}
+              <div
+                key={i}
+                className="flex items-center gap-2 text-sm dark:text-white"
+              >
+                <span
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: COLORS[i % COLORS.length] }}
+                ></span>
+                <span className="dark:text-white">{d.name}</span>
               </div>
             ))}
           </div>
