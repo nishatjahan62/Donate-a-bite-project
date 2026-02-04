@@ -111,7 +111,7 @@ const DashboardHome = () => {
           const [myReq, myPickups, myDonations] = await Promise.all([
             axiosSecure.get(`/requests/charity/${user.email}`),
             axiosSecure.get(`/charity/my-pickups/${user.email}`),
-            axiosSecure.get(`/donations/charity/${user.email}`),
+            axiosSecure.get(`/charity/received/${user.email}`),
           ]);
 
           const reqData = myReq.data || [];
@@ -159,6 +159,7 @@ const DashboardHome = () => {
           ]);
 
           setRecentActivity(reqData.slice(0, 5));
+          
         }
 
         // --- RESTAURANT ---
@@ -367,7 +368,10 @@ const DashboardHome = () => {
         </motion.div>
       </div>
     </div>
+    
   );
+  
 };
+
 
 export default DashboardHome;

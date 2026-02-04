@@ -118,7 +118,7 @@ const RequestedDonations = () => {
                 >
                   {req.status}
                 </td>
-                <td className="px-3 py-2 flex gap-2">
+                <td className="px-3 py-2 flex gap-2 items-center justify-center mx-auto">
                   {req.status === "Pending" && (
                     <>
                       <button

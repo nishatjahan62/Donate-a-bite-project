@@ -60,7 +60,7 @@ const MyDonations = () => {
   if (isLoading) return <p>Loading donations...</p>;
 
   return (
-  <div className="p-6 dark:bg-secondary min-h-screen">
+  <div className="p-6 dark:bg-gray-800 min-h-screen">
   <h1 className="text-3xl font-bold text-primary mb-6 text-center">
     My Donations
   </h1>
