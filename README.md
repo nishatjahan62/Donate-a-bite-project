@@ -89,6 +89,8 @@ Donate-A-Bite is designed to minimize local food waste while supporting communit
 
 📱 **Responsive Design**: Works beautifully on all devices with Tailwind CSS.
 
+🎬 **Demo Buttons**: Quickly try the platform using Admin, Charity, or Restaurant demo buttons on the login page.
+
 ---
 
 ⚙️ **Technology Stack**
