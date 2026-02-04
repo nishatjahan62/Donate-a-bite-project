@@ -164,8 +164,8 @@ const AllDonations = () => {
                 onClick={() => handleSort("asc")}
                 className={`block w-full text-left px-4 py-2 rounded-t-lg 
                   ${sortType === "asc"
-                    ? "text-primary font-semibold"
-                    : "hover:text-primary"}`}
+                    ? "text-primary font-semibold dark:text-white"
+                    : "hover:text-primary dark:text-white"}`}
               >
                 Ascending (kg → portions)
               </button>
@@ -174,7 +174,7 @@ const AllDonations = () => {
                 className={`block w-full text-left px-4 py-2 rounded-b-lg 
                   ${sortType === "desc"
                     ? "text-primary font-semibold"
-                    : "hover:text-primary"}`}
+                    : "hover:text-primary dark:text-white"}`}
               >
                 Descending (kg → portions)
               </button>

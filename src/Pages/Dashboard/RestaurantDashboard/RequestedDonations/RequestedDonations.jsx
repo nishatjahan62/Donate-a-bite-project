@@ -92,19 +92,19 @@ const RequestedDonations = () => {
                 key={req._id}
                 className="border-b border-secondary dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               >
-                <td className="px-3 py-2 font-medium text-primary">
+                <td className="px-3 py-2 font-medium dark:text-white">
                   {req.donationTitle}
                 </td>
-                <td className="px-3 py-2 text-primary">{req.foodType || "N/A"}</td>
-                <td className="px-3 py-2 text-primary">{req.charityName}</td>
-                <td className="px-3 py-2 text-primary">{req.charityEmail}</td>
+                <td className="px-3 py-2 dark:text-white">{req.foodType || "N/A"}</td>
+                <td className="px-3 py-2 dark:text-white">{req.charityName}</td>
+                <td className="px-3 py-2 dark:text-white">{req.charityEmail}</td>
                 <td
                   className="px-3 py-2 max-w-xs truncate"
                   title={req.description}
                 >
-                  {req.description}
+                 <span className="dark:text-white">{req.description}</span> 
                 </td>
-                <td className="px-3 py-2 text-primary">
+                <td className="px-3 py-2 dark:text-white">
                   {new Date(req.pickupTime).toLocaleString()}
                 </td>
                 <td

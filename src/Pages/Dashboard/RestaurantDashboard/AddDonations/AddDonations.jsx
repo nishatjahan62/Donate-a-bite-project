@@ -52,7 +52,8 @@ const AddDonation = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 dark:bg-secondary bg-gray-100 rounded-xl mt-10 sm:mt-16 shadow-2xl">
+   <div className="max-w-3xl mx-auto p-6 bg-secondary dark:bg-gray-600 rounded-xl mt-10 sm:mt-16 shadow-2xl">
+
       {/* Page Header */}
       <h1 className="text-3xl font-bold text-primary mb-6 py-5 text-center">
         Share Your Surplus – Add a Donation
@@ -65,7 +66,7 @@ const AddDonation = () => {
             type="text"
             placeholder="Donation Title (e.g., Surplus Pastries)"
             {...register("title", { required: "Title is required" })}
-            className="w-full p-2 border dark:bg-gray-800 rounded"
+            className="w-full p-2 border dark:bg-gray-800 dark:placeholder-white dark:text-white  rounded"
           />
           {errors.title && (
             <span className="text-red-500 text-sm">{errors.title.message}</span>
@@ -78,7 +79,7 @@ const AddDonation = () => {
             type="text"
             placeholder="Food Type (e.g., Bakery, Produce)"
             {...register("foodType", { required: "Food type is required" })}
-            className="w-full p-2 border dark:bg-gray-800 rounded"
+            className="w-full p-2 border dark:bg-gray-800 dark:placeholder-white dark:text-white  rounded"
           />
           {errors.foodType && (
             <span className="text-red-500 text-sm">
@@ -93,8 +94,7 @@ const AddDonation = () => {
             type="text"
             placeholder="Quantity (e.g., 10kg or 20 portions)"
             {...register("quantity", { required: "Quantity is required" })}
-            className="w-full p-2 border dark:bg-gray-800 rounded"
-          />
+className="w-full p-2 border dark:bg-gray-800 dark:placeholder-white dark:text-white  rounded"          />
           {errors.quantity && (
             <span className="text-red-500 text-sm">
               {errors.quantity.message}
@@ -102,7 +102,7 @@ const AddDonation = () => {
           )}
         </div>
 
-        {/* Pickup Time */}
+    
         <div>
           {/* Pickup Time */}
           <div>
@@ -110,8 +110,7 @@ const AddDonation = () => {
              placeholder="Pickup Time Window"
               type="datetime-local"
               {...register("pickupTime")}
-              className="w-full p-2 border dark:bg-gray-800 rounded"
-            />
+className="w-full p-2 border dark:bg-gray-800 dark:placeholder-white dark:text-white rounded"            />
             {errors.pickupTime && (
               <span className="text-red-500 text-sm">
                 {errors.pickupTime.message}
@@ -132,7 +131,7 @@ const AddDonation = () => {
             type="text"
             placeholder="Location (Address or Coordinates)"
             {...register("location", { required: "Location is required" })}
-            className="w-full p-2 border dark:bg-gray-800 rounded"
+           className="w-full p-2 border dark:bg-gray-800 dark:placeholder-white dark:text-white  rounded"
           />
           {errors.location && (
             <span className="text-red-500 text-sm">
@@ -147,7 +146,7 @@ const AddDonation = () => {
             type="text"
             placeholder="Image URL"
             {...register("image")}
-            className="w-full p-2 border dark:bg-gray-800 rounded"
+           className="w-full p-2 border dark:bg-gray-800 dark:placeholder-white dark:text-white  rounded"
           />
         </div>
 
@@ -156,13 +155,13 @@ const AddDonation = () => {
           type="text"
           value={user?.displayName || ""}
           readOnly
-          className="w-full p-2 border bg-gray-200 dark:bg-gray-700 rounded"
+      className="w-full p-2 border dark:bg-gray-800 dark:placeholder-white dark:text-white  rounded"
         />
         <input
           type="email"
           value={user?.email || ""}
           readOnly
-          className="w-full p-2 border bg-gray-200 dark:bg-gray-700 rounded"
+            className="w-full p-2 border dark:bg-gray-800 dark:placeholder-white dark:text-white rounded"
         />
 
         <Button

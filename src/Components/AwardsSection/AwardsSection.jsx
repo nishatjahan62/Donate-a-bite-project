@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FaAward, FaStar, FaMedal, FaTrophy } from "react-icons/fa";
 
 const awards = [
-  { icon: <FaAward />, title: "Best Charity Platform 2024" },
+  { icon: <FaAward />, title: "Best Charity Platform 2025" },
   { icon: <FaStar />, title: "Top Rated by Users" },
   { icon: <FaMedal />, title: "Community Impact Award" },
   { icon: <FaTrophy />, title: "Food Waste Hero Recognition" },
