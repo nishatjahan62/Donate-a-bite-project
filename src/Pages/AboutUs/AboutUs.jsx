@@ -15,7 +15,7 @@ const AboutUs = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header and Mission Statement */}
         <div className="text-center mb-16 border-b border-secondary/50 pb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary dark:text-gray-100 tracking-tight mb-4 motion-safe:animate-fadeIn">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-primary  tracking-tight mb-4 motion-safe:animate-fadeIn">
             Our Mission: Every Bite Counts
           </h1>
           <p className="mt-4 max-w-3xl mx-auto sm:text-base lg:text-lg text-gray-600 dark:text-gray-400 font-medium">
@@ -27,7 +27,7 @@ const AboutUs = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start mb-16">
           <div className="lg:col-span-2 bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 sm:p-10 border-l-4 border-secondary transition duration-300 hover:shadow-2xl">
-            <h2 className="text-3xl font-bold text-primary dark:text-gray-100 mb-6">
+            <h2 className="text-3xl font-bold text-primary  mb-6">
               Bridging the Gap
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed space-y-4">
@@ -42,7 +42,7 @@ const AboutUs = () => {
           </div>
 
           <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 border-r-4 border-primary transition duration-300 hover:shadow-2xl">
-            <h2 className="text-2xl font-bold text-primary dark:text-gray-100 mb-4 flex items-center">
+            <h2 className="text-2xl font-bold text-primary  mb-4 flex items-center">
               <IoIosColorPalette className="w-6 h-6 mr-3 text-secondary" />
               Our Logo & Vision
             </h2>
@@ -54,14 +54,14 @@ const AboutUs = () => {
               </p>
               <ul className="list-disc list-inside space-y-2 text-sm">
                 <li>
-                  <span className="font-semibold text-primary dark:text-gray-200">
+                  <span className="font-semibold text-primary ">
                     The Orange Crescent:
                   </span>{" "}
                   Symbolizes a **single, nourishing bite**, evocative of food,
                   warmth, and the immediate relief a donation provides.
                 </li>
                 <li>
-                  <span className="font-semibold text-primary dark:text-gray-200">
+                  <span className="font-semibold text-primary ">
                     The Teal Circle:
                   </span>{" "}
                   Represents the **trust, security, and complete cycle** of food
@@ -73,7 +73,7 @@ const AboutUs = () => {
         </div>
 
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center text-primary dark:text-gray-100 mb-10">
+          <h2 className="text-3xl font-bold text-center text-primary  mb-10">
             How Our Platform Works: The Four Roles
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -104,7 +104,7 @@ const AboutUs = () => {
         </div>
 
         <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-8 sm:p-12 border-t-8 border-secondary">
-          <h2 className="text-3xl font-bold text-center text-primary dark:text-gray-100 mb-8 flex items-center justify-center">
+          <h2 className="text-3xl font-bold text-center text-primary  mb-8 flex items-center justify-center">
             <MdSecurity className="w-8 h-8 mr-3 text-secondary" />
             Trust and Technology
           </h2>
