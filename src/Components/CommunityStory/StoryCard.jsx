@@ -1,38 +1,47 @@
 import React from "react";
 import { useSwiperSlide } from "swiper/react";
+import Button from "../../Pages/Shared/Button/Button";
 
-const StoryCard = ({ story }) => {
-  const { title, image, description } = story;
+const StoryCard = ({ story, onRead }) => {
   const swiperSlide = useSwiperSlide();
 
   return (
     <div
-      className={`w-full h-[350px] sm:h-[360px] p-4 sm:px-6 mx-0 rounded-2xl shadow-lg transition-all duration-300 text-left transform hover:-translate-y-2 hover:shadow-2xl 
-        ${
-          swiperSlide.isActive
-            ? "scale-100 opacity-100"
-            : "scale-95 opacity-70"
-        }
-        bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 flex flex-col`}
+      className={`
+      group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden
+      transition-all duration-500
+      ${
+        swiperSlide.isActive
+          ? "scale-100 opacity-100 shadow-2xl"
+          : "scale-90 opacity-60"
+      }
+    `}
     >
-      {/* Image section */}
-      <div className="w-full h-48 flex-shrink-0">
+      <div className="overflow-hidden">
         <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover rounded-xl"
+          src={story.image}
+          alt={story.title}
+          className="w-full h-60 object-cover transition-transform duration-700 group-hover:scale-110"
         />
       </div>
 
-      {/* Text section */}
-      <div className="flex flex-col justify-between flex-grow mt-4">
-        <h3 className="text-xl sm:text-2xl font-semibold text-center text-primary dark:text-white">
-          {title}
+      <div className="p-6 flex flex-col h-[230px]">
+
+        <h3 className="text-2xl font-bold text-primary text-center">
+          {story.title}
         </h3>
 
-        <p className="text-sm sm:text-base text-center line-clamp-4">
-          {description}
+        <p className="text-gray-600 dark:text-gray-300 mt-4 line-clamp-4 text-center flex-1">
+          {story.description}
         </p>
+
+        <Button
+          onClick={onRead}
+          label="Read full Story"
+        >
+      
+        </Button>
+
       </div>
     </div>
   );

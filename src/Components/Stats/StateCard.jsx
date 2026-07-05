@@ -27,7 +27,7 @@ const StatCard = ({ stat }) => {
   return (
     <div
       ref={ref}
-      className="bg-white dark:bg-gray-700 w-full shadow-md border-t-4 border-l-4 border-secondary rounded-2xl text-center flex flex-col items-center space-y-3 py-8 px-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 group"
+      className="h-full bg-white dark:bg-gray-700 shadow-md border-t-4 border-l-4 border-secondary rounded-2xl text-center flex flex-col items-center justify-center py-8 px-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 group"
     >
      
       <div className="relative p-4 bg-secondary dark:bg-gray-600 rounded-full mx-auto overflow-hidden ring-2 ring-secondary/40 shadow-sm group-hover:ring-primary transition-all duration-500">

@@ -9,7 +9,12 @@ const Stats = () => {
       suffix: " kg",
       label: "Total Food Donated",
     },
-    { icon: "meals", endValue: 3500, suffix: "", label: "Meals Saved" },
+    {
+      icon: "meals",
+      endValue: 3500,
+      suffix: "",
+      label: "Meals Saved",
+    },
     {
       icon: "co2",
       endValue: 280,
@@ -25,17 +30,20 @@ const Stats = () => {
   ];
 
   return (
-    <section className="dark:bg-[#1E293B] rounded-2xl nunito">
-      <div className=" mx-auto  text-center">
-        <div className="text-center py-3 pb-16">
-          <h2 className="text-3xl poppins font-bold text-primary">
+    <section className="dark:bg-[#1E293B] rounded-2xl py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Heading */}
+        <div className="text-center mb-14">
+          <h2 className="text-3xl font-bold text-primary poppins">
             Our Collective Impact
           </h2>
-          <p className="text-grey-800 dark:text-gray-300 text-lg">
+          <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
             Together, We’re Changing Lives
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
             <StatCard key={index} stat={stat} />
           ))}
