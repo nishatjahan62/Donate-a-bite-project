@@ -58,6 +58,10 @@ const Login = () => {
         restaurant :{
           email:"restaurant@gmail.com",
           pass:"restaurant"
+        },
+        user :{
+          email:"user@gmail.com",
+          pass:"user0101"
         }
       }
 
@@ -168,10 +172,11 @@ const Login = () => {
                 <Link to="/auth/forget-password">Forget Password?</Link>
               </p>
                  <h2 className="text-primary text-xl pb-1 text-center font-semibold">Role wise Login</h2>
-             <div className="flex flex-col lg:flex-row lg:items-center space-y-1.5 lg:space-y-0 lg:space-x-1.5">
-  <Button type="button" label="Login as Admin" size="sm" onClick={()=> handleDemoLogin("admin")} />
-  <Button type="button" label="Login as Charity" size="sm" onClick={()=> handleDemoLogin("charity")}   />
-  <Button type="button" label="Login as Restaurant" size="sm" onClick={()=> handleDemoLogin("restaurant")} />
+             <div className="flex flex-col lg:flex-row  justify-center items-center  space-y-1 lg:space-y-0 lg:space-x-2">
+  <Button type="button" label="Admin" size="md" onClick={()=> handleDemoLogin("admin")} />
+  <Button type="button" label="Charity" size="md" onClick={()=> handleDemoLogin("charity")}   />
+  <Button type="button" label="Restaurant" size="md" onClick={()=> handleDemoLogin("restaurant")} />
+      <Button type="button" label="User" size="md" onClick={()=> handleDemoLogin("user")} />
 </div>
 
               <p className="text-sm text-center text-gray-600 dark:text-gray-400">
