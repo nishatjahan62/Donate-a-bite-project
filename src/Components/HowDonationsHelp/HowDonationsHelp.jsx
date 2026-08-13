@@ -27,7 +27,7 @@ const steps = [
 
 const HowDonationsHelp = () => {
   return (
-    <section className="py-16 px-4 md:px-5 bg-secondary transition-colors duration-300 overflow-x-hidden rounded-2xl">
+    <section className="py-16 px-4 md:px-5 bg-secondary dark:bg-gray-900 transition-colors duration-300 overflow-x-hidden rounded-2xl">
       {/* Heading */}
       <div className="max-w-4xl mx-auto text-center mb-16">
         <motion.h2
